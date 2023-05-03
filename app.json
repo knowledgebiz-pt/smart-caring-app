@@ -2,6 +2,7 @@
   "expo": {
     "name": "smart-caring-app",
     "slug": "smart-caring-app",
+    "owner": "knowledgebiz",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
