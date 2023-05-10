@@ -1,31 +1,27 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
-import { SafeAreaView, StyleSheet, Image, TextInput, TouchableOpacity, Pressable, StatusBar, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text } from 'react-native'
+import { SafeAreaView, Image, TextInput, TouchableOpacity, Pressable, StatusBar, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text } from 'react-native'
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
 import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
-import CheckBox from 'expo-checkbox'
-import { LoginUser } from '../services/LoginService'
+import { RecoverUserPassword } from '../services/LoginService'
 
-export default function Login({ route, navigation }) {
+export default function RecoverPassword({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(true)
-    let colorScheme = useColorScheme()
-    const styleSelected = colorScheme == 'light' ? style : styleDark
-    const colors = require('../../style/Colors.json')
-
     const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [toggleCheckBox, setToggleCheckBox] = useState(false)
+    let colorScheme = useColorScheme()
+    var styleSelected = colorScheme == 'light' ? style : styleDark
+    var colors = require('../../style/Colors.json')
 
     useEffect(() => {
-        console.log('OPEN', Login.name, 'SCREEN')
+        console.log('OPEN', RecoverPassword.name, 'SCREEN')
         //For test loading
         setTimeout(() => {
-            setIsLoading(false) 
+            setIsLoading(false)
         }, 1000);
         return () => {
-            console.log('SCREEN', Login.name, 'CLOSE')
+            console.log('SCREEN', RecoverPassword.name, 'CLOSE')
         }
     }, [])
     Appearance.getColorScheme()
@@ -56,6 +52,7 @@ export default function Login({ route, navigation }) {
                 <View style={styleSelected.container}>
                     <Image style={styleSelected.image} source={require("../../assets/images/logo.png")} />
                     <StatusBar style="auto" />
+                    <Text style={styleSelected.option_buttons}>Please insert your email.</Text>
                     <View style={styleSelected.inputView}>
                         <TextInput
                             style={styleSelected.TextInput}
@@ -64,27 +61,11 @@ export default function Login({ route, navigation }) {
                             onChangeText={(email) => setEmail(email)}
                         />
                     </View>
-                    <View style={styleSelected.inputView}>
-                        <TextInput
-                            style={styleSelected.TextInput}
-                            placeholder="Password"
-                            placeholderTextColor="#ccc"
-                            secureTextEntry={true}
-                            onChangeText={(password) => setPassword(password)}
-                        />
-                    </View>
-                    <View style={styleSelected.checkboxView}>
-                        <CheckBox disabled={false} value={toggleCheckBox}
-                        onValueChange={(newVal) => setToggleCheckBox(newVal)}/><Text onPress={() => setToggleCheckBox(!toggleCheckBox)}> Remember me</Text>
-                    </View>
-                    <TouchableOpacity onPress={() => navigation.navigate('RecoverPassword')}>
-                        <Text style={styleSelected.option_buttons}>Forgot Password?</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                        <Text style={styleSelected.return_login_button}>Go back to login</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-                        <Text style={styleSelected.option_buttons}>Create a new account</Text>
-                    </TouchableOpacity>
-                    <Pressable onPressOut={() => LoginUser(email, password).then(res => {console.log(res)}).catch(e => {console.error(e)})} style={({ pressed }) => pressed ? styleSelected.pressedLoginBtn : styleSelected.loginBtn}>
-                        <Text style={styleSelected.loginText}>LOGIN</Text>
+                    <Pressable onPressOut={() => RecoverUserPassword(email)} style={({ pressed }) => pressed ? styleSelected.pressedLoginBtn : styleSelected.loginBtn}>
+                        <Text style={styleSelected.loginText}>RECOVER PASSWORD</Text>
                     </Pressable>
                 </View>
             </KeyboardAvoidingView>
