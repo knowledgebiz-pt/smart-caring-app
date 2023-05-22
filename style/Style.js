@@ -21,11 +21,11 @@ const style = StyleSheet.create({
   },
   inputView: {
     backgroundColor: colors.Base_Slot_4,
-    width:"80%",
-    borderRadius:25,
-    height:50,
-    marginBottom:20,
-    justifyContent:"center",
+    width: "80%",
+    borderRadius: 25,
+    height: 50,
+    marginBottom: 20,
+    justifyContent: "center",
   },
   TextInput: {
     height: 50,
@@ -41,7 +41,7 @@ const style = StyleSheet.create({
     marginBottom: 100
   },
   new_account_button: {
-      height: 30,
+    height: 30,
   },
   loginBtn: {
     width: "80%",
@@ -62,36 +62,58 @@ const style = StyleSheet.create({
     backgroundColor: colors.Base_Slot_1,
   },
   loginText: {
-      color: "#fff"
+    color: "#fff"
   },
   checkboxView: {
-      width: "80%",
-      marginBottom: 20,
-      marginLeft: 20,
-      zIndex: -5,
-      flexDirection: "row",
-      alignItems: "center"
+    width: "80%",
+    marginBottom: 20,
+    marginLeft: 20,
+    zIndex: -5,
+    flexDirection: "row",
+    alignItems: "center"
   },
   inputViewBelowDropdown: {
     backgroundColor: colors.Base_Slot_4,
-    width:"80%",
-    borderRadius:25,
-    height:50,
-    marginBottom:20,
-    justifyContent:"center",
+    width: "80%",
+    borderRadius: 25,
+    height: 50,
+    marginBottom: 20,
+    justifyContent: "center",
     zIndex: -5
   },
   DropDownPicker: {
-      backgroundColor: colors.Base_Slot_4,
-      borderColor: 'transparent',
-      borderRadius:25,
-      height:50,
-      justifyContent:"center",
+    backgroundColor: colors.Base_Slot_4,
+    borderColor: 'transparent',
+    borderRadius: 25,
+    height: 50,
+    justifyContent: "center",
   },
   dropDownContainer: {
     backgroundColor: colors.Base_Slot_1,
     borderRadius: 25
-  }
+  },
+
+  //buttonSize
+
+  buttonSize: {
+    height: 50,
+    width: "90%",
+    alignSelf: "center",
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+
+  // text
+
+  textRegular16: {
+    fontSize: 16,
+    fontWeight: 400
+  },
+  textBold16: {
+    fontSize: 16,
+    fontWeight: 600
+  },
 });
 
 export default style;

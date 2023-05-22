@@ -6,19 +6,21 @@ import RecoverPassword from './src/views/RecoverPassword';
 import { MyDrawer } from './src/components/Drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import FirstAccess from './src/views/FirstAccess';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     //<MyDrawer>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName='Login'>
-          <Stack.Screen name="Login" component={Login}/>
-          <Stack.Screen name="Register" component={Register}/>
-          <Stack.Screen name="RecoverPassword" component={RecoverPassword}/>
-        </Stack.Navigator>
-      </NavigationContainer>
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='FirstAccess'>
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="RecoverPassword" component={RecoverPassword} />
+        <Stack.Screen name="FirstAccess" component={FirstAccess} />
+      </Stack.Navigator>
+    </NavigationContainer>
     // </MyDrawer>
   );
 }

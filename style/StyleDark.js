@@ -91,7 +91,24 @@ const style = StyleSheet.create({
   dropDownContainer: {
     backgroundColor: colors.Base_Slot_1,
     borderRadius: 25
-  }
+  },
+
+  //buttons
+
+  buttonSize: {
+
+  },
+
+  //text
+
+  textRegular16: {
+    fontSize: 16,
+    fontWeight: 400
+  },
+  textBold16: {
+    fontSize: 16,
+    fontWeight: 400
+  },
 });
 
 export default style;
