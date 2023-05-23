@@ -1,4 +1,4 @@
-import { Platform, StyleSheet } from "react-native";
+import { Platform, StyleSheet, StatusBar } from "react-native";
 const colors = require("../style/Colors.json");
 
 const style = StyleSheet.create({
@@ -109,6 +109,11 @@ const style = StyleSheet.create({
     fontSize: 16,
     fontWeight: 400
   },
+  AndroidSafeArea: {
+    flex: 1,
+    backgroundColor: "white",
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
+  }
 });
 
 export default style;

@@ -41,7 +41,7 @@ export default function FirstAccess({ route, navigation }) {
         );
     }
     return (
-        <SafeAreaView style={[styleSelected.backgroundPrimary, { flex: 1 }]} onLayout={onLayoutRootView}>
+        <SafeAreaView style={[styleSelected.backgroundPrimary, styleSelected.AndroidSafeArea, { flex: 1 }]} onLayout={onLayoutRootView}>
             <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={colorScheme === 'light' ? 'dark-content' : 'light-content'} />
             <KeyboardAvoidingView
                 style={{ flex: 1, marginBottom: 10 }}
