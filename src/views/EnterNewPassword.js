@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
-import { SafeAreaView, StatusBar, Appearance, useColorScheme, Platform, View, Text, Image } from 'react-native'
+import { SafeAreaView, KeyboardAvoidingView,StatusBar, ScrollView, Appearance, useColorScheme, Platform, View, Text, Image } from 'react-native'
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
@@ -47,14 +47,14 @@ export default function EnterNewPassword({ route, navigation }) {
     return (
         <SafeAreaView style={[styleSelected.backgroundPrimary, styleSelected.AndroidSafeArea, { flex: 1 }]} onLayout={onLayoutRootView}>
             <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={colorScheme === 'light' ? 'dark-content' : 'light-content'} />
-            {/* <KeyboardAvoidingView
+            <KeyboardAvoidingView
                 style={{ flex: 1, marginBottom: 10 }}
                 enabled={true}
                 behavior={Platform.OS == 'android' ? 'height' : 'padding'}
-                keyboardVerticalOffset={Platform.OS == 'android' ? -150 : -150}
-            > */}
-            <KeyboardAwareScrollView style={{flex:1}}>
-                <View style={[styleSelected.backgroundPrimary, { flex: 1 }]}>
+                keyboardVerticalOffset={Platform.OS == 'android' ? 0 : 0}
+            >
+            {/* <KeyboardAwareScrollView style={{flex:1}}> */}
+                <ScrollView style={[styleSelected.backgroundPrimary, { flex: 1 }]}>
                     <View style={styleSelected.smallerImageContainer}>
 
                     </View>
@@ -68,9 +68,9 @@ export default function EnterNewPassword({ route, navigation }) {
                         <InputTransparent inputRef={ref_input2} isPassword={true} placeholderText={"Confirm new password"} />
                         <ButtonPrimary title={"Reset Password"} />
                     </View>
-                </View>
-                </KeyboardAwareScrollView>
-            {/* </KeyboardAvoidingView> */}
+                </ScrollView>
+                {/* </KeyboardAwareScrollView> */}
+            </KeyboardAvoidingView>
         </SafeAreaView>
     )
 }
