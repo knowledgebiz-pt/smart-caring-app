@@ -14,7 +14,7 @@ export default function ButtonPrimary({ title, event }) {
                     event()
             }}
             style={[styleSelected.buttonSize, { backgroundColor: colors.Base_Slot_2 }]}>
-            <Text style={styleSelected.textRegular16}>
+            <Text style={styleSelected.buttonPrimaryText}>
                 {title}
             </Text>
         </TouchableOpacity>

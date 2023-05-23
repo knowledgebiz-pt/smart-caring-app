@@ -92,6 +92,25 @@ const style = StyleSheet.create({
     backgroundColor: colors.Base_Slot_1,
     borderRadius: 25
   },
+  smallerImageContainer: {
+    backgroundColor: colors.Base_Slot_5, 
+    height: 400, 
+    width: "80%", 
+    alignSelf: "center", 
+    borderRadius: 20, 
+    marginTop: 20
+  },
+  paleBlueContainer: {
+    marginTop: 45,
+    flex: 1, 
+    justifyContent: "space-evenly", 
+    borderRadius: 30, 
+    alignSelf: "center", 
+    width: "90%", 
+    backgroundColor: 'rgba(28, 163, 252, 0.1)', 
+    justifyContent: "space-evenly", 
+    height: 250
+  },
 
   //buttons
 
@@ -108,7 +127,24 @@ const style = StyleSheet.create({
   textBold16: {
     fontSize: 16,
     fontWeight: 400
+  },  
+  textBold20DarkBlue:{
+    fontSize: 20, 
+    fontWeight: 600, 
+    color: "#030849"
   },
+  textRegular14Gray: {
+    fontSize: 14,
+    fontWeight: 400,
+    color: "#656565"
+  },
+  buttonPrimaryText: {
+    fontSize: 16,
+    fontWeight: 600,
+    color: "white"
+  },
+
+  // Safe Area
   AndroidSafeArea: {
     flex: 1,
     backgroundColor: "white",
