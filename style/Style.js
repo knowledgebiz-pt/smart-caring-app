@@ -92,12 +92,27 @@ const style = StyleSheet.create({
     backgroundColor: colors.Base_Slot_1,
     borderRadius: 25
   },
+  imageContainer: {
+    backgroundColor: colors.Base_Slot_5, 
+    height: "70%", 
+    width: "80%", 
+    alignSelf: "center", 
+    borderRadius: 15,
+    marginTop: 20
+  },
+  imageContainerNoMarginTop: {
+    backgroundColor: colors.Base_Slot_5, 
+    height: "70%", 
+    width: "80%", 
+    alignSelf: "center", 
+    borderRadius: 15
+  },
   smallerImageContainer: {
     backgroundColor: colors.Base_Slot_5, 
     height: 400, 
     width: "80%", 
     alignSelf: "center", 
-    borderRadius: 20, 
+    borderRadius: 15, 
     marginTop: 20
   },
   paleBlueContainer: {
@@ -116,7 +131,7 @@ const style = StyleSheet.create({
 
   buttonSize: {
     height: 50,
-    width: "90%",
+    width: "80%",
     alignSelf: "center",
     borderRadius: 30,
     alignItems: "center",
