@@ -1,20 +1,22 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
-import { SafeAreaView, StyleSheet, Image, TextInput, TouchableOpacity, Pressable, StatusBar, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text } from 'react-native'
+import { SafeAreaView, KeyboardAvoidingView,StatusBar, ScrollView, Appearance, useColorScheme, Platform, View, Text, Image } from 'react-native'
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
 import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
-import DropDownPicker from 'react-native-dropdown-picker'
-import CheckBox from 'expo-checkbox'
-import { BarPasswordStrengthDisplay } from 'react-native-password-strength-meter';
-import { RegisterUser } from '../services/RegisterService'
+import ButtonPrimary from '../components/ButtonPrimary'
+import InputTransparent from '../components/InputTransparent'
 
 export default function Register({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(true)
     let colorScheme = useColorScheme()
     const styleSelected = colorScheme == 'light' ? style : styleDark
     const colors = require('../../style/Colors.json')
+
+    const ref_input2 = useRef()
+    const ref_input3 = useRef()
+
 
     const [name, setName] = useState("")
     const [username, setUsername] = useState("")
@@ -56,87 +58,34 @@ export default function Register({ route, navigation }) {
         );
     }
     return (
-        <SafeAreaView style={[styleSelected.backgroundPrimary, { flex: 1 }]} onLayout={onLayoutRootView}>
+        <SafeAreaView style={[styleSelected.backgroundPrimary, styleSelected.AndroidSafeArea, { flex: 1 }]} onLayout={onLayoutRootView}>
             <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={colorScheme === 'light' ? 'dark-content' : 'light-content'} />
             <KeyboardAvoidingView
                 style={{ flex: 1}}
                 enabled={true}
                 behavior={Platform.OS == 'android' ? 'height' : 'padding'}
-                keyboardVerticalOffset={Platform.OS == 'android' ? -150 : -150}
+                keyboardVerticalOffset={Platform.OS == 'android' ? 0 : 0}
             >
-                <View style={styleSelected.container}>
-                    <Image style={styleSelected.image} source={require("../../assets/images/logo.png")} />
-                    <StatusBar style="auto" />
-                    <View style={styleSelected.inputView}>
-                        <TextInput
-                            style={styleSelected.TextInput}
-                            placeholder="Name"
-                            placeholderTextColor="#ccc"
-                            onChangeText={(name) => setName(name)}
-                        />
+            {/* <KeyboardAwareScrollView style={{flex:1}}> */}
+                <ScrollView style={[styleSelected.backgroundPrimary, { flex: 1 }]}>
+                    <View style={styleSelected.verySmallImageContainer}>
+
                     </View>
-                    <View style={styleSelected.inputView}>
-                        <TextInput
-                            style={styleSelected.TextInput}
-                            placeholder="Username"
-                            placeholderTextColor="#ccc"
-                            onChangeText={(username) => setUsername(username)}
-                        />
+                    {/* <View style={{flex:1}}> */}
+                        <Text style={[styleSelected.textBold20DarkBlue, {marginTop: 45, textAlign: "center"}]}>Create an account</Text>
+                        <Text style={[styleSelected.textRegular14Gray, {width:"65%", marginTop: 5, textAlign: "center", alignSelf: "center"}]}>Let's get started!</Text>
+
+                    {/* </View> */}
+                    <View style={styleSelected.paleBlueContainerTaller}>
+                        <InputTransparent inputMode='email' blurOnSubmit={false} isPassword={true} onSubmitEditing={() => ref_input2.current?.focus()} returnKeyType='next' placeholderText={"Enter your e-mail"} />
+                        <InputTransparent inputRef={ref_input2} blurOnSubmit={false} isPassword={true} onSubmitEditing={() => ref_input3.current?.focus()} returnKeyType='next' placeholderText={"Enter your password"} />
+                        <InputTransparent inputRef={ref_input3} isPassword={true} placeholderText={"Confirm your password"} />
+                        <Text style={[styleSelected.textDisclaimer, {width:"65%", marginTop: 5, alignSelf: "center"}]}>By clicking Continue, you agree to our <Text style={styleSelected.textBold}>Terms and Conditions</Text> and <Text style={styleSelected.textBold}>Privacy Statement</Text>.</Text>
+
+                        <ButtonPrimary title={"Continue"} />
                     </View>
-                    <View style={styleSelected.inputView}>
-                        {/* <TextInput
-                            style={styleSelected.TextInput}
-                            placeholder="Email"
-                            placeholderTextColor="#ccc"
-                            onChangeText={(email) => setEmail(email)}
-                        /> */}
-                        <DropDownPicker style={styleSelected.DropDownPicker}
-                        placeholder='Role'
-                        placeholderStyle={{color:'#ccc'}}
-                            textStyle={{color: '#fff', marginLeft:20}}
-                            dropDownContainerStyle={styleSelected.dropDownContainer}
-                            open={open}
-                            value={value}
-                            items={items}
-                            setOpen={setOpen}
-                            setValue={setValue}
-                            setItems={setItems}
-                        />
-                    </View>
-                    <View style={styleSelected.checkboxView}>
-                        <CheckBox disabled={false} value={toggleCheckBox}
-                        onValueChange={(newVal) => setToggleCheckBox(newVal)}/><Text onPress={() => setToggleCheckBox(!toggleCheckBox)}> I wish to display my role on my profile.</Text>
-                    </View>
-                    <View style={styleSelected.inputViewBelowDropdown}>
-                        <TextInput
-                            style={styleSelected.TextInput}
-                            placeholder="Email"
-                            placeholderTextColor="#ccc"
-                            onChangeText={(email) => setEmail(email)}
-                        />
-                    </View>
-                    <View style={styleSelected.inputViewBelowDropdown}>
-                        <TextInput
-                            style={styleSelected.TextInput}
-                            placeholder="Password"
-                            placeholderTextColor="#ccc"
-                            secureTextEntry={true}
-                            onChangeText={(password) => setPassword(password)}
-                        />
-                    </View>
-                    <View style={{marginTop: -20,marginBottom:20}}>
-                    <BarPasswordStrengthDisplay width={300}
-                            password={password}
-                        />
-                    </View>
-                    <Text style={styleSelected.option_buttons}>Already have an account?</Text>
-                    <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                        <Text style={[styleSelected.option_buttons, {color: colors.Base_Slot_4}]}>Click here to login instead</Text>
-                    </TouchableOpacity>
-                    <Pressable onPressOut={() => RegisterUser(name, username, value, toggleCheckBox, email, password)} style={({ pressed }) => pressed ? styleSelected.pressedLoginBtn : styleSelected.loginBtn}>
-                        <Text style={styleSelected.loginText}>REGISTER</Text>
-                    </Pressable>
-                </View>
+                </ScrollView>
+                {/* </KeyboardAwareScrollView> */}
             </KeyboardAvoidingView>
         </SafeAreaView>
     )
