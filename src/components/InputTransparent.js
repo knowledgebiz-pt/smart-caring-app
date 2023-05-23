@@ -34,7 +34,7 @@ export default function InputTransparent(
             style={[styleSelected.buttonSize, { backgroundColor: colors.Base_Slot_1, flexDirection: "row", paddingLeft: 20 }]}
             placeholder={placeholderText}
             placeholderTextColor="rgba(101, 101, 101, 0.5)"
-            inputMode=""
+            inputMode={inputMode}
             secureTextEntry={isPassword}
             onSubmitEditing={onSubmitEditing}
             returnKeyType={returnKeyType}
