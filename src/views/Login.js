@@ -1,28 +1,24 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
-import { SafeAreaView, StyleSheet, Image, TextInput, TouchableOpacity, Pressable, StatusBar, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text } from 'react-native'
+import { SafeAreaView, StatusBar, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text, Image, TouchableOpacity } from 'react-native'
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
 import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
-import CheckBox from 'expo-checkbox'
-import { LoginUser } from '../services/LoginService'
+import InputTransparent from '../components/InputTransparent'
+import ButtonPrimary from '../components/ButtonPrimary'
 
 export default function Login({ route, navigation }) {
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
     let colorScheme = useColorScheme()
-    const styleSelected = colorScheme == 'light' ? style : styleDark
-    const colors = require('../../style/Colors.json')
-
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [toggleCheckBox, setToggleCheckBox] = useState(false)
+    var styleSelected = colorScheme == 'light' ? style : styleDark
+    var colors = require('../../style/Colors.json')
 
     useEffect(() => {
         console.log('OPEN', Login.name, 'SCREEN')
         //For test loading
         setTimeout(() => {
-            setIsLoading(false) 
+            setIsLoading(true)
         }, 1000);
         return () => {
             console.log('SCREEN', Login.name, 'CLOSE')
@@ -39,7 +35,7 @@ export default function Login({ route, navigation }) {
         if (isLoading) {
         }
     }, [isLoading]);
-    if (isLoading) {
+    if (!isLoading) {
         return (
             <Loader />
         );
@@ -48,44 +44,53 @@ export default function Login({ route, navigation }) {
         <SafeAreaView style={[styleSelected.backgroundPrimary, { flex: 1 }]} onLayout={onLayoutRootView}>
             <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={colorScheme === 'light' ? 'dark-content' : 'light-content'} />
             <KeyboardAvoidingView
-                style={{ flex: 1}}
+                style={{ flex: 1, marginBottom: 10 }}
                 enabled={true}
                 behavior={Platform.OS == 'android' ? 'height' : 'padding'}
                 keyboardVerticalOffset={Platform.OS == 'android' ? -150 : -150}
             >
-                <View style={styleSelected.container}>
-                    <Image style={styleSelected.image} source={require("../../assets/images/logo.png")} />
-                    <StatusBar style="auto" />
-                    <View style={styleSelected.inputView}>
-                        <TextInput
-                            style={styleSelected.TextInput}
-                            placeholder="Email"
-                            placeholderTextColor="#ccc"
-                            onChangeText={(email) => setEmail(email)}
-                        />
+                <View style={[styleSelected.backgroundPrimary, { flex: 1 }]}>
+                    <Image source={require("../../assets/images/logo.png")} style={{ width: 200, height: 200, alignSelf: "center" }} resizeMode='contain' />
+                    <View style={{ height: 80, justifyContent: "space-evenly", alignItems: "center" }}>
+                        <Text style={styleSelected.textBold20DarkBlue}>Welcome back</Text>
+                        <Text style={styleSelected.textRegular14Gray}>Let’s log in and continue helping others!</Text>
                     </View>
-                    <View style={styleSelected.inputView}>
-                        <TextInput
-                            style={styleSelected.TextInput}
-                            placeholder="Password"
-                            placeholderTextColor="#ccc"
-                            secureTextEntry={true}
-                            onChangeText={(password) => setPassword(password)}
-                        />
+                    <View style={{
+                        backgroundColor: 'rgba(28, 163, 252, 0.1)',
+                        height: "55%",
+                        width: "90%",
+                        alignSelf: "center",
+                        borderRadius: 20,
+                        justifyContent: "center"
+                    }}>
+                        <View style={{height: 70, marginTop: 20}}>
+                            <InputTransparent placeholderText={"Enter e-mail"} />
+                        </View>
+                        <View style={{height: 70}}>
+                            <InputTransparent placeholderText={"password"} />
+                        </View>
+                        <TouchableOpacity style={{height: 30}}>
+                            <Text style={[{ alignSelf: "flex-end", textDecorationLine: "underline", color: colors.Base_Slot_3, fontWeight: 500, marginRight: 50 }, styleSelected.text12Regular]}>Forgot Password</Text>
+                        </TouchableOpacity>
+                        <ButtonPrimary title={"Login"} />
+                        <View style={{ flexDirection: "row", height: 50, justifyContent: "center", alignItems: "center" }}>
+                            <View style={{ height: 1, backgroundColor: colors.Base_Slot_5, flex: 1 }} />
+                            <Text style={[{ marginLeft: 15, marginRight: 15 }, styleSelected.text12Regular]}>or</Text>
+                            <View style={{ height: 1, backgroundColor: colors.Base_Slot_5, flex: 1 }} />
+                        </View>
+                        <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
+                            <TouchableOpacity style={{ backgroundColor: colors.Base_Slot_1, width: 150, borderRadius: 30, justifyContent: "center", alignItems: "center", height: 50 }}>
+                                <Image source={require("../../assets/images/google.png")} style={{ height: 35, width: 35 }} />
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{ backgroundColor: colors.Base_Slot_1, width: 150, borderRadius: 30, justifyContent: "center", alignItems: "center" }}>
+                                <Image source={require("../../assets/images/facebook.png")} style={{ height: 35, width: 35 }} />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 20 }}>
+                            <Text style={[styleSelected.textRegular16, { color: colors.Base_Slot_3 }]}>Don’t have an account? </Text>
+                            <Text style={[styleSelected.textBold16, { color: colors.Base_Slot_3 }]}>Sign up</Text>
+                        </View>
                     </View>
-                    <View style={styleSelected.checkboxView}>
-                        <CheckBox disabled={false} value={toggleCheckBox}
-                        onValueChange={(newVal) => setToggleCheckBox(newVal)}/><Text onPress={() => setToggleCheckBox(!toggleCheckBox)}> Remember me</Text>
-                    </View>
-                    <TouchableOpacity onPress={() => navigation.navigate('RecoverPassword')}>
-                        <Text style={styleSelected.option_buttons}>Forgot Password?</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-                        <Text style={styleSelected.option_buttons}>Create a new account</Text>
-                    </TouchableOpacity>
-                    <Pressable onPressOut={() => LoginUser(email, password).then(res => {console.log(res)}).catch(e => {console.error(e)})} style={({ pressed }) => pressed ? styleSelected.pressedLoginBtn : styleSelected.loginBtn}>
-                        <Text style={styleSelected.loginText}>LOGIN</Text>
-                    </Pressable>
                 </View>
             </KeyboardAvoidingView>
         </SafeAreaView>

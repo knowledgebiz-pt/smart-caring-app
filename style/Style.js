@@ -93,56 +93,56 @@ const style = StyleSheet.create({
     borderRadius: 25
   },
   imageContainer: {
-    backgroundColor: colors.Base_Slot_5, 
-    height: "70%", 
-    width: "80%", 
-    alignSelf: "center", 
+    backgroundColor: colors.Base_Slot_5,
+    height: "70%",
+    width: "80%",
+    alignSelf: "center",
     borderRadius: 15,
     marginTop: 20
   },
   imageContainerNoMarginTop: {
-    backgroundColor: colors.Base_Slot_5, 
-    height: "70%", 
-    width: "80%", 
-    alignSelf: "center", 
+    backgroundColor: colors.Base_Slot_5,
+    height: "70%",
+    width: "80%",
+    alignSelf: "center",
     borderRadius: 15
   },
   smallerImageContainer: {
-    backgroundColor: colors.Base_Slot_5, 
-    height: 400, 
-    width: "80%", 
-    alignSelf: "center", 
-    borderRadius: 15, 
+    backgroundColor: colors.Base_Slot_5,
+    height: 400,
+    width: "80%",
+    alignSelf: "center",
+    borderRadius: 15,
     marginTop: 20
   },
   verySmallImageContainer: {
-    backgroundColor: colors.Base_Slot_5, 
-    height: 250, 
-    width: "80%", 
-    alignSelf: "center", 
-    borderRadius: 15, 
+    backgroundColor: colors.Base_Slot_5,
+    height: 250,
+    width: "80%",
+    alignSelf: "center",
+    borderRadius: 15,
     marginTop: 20
   },
   paleBlueContainer: {
     marginTop: 45,
-    flex: 1, 
-    justifyContent: "space-evenly", 
-    borderRadius: 30, 
-    alignSelf: "center", 
-    width: "90%", 
-    backgroundColor: 'rgba(28, 163, 252, 0.1)', 
-    justifyContent: "space-evenly", 
+    flex: 1,
+    justifyContent: "space-evenly",
+    borderRadius: 30,
+    alignSelf: "center",
+    width: "90%",
+    backgroundColor: 'rgba(28, 163, 252, 0.1)',
+    justifyContent: "space-evenly",
     height: 250
   },
   paleBlueContainerTaller: {
     marginTop: 45,
-    flex: 1, 
-    justifyContent: "space-evenly", 
-    borderRadius: 30, 
-    alignSelf: "center", 
-    width: "90%", 
-    backgroundColor: 'rgba(28, 163, 252, 0.1)', 
-    justifyContent: "space-evenly", 
+    flex: 1,
+    justifyContent: "space-evenly",
+    borderRadius: 30,
+    alignSelf: "center",
+    width: "90%",
+    backgroundColor: 'rgba(28, 163, 252, 0.1)',
+    justifyContent: "space-evenly",
     height: 400
   },
 
@@ -167,9 +167,9 @@ const style = StyleSheet.create({
     fontSize: 16,
     fontWeight: 600
   },
-  textBold20DarkBlue:{
-    fontSize: 20, 
-    fontWeight: 600, 
+  textBold20DarkBlue: {
+    fontSize: 20,
+    fontWeight: 600,
     color: "#030849"
   },
   textRegular14Gray: {
@@ -189,6 +189,10 @@ const style = StyleSheet.create({
     fontSize: 16,
     fontWeight: 600,
     color: "white"
+  },
+
+  text12Regular: {
+      fontSize: 12
   },
 
   // Safe Area
