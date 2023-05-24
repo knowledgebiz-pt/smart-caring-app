@@ -17,6 +17,9 @@ export default function EnterNewPassword({ route, navigation }) {
 
     const ref_input2 = useRef()
 
+    const [password, setPassword] = useState("")
+    const [confirmPassword, setConfirmPassword] = useState("")
+
 
     useEffect(() => {
         console.log('OPEN', EnterNewPassword.name, 'SCREEN')
@@ -64,8 +67,8 @@ export default function EnterNewPassword({ route, navigation }) {
 
                     {/* </View> */}
                     <View style={styleSelected.paleBlueContainer}>
-                        <InputTransparent blurOnSubmit={false} isPassword={true} onSubmitEditing={() => ref_input2.current?.focus()} returnKeyType='next' placeholderText={"Enter new password"} />
-                        <InputTransparent inputRef={ref_input2} isPassword={true} placeholderText={"Confirm new password"} />
+                        <InputTransparent onChangeText={(text) => {setPassword(text)}} blurOnSubmit={false} isPassword={true} onSubmitEditing={() => ref_input2.current?.focus()} returnKeyType='next' placeholderText={"Enter new password"} />
+                        <InputTransparent onChangeText={(text) => {setConfirmPassword(text)}} inputRef={ref_input2} isPassword={true} placeholderText={"Confirm new password"} />
                         <ButtonPrimary title={"Reset Password"} />
                     </View>
                 </ScrollView>

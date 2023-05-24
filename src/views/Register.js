@@ -17,19 +17,9 @@ export default function Register({ route, navigation }) {
     const ref_input2 = useRef()
     const ref_input3 = useRef()
 
-
-    const [name, setName] = useState("")
-    const [username, setUsername] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(null);
-    const [items, setItems] = useState([
-        {label: 'Patient', value: '1'},
-        {label: 'Caregiver', value: '2'},
-        {label: 'Healthcare Professional', value: '3'}
-    ]);
-    const [toggleCheckBox, setToggleCheckBox] = useState(false)
+    const [confirmPassword, setConfirmPassword] = useState("")
 
     useEffect(() => {
         console.log('OPEN', Register.name, 'SCREEN')
@@ -77,9 +67,9 @@ export default function Register({ route, navigation }) {
 
                     {/* </View> */}
                     <View style={styleSelected.paleBlueContainerTaller}>
-                        <InputTransparent inputMode='email' blurOnSubmit={false} isPassword={true} onSubmitEditing={() => ref_input2.current?.focus()} returnKeyType='next' placeholderText={"Enter your e-mail"} />
-                        <InputTransparent inputRef={ref_input2} blurOnSubmit={false} isPassword={true} onSubmitEditing={() => ref_input3.current?.focus()} returnKeyType='next' placeholderText={"Enter your password"} />
-                        <InputTransparent inputRef={ref_input3} isPassword={true} placeholderText={"Confirm your password"} />
+                        <InputTransparent onChangeText={(text) => setEmail(text)} inputMode='email' blurOnSubmit={false} isPassword={true} onSubmitEditing={() => ref_input2.current?.focus()} returnKeyType='next' placeholderText={"Enter your e-mail"} />
+                        <InputTransparent onChangeText={(text) => setPassword(text)} inputRef={ref_input2} blurOnSubmit={false} isPassword={true} onSubmitEditing={() => ref_input3.current?.focus()} returnKeyType='next' placeholderText={"Enter your password"} />
+                        <InputTransparent onChangeText={(text) => setConfirmPassword(text)} inputRef={ref_input3} isPassword={true} placeholderText={"Confirm your password"} />
                         <Text style={[styleSelected.textDisclaimer, {width:"65%", marginTop: 5, alignSelf: "center"}]}>By clicking Continue, you agree to our <Text style={styleSelected.textBold}>Terms and Conditions</Text> and <Text style={styleSelected.textBold}>Privacy Statement</Text>.</Text>
 
                         <ButtonPrimary title={"Continue"} />
