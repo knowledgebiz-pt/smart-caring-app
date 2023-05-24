@@ -8,20 +8,20 @@ import Loader from '../components/Loader'
 import ButtonPrimary from '../components/ButtonPrimary'
 import ButtonTransparent from '../components/ButtonTransparent'
 
-export default function FirstAccess({ route, navigation }) {
-    const [isLoading, setIsLoading] = useState(false)
+export default function SuccessNewPassword({ route, navigation }) {
+    const [isLoading, setIsLoading] = useState(true)
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
 
     useEffect(() => {
-        console.log('OPEN', FirstAccess.name, 'SCREEN')
+        console.log('OPEN', SuccessNewPassword.name, 'SCREEN')
         //For test loading
         setTimeout(() => {
-            setIsLoading(true)
+            setIsLoading(false)
         }, 1000);
         return () => {
-            console.log('SCREEN', FirstAccess.name, 'CLOSE')
+            console.log('SCREEN', SuccessNewPassword.name, 'CLOSE')
         }
     }, [])
     Appearance.getColorScheme()
@@ -35,7 +35,7 @@ export default function FirstAccess({ route, navigation }) {
         if (isLoading) {
         }
     }, [isLoading]);
-    if (!isLoading) {
+    if (isLoading) {
         return (
             <Loader />
         );
@@ -50,15 +50,11 @@ export default function FirstAccess({ route, navigation }) {
                 keyboardVerticalOffset={Platform.OS == 'android' ? -150 : -150}
             >
                 <View style={[styleSelected.backgroundPrimary, { flex: 1 }]}>
-                    <Image source={require("../../assets/images/logo.png")}
-                        resizeMode='contain'
-                        style={{ height: 90, width: 183, alignSelf: "center" }} />
-                    <View style={styleSelected.imageContainerNoMarginTop}>
+                    <View style={styleSelected.imageContainer}>
 
                     </View>
                     <View style={{ flex: 1, justifyContent: "space-evenly" }}>
-                        <ButtonPrimary title={"Login"} />
-                        <ButtonTransparent title={"Don’t have an account? "} titleBold={"Sign up"} />
+                        <ButtonPrimary title={"Let's start!"} />
                     </View>
                 </View>
             </KeyboardAvoidingView>
