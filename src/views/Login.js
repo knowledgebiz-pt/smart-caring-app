@@ -69,7 +69,7 @@ export default function Login({ route, navigation }) {
                         <View style={{ height: 70 }}>
                             <InputTransparent placeholderText={"password"} />
                         </View>
-                        <TouchableOpacity style={{ height: 30 }} onPress={() => { navigation.navigate("EnterNewPassword") }}>
+                        <TouchableOpacity style={{ height: 30 }} onPress={() => { navigation.navigate("RecoverPassword") }}>
                             <Text style={[{ alignSelf: "flex-end", textDecorationLine: "underline", color: colors.Base_Slot_3, fontWeight: 500, marginRight: 50 }, styleSelected.text12Regular]}>Forgot Password</Text>
                         </TouchableOpacity>
                         <ButtonPrimary title={"Login"} />

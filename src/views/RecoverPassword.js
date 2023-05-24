@@ -6,9 +6,11 @@ import * as NavigationBar from 'expo-navigation-bar'
 import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
 import { RecoverUserPassword } from '../services/LoginService'
+import InputTransparent from '../components/InputTransparent'
+import ButtonPrimary from '../components/ButtonPrimary'
 
 export default function RecoverPassword({ route, navigation }) {
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
     const [email, setEmail] = useState("")
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
@@ -44,31 +46,37 @@ export default function RecoverPassword({ route, navigation }) {
         <SafeAreaView style={[styleSelected.backgroundPrimary, { flex: 1 }]} onLayout={onLayoutRootView}>
             <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={colorScheme === 'light' ? 'dark-content' : 'light-content'} />
             <KeyboardAvoidingView
-                style={{ flex: 1}}
+                style={{ flex: 1 }}
                 enabled={true}
                 behavior={Platform.OS == 'android' ? 'height' : 'padding'}
-                keyboardVerticalOffset={Platform.OS == 'android' ? -150 : -150}
+                keyboardVerticalOffset={Platform.OS == 'android' ? -100 : -100}
             >
-                <View style={styleSelected.container}>
-                    <Image style={styleSelected.image} source={require("../../assets/images/logo.png")} />
-                    <StatusBar style="auto" />
-                    <Text style={styleSelected.option_buttons}>Please insert your email.</Text>
-                    <View style={styleSelected.inputView}>
-                        <TextInput
-                            style={styleSelected.TextInput}
-                            placeholder="Email"
-                            placeholderTextColor="#ccc"
-                            onChangeText={(email) => setEmail(email)}
-                        />
+                <View style={{
+                    backgroundColor: colors.Base_Slot_5,
+                    height: "50%",
+                    width: "80%",
+                    alignSelf: "center",
+                    borderRadius: 15,
+                    marginTop: 20
+                }}></View>
+                <View style={{justifyContent: "space-evenly", alignItems: "center", height: 100}}>
+                    <Text style={styleSelected.textBold20DarkBlue}>Forgot Password?</Text>
+                    <Text style={[styleSelected.textRegular14Gray, {textAlign: "center"}]}>Enter your e-mail or phone number in order to create a new password</Text>
+                </View>
+                <View style={{
+                    backgroundColor: 'rgba(28, 163, 252, 0.1)',
+                    height: "25%",
+                    width: "90%",
+                    alignSelf: "center",
+                    borderRadius: 20,
+                    justifyContent: "center"
+                }}>
+                    <View style={{ height: 70, marginTop: 20 }}>
+                        <InputTransparent placeholderText={"Enter e-mail or phone number"} />
                     </View>
-                    <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                        <Text style={styleSelected.return_login_button}>Go back to login</Text>
-                    </TouchableOpacity>
-                    <Pressable onPressOut={() => RecoverUserPassword(email)} style={({ pressed }) => pressed ? styleSelected.pressedLoginBtn : styleSelected.loginBtn}>
-                        <Text style={styleSelected.loginText}>RECOVER PASSWORD</Text>
-                    </Pressable>
+                    <ButtonPrimary title={"Send Code"} />
                 </View>
             </KeyboardAvoidingView>
-        </SafeAreaView>
+        </SafeAreaView >
     )
 }
