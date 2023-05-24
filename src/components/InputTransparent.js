@@ -3,9 +3,9 @@ import { Text, TouchableOpacity, TextInput, useColorScheme } from "react-native"
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 /***
- * @param placeholderText: string - Text that will appear as placeholder
+ * @param placeholder: string - Text that will appear as placeholder
  * @param inputMode: string - Determines type of keyboard to open. Defaults to "text". Valid values: 'decimal', 'email', 'none', 'numeric', 'search', 'tel', 'text', 'url'
- * @param isPassword: boolean - If true, the text input obscures the text entered so that sensitive text like passwords stay secure. Defaults to false.
+ * @param secureTextEntry: boolean - If true, the text input obscures the text entered so that sensitive text like passwords stay secure. Defaults to false.
  * @param onSubmitEditing: function - Callback that is called when the text input's submit button is pressed. Defaults to an empty function
  * @param returnKeyType: string - Determines how the return key looks. Valid values: 'default', 'go', 'google', 'join', 'next', 'route', 'search', 'send', 'yahoo', 'done', 'emergency-call'. Defaults to 'default'
  * @param inputRef: React.MutableRefObject<undefined> - Allows getting a ref to the component instance. Defaults to null
@@ -16,9 +16,9 @@ import styleDark from '../../style/StyleDark'
 
 export default function InputTransparent(
     { 
-        placeholderText, 
+        placeholder, 
         inputMode="text", 
-        isPassword=false,
+        secureTextEntry=false,
         onSubmitEditing=() => {}, 
         returnKeyType="default", 
         inputRef=null,
@@ -27,17 +27,17 @@ export default function InputTransparent(
         event 
     }) {
 
-    //placeholderText: 
+    //placeholder: 
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
     return (
         <TextInput
             style={[styleSelected.buttonSize, { backgroundColor: colors.BaseSlot1, flexDirection: "row", paddingLeft: 20 }]}
-            placeholder={placeholderText}
+            placeholder={placeholder}
             placeholderTextColor="rgba(101, 101, 101, 0.5)"
             inputMode={inputMode}
-            secureTextEntry={isPassword}
+            secureTextEntry={secureTextEntry}
             onSubmitEditing={onSubmitEditing}
             returnKeyType={returnKeyType}
             ref={inputRef}
