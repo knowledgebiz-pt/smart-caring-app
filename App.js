@@ -16,14 +16,13 @@ export default function App() {
   return (
     //<MyDrawer>
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Login'>
+      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='FirstAccess'>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="RecoverPassword" component={RecoverPassword} />
         <Stack.Screen name="FirstAccess" component={FirstAccess} />
         <Stack.Screen name="EnterNewPassword" component={EnterNewPassword} />
         <Stack.Screen name="SuccessNewPassword" component={SuccessNewPassword} />
-
       </Stack.Navigator>
     </NavigationContainer>
     // </MyDrawer>

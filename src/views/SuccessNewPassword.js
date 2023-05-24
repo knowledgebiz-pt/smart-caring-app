@@ -9,7 +9,7 @@ import ButtonPrimary from '../components/ButtonPrimary'
 import ButtonTransparent from '../components/ButtonTransparent'
 
 export default function SuccessNewPassword({ route, navigation }) {
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
@@ -54,7 +54,7 @@ export default function SuccessNewPassword({ route, navigation }) {
 
                     </View>
                     <View style={{ flex: 1, justifyContent: "space-evenly" }}>
-                        <ButtonPrimary title={"Let's start!"} />
+                        <ButtonPrimary title={"Let's start!"} event={() => {navigation.navigate("Login")}}/>
                     </View>
                 </View>
             </KeyboardAvoidingView>

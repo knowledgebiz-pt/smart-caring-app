@@ -10,7 +10,7 @@ import InputTransparent from '../components/InputTransparent'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default function EnterNewPassword({ route, navigation }) {
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
@@ -69,7 +69,7 @@ export default function EnterNewPassword({ route, navigation }) {
                     <View style={styleSelected.paleBlueContainer}>
                         <InputTransparent onChangeText={(text) => {setPassword(text)}} blurOnSubmit={false} isPassword={true} onSubmitEditing={() => ref_input2.current?.focus()} returnKeyType='next' placeholderText={"Enter new password"} />
                         <InputTransparent onChangeText={(text) => {setConfirmPassword(text)}} inputRef={ref_input2} isPassword={true} placeholderText={"Confirm new password"} />
-                        <ButtonPrimary title={"Reset Password"} />
+                        <ButtonPrimary title={"Reset Password"} event={() => {navigation.navigate("SuccessNewPassword")}}/>
                     </View>
                 </ScrollView>
                 {/* </KeyboardAwareScrollView> */}

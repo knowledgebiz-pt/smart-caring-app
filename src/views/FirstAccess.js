@@ -57,8 +57,8 @@ export default function FirstAccess({ route, navigation }) {
 
                     </View>
                     <View style={{ flex: 1, justifyContent: "space-evenly" }}>
-                        <ButtonPrimary title={"Login"} />
-                        <ButtonTransparent title={"Don’t have an account? "} titleBold={"Sign up"} />
+                        <ButtonPrimary title={"Login"} event={() => {navigation.navigate("Login")}}/>
+                        <ButtonTransparent title={"Don’t have an account? "} titleBold={"Sign up"} event={() => {navigation.navigate("Register")}}/>
                     </View>
                 </View>
             </KeyboardAvoidingView>

@@ -9,7 +9,7 @@ import InputTransparent from '../components/InputTransparent'
 import ButtonPrimary from '../components/ButtonPrimary'
 
 export default function Login({ route, navigation }) {
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
@@ -63,13 +63,13 @@ export default function Login({ route, navigation }) {
                         borderRadius: 20,
                         justifyContent: "center"
                     }}>
-                        <View style={{height: 70, marginTop: 20}}>
+                        <View style={{ height: 70, marginTop: 20 }}>
                             <InputTransparent placeholderText={"Enter e-mail"} />
                         </View>
-                        <View style={{height: 70}}>
+                        <View style={{ height: 70 }}>
                             <InputTransparent placeholderText={"password"} />
                         </View>
-                        <TouchableOpacity style={{height: 30}}>
+                        <TouchableOpacity style={{ height: 30 }} onPress={() => { navigation.navigate("EnterNewPassword") }}>
                             <Text style={[{ alignSelf: "flex-end", textDecorationLine: "underline", color: colors.Base_Slot_3, fontWeight: 500, marginRight: 50 }, styleSelected.text12Regular]}>Forgot Password</Text>
                         </TouchableOpacity>
                         <ButtonPrimary title={"Login"} />
@@ -86,10 +86,10 @@ export default function Login({ route, navigation }) {
                                 <Image source={require("../../assets/images/facebook.png")} style={{ height: 35, width: 35 }} />
                             </TouchableOpacity>
                         </View>
-                        <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 20 }}>
+                        <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", marginTop: 20 }} onPress={() => {navigation.navigate("Register")}}>
                             <Text style={[styleSelected.textRegular16, { color: colors.Base_Slot_3 }]}>Don’t have an account? </Text>
                             <Text style={[styleSelected.textBold16, { color: colors.Base_Slot_3 }]}>Sign up</Text>
-                        </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </KeyboardAvoidingView>
