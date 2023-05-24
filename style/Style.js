@@ -115,6 +115,14 @@ const style = StyleSheet.create({
     borderRadius: 15, 
     marginTop: 20
   },
+  verySmallImageContainer: {
+    backgroundColor: colors.Base_Slot_5, 
+    height: 250, 
+    width: "80%", 
+    alignSelf: "center", 
+    borderRadius: 15, 
+    marginTop: 20
+  },
   paleBlueContainer: {
     marginTop: 45,
     flex: 1, 
@@ -125,6 +133,17 @@ const style = StyleSheet.create({
     backgroundColor: 'rgba(28, 163, 252, 0.1)', 
     justifyContent: "space-evenly", 
     height: 250
+  },
+  paleBlueContainerTaller: {
+    marginTop: 45,
+    flex: 1, 
+    justifyContent: "space-evenly", 
+    borderRadius: 30, 
+    alignSelf: "center", 
+    width: "90%", 
+    backgroundColor: 'rgba(28, 163, 252, 0.1)', 
+    justifyContent: "space-evenly", 
+    height: 400
   },
 
   //buttonSize
@@ -157,6 +176,14 @@ const style = StyleSheet.create({
     fontSize: 14,
     fontWeight: 400,
     color: "#656565"
+  },
+  textDisclaimer: {
+    fontSize: 11,
+    fontWeight: 400,
+    color: '#030849'
+  },
+  textBold: {
+    fontWeight: 600
   },
   buttonPrimaryText: {
     fontSize: 16,
