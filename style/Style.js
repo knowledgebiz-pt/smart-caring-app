@@ -3,14 +3,14 @@ const colors = require("../style/Colors.json");
 
 const style = StyleSheet.create({
   backgroundPrimary: {
-    backgroundColor: colors.Base_Slot_1,
+    backgroundColor: colors.BaseSlot1,
   },
   backgroundLoader: {
-    backgroundColor: colors.Base_Slot_1
+    backgroundColor: colors.BaseSlot1
   },
   container: {
     flex: 1,
-    backgroundColor: colors.Base_Slot_2,
+    backgroundColor: colors.BaseSlot2,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -20,7 +20,7 @@ const style = StyleSheet.create({
     height: 100
   },
   inputView: {
-    backgroundColor: colors.Base_Slot_4,
+    backgroundColor: colors.BaseSlot4,
     width: "80%",
     borderRadius: 25,
     height: 50,
@@ -50,7 +50,7 @@ const style = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 40,
-    backgroundColor: colors.Base_Slot_4,
+    backgroundColor: colors.BaseSlot4,
   },
   pressedLoginBtn: {
     width: "80%",
@@ -59,7 +59,7 @@ const style = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 40,
-    backgroundColor: colors.Base_Slot_1,
+    backgroundColor: colors.BaseSlot1,
   },
   loginText: {
     color: "#fff"
@@ -73,7 +73,7 @@ const style = StyleSheet.create({
     alignItems: "center"
   },
   inputViewBelowDropdown: {
-    backgroundColor: colors.Base_Slot_4,
+    backgroundColor: colors.BaseSlot4,
     width: "80%",
     borderRadius: 25,
     height: 50,
@@ -82,18 +82,18 @@ const style = StyleSheet.create({
     zIndex: -5
   },
   DropDownPicker: {
-    backgroundColor: colors.Base_Slot_4,
+    backgroundColor: colors.BaseSlot4,
     borderColor: 'transparent',
     borderRadius: 25,
     height: 50,
     justifyContent: "center",
   },
   dropDownContainer: {
-    backgroundColor: colors.Base_Slot_1,
+    backgroundColor: colors.BaseSlot1,
     borderRadius: 25
   },
   imageContainer: {
-    backgroundColor: colors.Base_Slot_5, 
+    backgroundColor: colors.BaseSlot5, 
     height: "70%", 
     width: "80%", 
     alignSelf: "center", 
@@ -101,14 +101,14 @@ const style = StyleSheet.create({
     marginTop: 20
   },
   imageContainerNoMarginTop: {
-    backgroundColor: colors.Base_Slot_5, 
+    backgroundColor: colors.BaseSlot5, 
     height: "70%", 
     width: "80%", 
     alignSelf: "center", 
     borderRadius: 15
   },
   smallerImageContainer: {
-    backgroundColor: colors.Base_Slot_5, 
+    backgroundColor: colors.BaseSlot5, 
     height: 400, 
     width: "80%", 
     alignSelf: "center", 
@@ -116,7 +116,7 @@ const style = StyleSheet.create({
     marginTop: 20
   },
   verySmallImageContainer: {
-    backgroundColor: colors.Base_Slot_5, 
+    backgroundColor: colors.BaseSlot5, 
     height: 250, 
     width: "80%", 
     alignSelf: "center", 

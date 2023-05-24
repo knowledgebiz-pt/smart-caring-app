@@ -1,7 +1,7 @@
 {
-    "Base_Slot_1": "#FFFFFF",
-    "Base_Slot_2": "#1CA3FC",
-    "Base_Slot_3": "#656565",
-    "Base_Slot_4": "#56B288",
-    "Base_Slot_5": "#A8A8A8"
+    "BaseSlot1": "#FFFFFF",
+    "BaseSlot2": "#1CA3FC",
+    "BaseSlot3": "#656565",
+    "BaseSlot4": "#56B288",
+    "BaseSlot5": "#A8A8A8"
 }

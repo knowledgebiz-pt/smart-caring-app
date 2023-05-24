@@ -13,7 +13,7 @@ export default function ButtonTransparent({ title, titleBold, event }) {
                 if (typeof event == "function")
                     event()
             }}
-            style={[styleSelected.buttonSize, { backgroundColor: colors.Base_Slot_1, flexDirection: "row" }]}>
+            style={[styleSelected.buttonSize, { backgroundColor: colors.BaseSlot1, flexDirection: "row" }]}>
             <Text style={styleSelected.textRegular16}>
                 {title}
             </Text>

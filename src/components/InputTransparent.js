@@ -33,7 +33,7 @@ export default function InputTransparent(
     var colors = require('../../style/Colors.json')
     return (
         <TextInput
-            style={[styleSelected.buttonSize, { backgroundColor: colors.Base_Slot_1, flexDirection: "row", paddingLeft: 20 }]}
+            style={[styleSelected.buttonSize, { backgroundColor: colors.BaseSlot1, flexDirection: "row", paddingLeft: 20 }]}
             placeholder={placeholderText}
             placeholderTextColor="rgba(101, 101, 101, 0.5)"
             inputMode={inputMode}

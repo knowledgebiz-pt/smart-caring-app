@@ -29,7 +29,7 @@ export default function SuccessNewPassword({ route, navigation }) {
         console.log('COLOR THEME WAS ALTER')
         console.log(colorScheme)
         if (Platform.OS === 'android')
-            NavigationBar.setBackgroundColorAsync(colorScheme === 'light' ? colors.Base_Slot_1 : colors.Base_Slot_1)
+            NavigationBar.setBackgroundColorAsync(colorScheme === 'light' ? colors.BaseSlot1 : colors.BaseSlot1)
     })
     const onLayoutRootView = useCallback(async () => {
         if (isLoading) {

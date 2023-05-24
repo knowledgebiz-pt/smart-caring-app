@@ -7,6 +7,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
 import ButtonPrimary from '../components/ButtonPrimary'
 import InputTransparent from '../components/InputTransparent'
+import InputDefault from '../components/InputDefault'
 
 export default function Register({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(true)
@@ -36,7 +37,7 @@ export default function Register({ route, navigation }) {
         console.log('COLOR THEME WAS ALTER')
         console.log(colorScheme)
         if (Platform.OS === 'android')
-            NavigationBar.setBackgroundColorAsync(colorScheme === 'light' ? colors.Base_Slot_1 : colors.Base_Slot_1)
+            NavigationBar.setBackgroundColorAsync(colorScheme === 'light' ? colors.BaseSlot1 : colors.BaseSlot1)
     })
     const onLayoutRootView = useCallback(async () => {
         if (isLoading) {

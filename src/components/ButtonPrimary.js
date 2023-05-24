@@ -13,7 +13,7 @@ export default function ButtonPrimary({ title, event }) {
                 if (typeof event == "function")
                     event()
             }}
-            style={[styleSelected.buttonSize, { backgroundColor: colors.Base_Slot_2 }]}>
+            style={[styleSelected.buttonSize, { backgroundColor: colors.BaseSlot2 }]}>
             <Text style={styleSelected.buttonPrimaryText}>
                 {title}
             </Text>
