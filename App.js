@@ -21,7 +21,6 @@ export default function App() {
         <Stack.Screen name="RecoverPassword" component={RecoverPassword} />
         <Stack.Screen name="FirstAccess" component={FirstAccess} />
         <Stack.Screen name="EnterNewPassword" component={EnterNewPassword} />
-
       </Stack.Navigator>
     </NavigationContainer>
     // </MyDrawer>
