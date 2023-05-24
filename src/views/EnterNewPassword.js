@@ -67,8 +67,8 @@ export default function EnterNewPassword({ route, navigation }) {
 
                     {/* </View> */}
                     <View style={styleSelected.paleBlueContainer}>
-                        <InputTransparent onChangeText={(text) => {setPassword(text)}} blurOnSubmit={false} isPassword={true} onSubmitEditing={() => ref_input2.current?.focus()} returnKeyType='next' placeholderText={"Enter new password"} />
-                        <InputTransparent onChangeText={(text) => {setConfirmPassword(text)}} inputRef={ref_input2} isPassword={true} placeholderText={"Confirm new password"} />
+                        <InputTransparent onChangeText={(text) => {setPassword(text)}} blurOnSubmit={false} secureTextEntry={true} onSubmitEditing={() => ref_input2.current?.focus()} returnKeyType='next' placeholder={"Enter new password"} />
+                        <InputTransparent onChangeText={(text) => {setConfirmPassword(text)}} inputRef={ref_input2} secureTextEntry={true} placeholder={"Confirm new password"} />
                         <ButtonPrimary title={"Reset Password"} />
                     </View>
                 </ScrollView>
