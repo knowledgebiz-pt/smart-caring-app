@@ -9,7 +9,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import FirstAccess from './src/views/FirstAccess';
 import EnterNewPassword from './src/views/EnterNewPassword';
 import SuccessNewPassword from './src/views/SuccessNewPassword';
+import CreateAccount from './src/views/CreateAccount';
+import Features from './src/views/Features';
 import RecoverPasswordCode from './src/views/RecoverPasswordCode';
+import CreateAccountWithGmail from './src/views/CreateAccountWithGmail';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,7 +20,7 @@ export default function App() {
   return (
     //<MyDrawer>
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Login'>
+      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='FirstAccess'>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="RecoverPassword" component={RecoverPassword} />
@@ -25,6 +28,12 @@ export default function App() {
         <Stack.Screen name="FirstAccess" component={FirstAccess} />
         <Stack.Screen name="EnterNewPassword" component={EnterNewPassword} />
         <Stack.Screen name="SuccessNewPassword" component={SuccessNewPassword} />
+        <Stack.Screen name="CreateAccount" component={CreateAccount} />
+        <Stack.Screen name="CreateAccountWithGmail" component={CreateAccountWithGmail} />
+        <Stack.Screen name="Features" component={Features} />
+
+
+
       </Stack.Navigator>
     </NavigationContainer>
     // </MyDrawer>

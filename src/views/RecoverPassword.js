@@ -31,7 +31,7 @@ export default function RecoverPassword({ route, navigation }) {
         console.log('COLOR THEME WAS ALTER')
         console.log(colorScheme)
         if (Platform.OS === 'android')
-            NavigationBar.setBackgroundColorAsync(colorScheme === 'light' ? colors.Base_Slot_1 : colors.Base_Slot_1)
+            NavigationBar.setBackgroundColorAsync(colorScheme === 'light' ? colors.BaseSlot1 : colors.BaseSlot1)
     })
     const onLayoutRootView = useCallback(async () => {
         if (isLoading) {
@@ -52,16 +52,16 @@ export default function RecoverPassword({ route, navigation }) {
                 keyboardVerticalOffset={Platform.OS == 'android' ? -100 : -100}
             >
                 <View style={{
-                    backgroundColor: colors.Base_Slot_5,
+                    backgroundColor: colors.BaseSlot5,
                     height: "50%",
                     width: "80%",
                     alignSelf: "center",
                     borderRadius: 15,
                     marginTop: 20
                 }}></View>
-                <View style={{justifyContent: "space-evenly", alignItems: "center", height: 100}}>
+                <View style={{ justifyContent: "space-evenly", alignItems: "center", height: 100 }}>
                     <Text style={styleSelected.textBold20DarkBlue}>Forgot Password?</Text>
-                    <Text style={[styleSelected.textRegular14Gray, {textAlign: "center"}]}>Enter your e-mail or phone number in order to create a new password</Text>
+                    <Text style={[styleSelected.textRegular14Gray, { textAlign: "center" }]}>Enter your e-mail or phone number in order to create a new password</Text>
                 </View>
                 <View style={{
                     backgroundColor: 'rgba(28, 163, 252, 0.1)',
@@ -72,9 +72,11 @@ export default function RecoverPassword({ route, navigation }) {
                     justifyContent: "center"
                 }}>
                     <View style={{ height: 70, marginTop: 20 }}>
-                        <InputTransparent placeholderText={"Enter e-mail or phone number"} />
+                        <InputTransparent placeholder={"Enter e-mail or phone number"} />
                     </View>
-                    <ButtonPrimary title={"Send Code"} />
+                    <ButtonPrimary title={"Send Code"} event={() => {
+                        navigation.navigate("RecoverPasswordCode")
+                    }} />
                 </View>
             </KeyboardAvoidingView>
         </SafeAreaView >

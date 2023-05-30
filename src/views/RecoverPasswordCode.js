@@ -34,7 +34,7 @@ export default function RecoverPasswordCode({ route, navigation }) {
         console.log('COLOR THEME WAS ALTER')
         console.log(colorScheme)
         if (Platform.OS === 'android')
-            NavigationBar.setBackgroundColorAsync(colorScheme === 'light' ? colors.Base_Slot_1 : colors.Base_Slot_1)
+            NavigationBar.setBackgroundColorAsync(colorScheme === 'light' ? colors.BaseSlot1 : colors.BaseSlot1)
     })
     const onLayoutRootView = useCallback(async () => {
         if (isLoading) {
@@ -56,7 +56,7 @@ export default function RecoverPasswordCode({ route, navigation }) {
             >
                 <View style={[styleSelected.backgroundPrimary, { flex: 1 }]} onTouchStart={() => Keyboard.dismiss()}>
                     <View style={{
-                        backgroundColor: colors.Base_Slot_5,
+                        backgroundColor: colors.BaseSlot5,
                         height: "50%",
                         width: "80%",
                         alignSelf: "center",
@@ -77,35 +77,37 @@ export default function RecoverPasswordCode({ route, navigation }) {
                         justifyContent: "center"
                     }}>
                         <View style={{ height: 70, marginTop: 20, flexDirection: "row", justifyContent: "space-evenly" }}>
-                            <View onTouchEnd={() => { input1.current.focus() }} style={{ backgroundColor: colors.Base_Slot_1, width: 55, height: 55, borderRadius: 20, justifyContent: "center", alignItems: "center" }}>
+                            <View onTouchEnd={() => { input1.current.focus() }} style={{ backgroundColor: colors.BaseSlot1, width: 55, height: 55, borderRadius: 20, justifyContent: "center", alignItems: "center" }}>
                                 <TextInput keyboardType='numeric' maxLength={1} style={{ fontSize: 24 }} ref={input1} returnKeyType='next' onChangeText={(value) => {
                                     if (value.length == 1)
                                         input2.current.focus()
                                 }} />
                             </View>
-                            <View onTouchEnd={() => { input1.current.focus() }} style={{ backgroundColor: colors.Base_Slot_1, width: 55, height: 55, borderRadius: 20, justifyContent: "center", alignItems: "center" }}>
+                            <View onTouchEnd={() => { input1.current.focus() }} style={{ backgroundColor: colors.BaseSlot1, width: 55, height: 55, borderRadius: 20, justifyContent: "center", alignItems: "center" }}>
                                 <TextInput keyboardType='numeric' maxLength={1} style={{ fontSize: 24 }} ref={input2} returnKeyType='next' onChangeText={(value) => {
                                     if (value.length == 1)
                                         input3.current.focus()
                                 }} />
                             </View>
-                            <View onTouchEnd={() => { input1.current.focus() }} style={{ backgroundColor: colors.Base_Slot_1, width: 55, height: 55, borderRadius: 20, justifyContent: "center", alignItems: "center" }}>
+                            <View onTouchEnd={() => { input1.current.focus() }} style={{ backgroundColor: colors.BaseSlot1, width: 55, height: 55, borderRadius: 20, justifyContent: "center", alignItems: "center" }}>
                                 <TextInput keyboardType='numeric' maxLength={1} style={{ fontSize: 24 }} ref={input3} returnKeyType='next' onChangeText={(value) => {
                                     if (value.length == 1)
                                         input4.current.focus()
                                 }} />
                             </View>
-                            <View onTouchEnd={() => { input1.current.focus() }} style={{ backgroundColor: colors.Base_Slot_1, width: 55, height: 55, borderRadius: 20, justifyContent: "center", alignItems: "center" }}>
+                            <View onTouchEnd={() => { input1.current.focus() }} style={{ backgroundColor: colors.BaseSlot1, width: 55, height: 55, borderRadius: 20, justifyContent: "center", alignItems: "center" }}>
                                 <TextInput keyboardType='numeric' maxLength={1} style={{ fontSize: 24 }} ref={input4} returnKeyType='next' onChangeText={(value) => {
                                     if (value.length == 1)
                                         Keyboard.dismiss()
                                 }} />
                             </View>
                         </View>
-                        <ButtonPrimary title={"Verify Code"} />
+                        <ButtonPrimary title={"Verify Code"} event={() => {
+                            navigation.navigate("EnterNewPassword")
+                        }} />
                         <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", marginTop: 20 }}>
-                            <Text style={[styleSelected.textRegular16, { color: colors.Base_Slot_3 }]}>Didn’t receive the code? </Text>
-                            <Text style={[styleSelected.textBold16, { color: colors.Base_Slot_3 }]}>Resend code</Text>
+                            <Text style={[styleSelected.textRegular16, { color: colors.BaseSlot3 }]}>Didn’t receive the code? </Text>
+                            <Text style={[styleSelected.textBold16, { color: colors.BaseSlot3 }]}>Resend code</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

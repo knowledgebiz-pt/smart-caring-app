@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TouchableOpacity, TextInput, useColorScheme } from "react-native";
+import { View,Text, TouchableOpacity, TextInput, useColorScheme } from "react-native";
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 /***
@@ -14,23 +14,29 @@ import styleDark from '../../style/StyleDark'
  * @param hasBorder: boolean - Determine whether the component has a border around it. Defaults to false
  * @param borderColor: string - Determine the color of the component's border, in case it has one.
  * @param fullWidth: boolean - If true, will use buttonSizeFullWidth style (width: "100%") instead of buttonSize style (width: "80%")
+ * @param inputColor: string - Color of the input text
+ * @param fontSize: integer - Size of the input text font
  * @param event: any
+ * @param value: string - value of input
  */
 
-export default function InputTransparent(
-    {
-        placeholder,
-        inputMode = "text",
-        secureTextEntry = false,
-        onSubmitEditing,
-        returnKeyType = "default",
-        inputRef = null,
-        blurOnSubmit = true,
-        hasBorder = false,
+export default function InputTransparentLabelAbove(
+    { 
+        placeholder, 
+        inputMode="text", 
+        secureTextEntry=false,
+        onSubmitEditing, 
+        returnKeyType="default", 
+        inputRef=null,
+        blurOnSubmit=true,
+        hasBorder=false,
         borderColor,
         onChangeText,
-        fullWidth = false,
-        event
+        fullWidth=false,
+        inputColor,
+        fontSize,
+        event,
+        value
     }) {
 
     //placeholder: 
@@ -43,18 +49,27 @@ export default function InputTransparent(
         inputStyles['borderWidth'] = 1
         inputStyles['borderColor'] = borderColor
     }
+    if (inputColor) {
+        inputStyles['color'] = inputColor
+    }
+    if (fontSize) {
+        inputStyles['fontSize'] = fontSize
+    }
     return (
-        <TextInput
-            style={[sizeStyleSelected, inputStyles]}
-            placeholder={placeholder}
-            placeholderTextColor="rgba(101, 101, 101, 0.5)"
-            inputMode={inputMode}
-            secureTextEntry={secureTextEntry}
-            onSubmitEditing={onSubmitEditing}
-            returnKeyType={returnKeyType}
-            ref={inputRef}
-            blurOnSubmit={blurOnSubmit}
-            onChangeText={onChangeText}
-        />
+        <View>
+            <Text style={[styleSelected.textRegular13DarkBlue,{marginLeft: 20, marginBottom: 5}]}>{placeholder}</Text>
+            <TextInput
+                style={[sizeStyleSelected, inputStyles]}
+                placeholderTextColor="rgba(101, 101, 101, 0.5)"
+                inputMode={inputMode}
+                secureTextEntry={secureTextEntry}
+                onSubmitEditing={onSubmitEditing}
+                returnKeyType={returnKeyType}
+                ref={inputRef}
+                blurOnSubmit={blurOnSubmit}
+                onChangeText={onChangeText}
+                value={value}       
+            />
+        </View>
     )
 }

@@ -36,7 +36,7 @@ export default function EnterNewPassword({ route, navigation }) {
         console.log('COLOR THEME WAS ALTER')
         console.log(colorScheme)
         if (Platform.OS === 'android')
-            NavigationBar.setBackgroundColorAsync(colorScheme === 'light' ? colors.Base_Slot_1 : colors.Base_Slot_1)
+            NavigationBar.setBackgroundColorAsync(colorScheme === 'light' ? colors.BaseSlot1 : colors.BaseSlot1)
     })
     const onLayoutRootView = useCallback(async () => {
         if (isLoading) {
@@ -67,8 +67,8 @@ export default function EnterNewPassword({ route, navigation }) {
 
                     {/* </View> */}
                     <View style={styleSelected.paleBlueContainer}>
-                        <InputTransparent onChangeText={(text) => {setPassword(text)}} blurOnSubmit={false} isPassword={true} onSubmitEditing={() => ref_input2.current?.focus()} returnKeyType='next' placeholderText={"Enter new password"} />
-                        <InputTransparent onChangeText={(text) => {setConfirmPassword(text)}} inputRef={ref_input2} isPassword={true} placeholderText={"Confirm new password"} />
+                        <InputTransparent onChangeText={(text) => {setPassword(text)}} blurOnSubmit={false} isPassword={true} onSubmitEditing={() => ref_input2.current?.focus()} returnKeyType='next' placeholder={"Enter new password"} />
+                        <InputTransparent onChangeText={(text) => {setConfirmPassword(text)}} inputRef={ref_input2} isPassword={true} placeholder={"Confirm new password"} />
                         <ButtonPrimary title={"Reset Password"} event={() => {navigation.navigate("SuccessNewPassword")}}/>
                     </View>
                 </ScrollView>

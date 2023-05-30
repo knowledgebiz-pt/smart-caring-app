@@ -7,21 +7,22 @@ import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
 import ButtonPrimary from '../components/ButtonPrimary'
 import ButtonTransparent from '../components/ButtonTransparent'
+import Carousel from "react-native-snap-carousel"
 
-export default function SuccessNewPassword({ route, navigation }) {
-    const [isLoading, setIsLoading] = useState(false)
+export default function Features({ route, navigation }) {
+    const [isLoading, setIsLoading] = useState(true)
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
 
     useEffect(() => {
-        console.log('OPEN', SuccessNewPassword.name, 'SCREEN')
+        console.log('OPEN', Features.name, 'SCREEN')
         //For test loading
         setTimeout(() => {
             setIsLoading(false)
         }, 1000);
         return () => {
-            console.log('SCREEN', SuccessNewPassword.name, 'CLOSE')
+            console.log('SCREEN', Features.name, 'CLOSE')
         }
     }, [])
     Appearance.getColorScheme()
@@ -53,9 +54,9 @@ export default function SuccessNewPassword({ route, navigation }) {
                     <View style={styleSelected.imageContainer}>
 
                     </View>
-                    <View style={{ flex: 1, justifyContent: "space-evenly" }}>
-                        <ButtonPrimary title={"Let's start!"} event={() => {navigation.navigate("Login")}}/>
-                    </View>
+                    {/* <View style={{ flex: 1, justifyContent: "space-evenly" }}>
+                        <ButtonPrimary title={"Let's start!"} />
+                    </View> */}
                 </View>
             </KeyboardAvoidingView>
         </SafeAreaView>

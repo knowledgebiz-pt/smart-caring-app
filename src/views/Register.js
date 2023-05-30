@@ -36,7 +36,7 @@ export default function Register({ route, navigation }) {
         console.log('COLOR THEME WAS ALTER')
         console.log(colorScheme)
         if (Platform.OS === 'android')
-            NavigationBar.setBackgroundColorAsync(colorScheme === 'light' ? colors.Base_Slot_1 : colors.Base_Slot_1)
+            NavigationBar.setBackgroundColorAsync(colorScheme === 'light' ? colors.BaseSlot1 : colors.BaseSlot1)
     })
     const onLayoutRootView = useCallback(async () => {
         if (isLoading) {
@@ -67,12 +67,12 @@ export default function Register({ route, navigation }) {
 
                     {/* </View> */}
                     <View style={styleSelected.paleBlueContainerTaller}>
-                        <InputTransparent onChangeText={(text) => setEmail(text)} inputMode='email' blurOnSubmit={false} isPassword={true} onSubmitEditing={() => ref_input2.current?.focus()} returnKeyType='next' placeholderText={"Enter your e-mail"} />
-                        <InputTransparent onChangeText={(text) => setPassword(text)} inputRef={ref_input2} blurOnSubmit={false} isPassword={true} onSubmitEditing={() => ref_input3.current?.focus()} returnKeyType='next' placeholderText={"Enter your password"} />
-                        <InputTransparent onChangeText={(text) => setConfirmPassword(text)} inputRef={ref_input3} isPassword={true} placeholderText={"Confirm your password"} />
-                        <Text style={[styleSelected.textDisclaimer, { width: "65%", marginTop: 5, alignSelf: "center" }]}>By clicking Continue, you agree to our <Text style={styleSelected.textBold}>Terms and Conditions</Text> and <Text style={styleSelected.textBold}>Privacy Statement</Text>.</Text>
+                        <InputTransparent onChangeText={(text) => setEmail(text)} inputMode='email' blurOnSubmit={false} onSubmitEditing={() => ref_input2.current?.focus()} returnKeyType='next' placeholder={"Enter your e-mail"} />
+                        <InputTransparent onChangeText={(text) => setPassword(text)} inputRef={ref_input2} blurOnSubmit={false} secureTextEntry={true} onSubmitEditing={() => ref_input3.current?.focus()} returnKeyType='next' placeholder={"Enter your password"} />
+                        <InputTransparent onChangeText={(text) => setConfirmPassword(text)} inputRef={ref_input3} secureTextEntry={true} placeholder={"Confirm your password"} />
+                        <Text style={[styleSelected.textDisclaimer, {width:"65%", marginTop: 5, alignSelf: "center"}]}>By clicking Continue, you agree to our <Text style={styleSelected.textBold}>Terms and Conditions</Text> and <Text style={styleSelected.textBold}>Privacy Statement</Text>.</Text>
 
-                        <ButtonPrimary title={"Continue"} />
+                        <ButtonPrimary event={() => navigation.navigate('CreateAccount', {email: email, password: password})} title={"Continue"} />
                     </View>
                 </ScrollView>
                 {/* </KeyboardAwareScrollView> */}

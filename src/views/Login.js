@@ -13,6 +13,8 @@ import * as Google from "expo-auth-session/providers/google";
 
 export default function Login({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(true)
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
@@ -20,9 +22,9 @@ export default function Login({ route, navigation }) {
         androidClientId:
             "181932543433-gbl0846u9a7qa5fo72ik1o1kumkc7p0q.apps.googleusercontent.com",
         iosClientId:
-            "181932543433-pto5d2nj943u46hk70f7p01d9via842a.apps.googleusercontent.com",
+            "870460584280-reph3naspthqbhr8rn7lq9e8mkj2fl7h.apps.googleusercontent.com",
         expoClientId:
-            "181932543433-da75ds8om0gi0l5rm38e91vf9aapsdrb.apps.googleusercontent.com",
+            "870460584280-rscdtdn9l306hahc1o6fggajiqje5s1t.apps.googleusercontent.com",
     });
 
     useEffect(() => {
@@ -38,6 +40,7 @@ export default function Login({ route, navigation }) {
         if (response?.type === "locked") {
             Alert.alert("Locked", "LOCKED");
         }
+        setIsLoading(true)
     }, [response]);
 
     async function GetUserData() {
@@ -49,6 +52,7 @@ export default function Login({ route, navigation }) {
         );
         userInfoResponse.json().then((data) => {
             console.warn(data)
+            navigation.navigate('CreateAccountWithGmail', { userInfo: data })
         });
     }
 
@@ -67,7 +71,7 @@ export default function Login({ route, navigation }) {
         console.log('COLOR THEME WAS ALTER')
         console.log(colorScheme)
         if (Platform.OS === 'android')
-            NavigationBar.setBackgroundColorAsync(colorScheme === 'light' ? colors.Base_Slot_1 : colors.Base_Slot_1)
+            NavigationBar.setBackgroundColorAsync(colorScheme === 'light' ? colors.BaseSlot1 : colors.BaseSlot1)
     })
     const onLayoutRootView = useCallback(async () => {
         if (isLoading) {
@@ -102,35 +106,54 @@ export default function Login({ route, navigation }) {
                         justifyContent: "center"
                     }}>
                         <View style={{ height: 70, marginTop: 20 }}>
-                            <InputTransparent placeholderText={"Enter e-mail"} />
+                            <InputTransparent
+                                placeholder={"Enter e-mail"}
+                                onChangeText={(value) => {
+                                    setEmail(value)
+                                }} />
                         </View>
                         <View style={{ height: 70 }}>
-                            <InputTransparent placeholderText={"password"} />
+                            <InputTransparent
+                                placeholder={"Password"}
+                                secureTextEntry={true}
+                                onChangeText={(value) => {
+                                    setPassword(value)
+                                }} />
                         </View>
                         <TouchableOpacity style={{ height: 30 }} onPress={() => { navigation.navigate("RecoverPassword") }}>
-                            <Text style={[{ alignSelf: "flex-end", textDecorationLine: "underline", color: colors.Base_Slot_3, fontWeight: 500, marginRight: 50 }, styleSelected.text12Regular]}>Forgot Password</Text>
+                            <Text style={[{ alignSelf: "flex-end", textDecorationLine: "underline", color: colors.BaseSlot3, fontWeight: 500, marginRight: 50 }, styleSelected.text12Regular]}>Forgot Password</Text>
                         </TouchableOpacity>
-                        <ButtonPrimary title={"Login"} />
+                        <ButtonPrimary title={"Login"} event={() => {
+                            setIsLoading(false)
+                            UserService.getUserDataByIdUser(email, password).then(response => {
+                                setIsLoading(true)
+                                console.warn(response.data)
+                            }).catch((error) => {
+                                console.error(error)
+                                setIsLoading(true)
+                            })
+                        }} />
                         <View style={{ flexDirection: "row", height: 50, justifyContent: "center", alignItems: "center" }}>
-                            <View style={{ height: 1, backgroundColor: colors.Base_Slot_5, flex: 1 }} />
+                            <View style={{ height: 1, backgroundColor: colors.BaseSlot5, flex: 1 }} />
                             <Text style={[{ marginLeft: 15, marginRight: 15 }, styleSelected.text12Regular]}>or</Text>
-                            <View style={{ height: 1, backgroundColor: colors.Base_Slot_5, flex: 1 }} />
+                            <View style={{ height: 1, backgroundColor: colors.BaseSlot5, flex: 1 }} />
                         </View>
                         <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
                             <TouchableOpacity
                                 onPress={() => {
+                                    setIsLoading(false)
                                     prompAsync();
                                 }}
-                                style={{ backgroundColor: colors.Base_Slot_1, width: 150, borderRadius: 30, justifyContent: "center", alignItems: "center", height: 50 }}>
+                                style={{ backgroundColor: colors.BaseSlot1, width: 150, borderRadius: 30, justifyContent: "center", alignItems: "center", height: 50 }}>
                                 <Image source={require("../../assets/images/google.png")} style={{ height: 35, width: 35 }} />
                             </TouchableOpacity>
-                            <TouchableOpacity style={{ backgroundColor: colors.Base_Slot_1, width: 150, borderRadius: 30, justifyContent: "center", alignItems: "center" }}>
+                            <TouchableOpacity style={{ backgroundColor: colors.BaseSlot1, width: 150, borderRadius: 30, justifyContent: "center", alignItems: "center" }}>
                                 <Image source={require("../../assets/images/facebook.png")} style={{ height: 35, width: 35 }} />
                             </TouchableOpacity>
                         </View>
                         <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", marginTop: 20 }} onPress={() => { navigation.navigate("Register") }}>
-                            <Text style={[styleSelected.textRegular16, { color: colors.Base_Slot_3 }]}>Don’t have an account? </Text>
-                            <Text style={[styleSelected.textBold16, { color: colors.Base_Slot_3 }]}>Sign up</Text>
+                            <Text style={[styleSelected.textRegular16, { color: colors.BaseSlot3 }]}>Don’t have an account? </Text>
+                            <Text style={[styleSelected.textBold16, { color: colors.BaseSlot3 }]}>Sign up</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
