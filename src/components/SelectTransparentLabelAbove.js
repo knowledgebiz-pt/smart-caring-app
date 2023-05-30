@@ -1,7 +1,9 @@
 import React from "react";
-import { Text, TouchableOpacity, TextInput, useColorScheme } from "react-native";
+import { View,Text, TouchableOpacity, TextInput, useColorScheme } from "react-native";
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
+import DropDownPicker from 'react-native-dropdown-picker'
+
 /***
  * @param placeholder: string - Text that will appear as placeholder
  * @param inputMode: string - Determines type of keyboard to open. Defaults to "text". Valid values: 'decimal', 'email', 'none', 'numeric', 'search', 'tel', 'text', 'url'
@@ -14,10 +16,12 @@ import styleDark from '../../style/StyleDark'
  * @param hasBorder: boolean - Determine whether the component has a border around it. Defaults to false
  * @param borderColor: string - Determine the color of the component's border, in case it has one.
  * @param fullWidth: boolean - If true, will use buttonSizeFullWidth style (width: "100%") instead of buttonSize style (width: "80%")
+ * @param inputColor: string - Color of the input text
+ * @param fontSize: integer - Size of the input text font
  * @param event: any
  */
 
-export default function InputTransparent(
+export default function SelectTransparentLabelAbove(
     { 
         placeholder, 
         inputMode="text", 
@@ -30,6 +34,8 @@ export default function InputTransparent(
         borderColor,
         onChangeText,
         fullWidth=false,
+        inputColor,
+        fontSize,
         event 
     }) {
 
@@ -43,19 +49,17 @@ export default function InputTransparent(
         inputStyles['borderWidth'] = 1
         inputStyles['borderColor'] = borderColor
     }
+    if (inputColor) {
+        console.log(inputColor)
+        inputStyles['color'] = inputColor
+    }
+    if (fontSize) {
+        inputStyles['fontSize'] = fontSize
+    }
     return (
-        <TextInput
-            style={[sizeStyleSelected, inputStyles]}
-            placeholder={placeholder}
-            placeholderTextColor="rgba(101, 101, 101, 0.5)"
-            inputMode={inputMode}
-            secureTextEntry={secureTextEntry}
-            onSubmitEditing={onSubmitEditing}
-            returnKeyType={returnKeyType}
-            ref={inputRef}
-            blurOnSubmit={blurOnSubmit}
-            onChangeText={onChangeText}
-            
-            />
+        <View>
+            <Text style={[styleSelected.textRegular13DarkBlue,{marginLeft: 20, marginBottom: 5}]}>{placeholder}</Text>
+            <DropDownPicker/>
+        </View>
     )
 }

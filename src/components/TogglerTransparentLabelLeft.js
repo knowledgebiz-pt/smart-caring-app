@@ -1,0 +1,65 @@
+import React from "react";
+import { View,Text, TouchableOpacity, TextInput, useColorScheme } from "react-native";
+import style from '../../style/Style'
+import styleDark from '../../style/StyleDark'
+import SwitchSelector from "react-native-switch-selector"
+/***
+ * @param label: string - Text that will appear as over the input as its label
+ * @param optionOneLabel: string - Text that will determine the label of the first option
+ * @param optionOneValue: string - Value of the first option
+ * @param optionTwoLabel: string - Text that will determine the label of the second option
+ * @param optionTwoValue: string - Value of the second option
+ * @param hasBorder: boolean - Determine whether the component has a border around it. Defaults to false
+ * @param borderColor: string - Determine the color of the component's border, in case it has one.
+ * @param fullWidth: boolean - If true, will use buttonSizeFullWidth style (width: "100%") instead of buttonSize style (width: "80%")
+ * @param inputColor: string - Color of the input text
+ * @param fontSize: integer - Size of the input text font
+ * @param event: any
+ */
+
+export default function TogglerTransparentLabelLeft(
+    { 
+        label,
+        optionOneLabel,
+        optionOneValue,
+        optionTwoLabel,
+        optionTwoValue,
+        hasBorder=false,
+        borderColor,
+        fullWidth=false,
+        inputColor,
+        fontSize,
+        onPress,
+        event 
+    }) {
+
+    //placeholder: 
+    let colorScheme = useColorScheme()
+    var styleSelected = colorScheme == 'light' ? style : styleDark
+    var colors = require('../../style/Colors.json')
+    let inputStyles = { backgroundColor: colors.BaseSlot1, flexDirection: "row", paddingLeft: 20 }
+    const sizeStyleSelected = fullWidth ? styleSelected.buttonSizeFullWidth : styleSelected.buttonSize
+    if (hasBorder) {
+        inputStyles['borderWidth'] = 1
+        inputStyles['borderColor'] = borderColor
+    }
+    if (inputColor) {
+        inputStyles['color'] = inputColor
+    }
+    if (fontSize) {
+        inputStyles['fontSize'] = fontSize
+    }
+    return (
+        <View style={{flexDirection: 'row'}}>
+            <Text style={[styleSelected.textRegular13Gray,{marginLeft: 20, marginTop: 12}]}>{label}</Text>
+            <SwitchSelector 
+                borderColor={colors.BaseSlot5}
+                style={[sizeStyleSelected, inputStyles]}
+                textColor={colors.BaseSlot3}
+                buttonColor={colors.BaseSlot5}
+                options={[{label: optionOneLabel, value: optionOneValue,}, {label: optionTwoLabel, value: optionTwoValue}]}
+                initial={0}
+                onPress={onPress}/>
+        </View>
+    )
+}

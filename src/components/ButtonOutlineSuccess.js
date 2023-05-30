@@ -5,14 +5,13 @@ import styleDark from '../../style/StyleDark'
 
 /***
  * @param title: string - Text that will appear in the button
- * @param titleBold: string - Text that will appear in the button in bold
  * @param fullWidth: boolean - If true, will use buttonSizeFullWidth style (width: "100%") instead of buttonSize style (width: "80%")
  */
 
-export default function ButtonTransparent({ title, titleBold, fullWidth=false, event }) {
+export default function ButtonOutlineSuccess({ title, fullWidth=false, event }) {
     let colorScheme = useColorScheme()
-    var styleSelected = colorScheme == 'light' ? style : styleDark
-    var colors = require('../../style/Colors.json')
+    const styleSelected = colorScheme == 'light' ? style : styleDark
+    const colors = require('../../style/Colors.json')
     const sizeStyleSelected = fullWidth ? styleSelected.buttonSizeFullWidth : styleSelected.buttonSize
     return (
         <TouchableOpacity
@@ -20,12 +19,9 @@ export default function ButtonTransparent({ title, titleBold, fullWidth=false, e
                 if (typeof event == "function")
                     event()
             }}
-            style={[sizeStyleSelected, { backgroundColor: colors.BaseSlot1, flexDirection: "row" }]}>
-            <Text style={styleSelected.textRegular16}>
+            style={[sizeStyleSelected, {borderWidth: 2, borderColor: colors.BaseSlot4 }]}>
+            <Text style={styleSelected.buttonOutlineSuccessText}>
                 {title}
-            </Text>
-            <Text style={styleSelected.textBold16}>
-                {titleBold}
             </Text>
         </TouchableOpacity>
     )

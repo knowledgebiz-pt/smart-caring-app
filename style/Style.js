@@ -156,6 +156,28 @@ const style = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
+  buttonSizeFullWidth: {
+    height: 50,
+    width: "100%",
+    alignSelf: "center",
+    borderRadius: 30,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  buttonSizeTextLeft: {
+    height: 50,
+    width: "80%",
+    alignSelf: "center",
+    borderRadius: 30,
+    justifyContent: "center"
+  },
+  buttonSizeFullWidthTextLeft: {
+    height: 50,
+    width: "100%",
+    alignSelf: "center",
+    borderRadius: 30,
+    justifyContent: "center"
+  },
 
   // text
 
@@ -172,13 +194,28 @@ const style = StyleSheet.create({
     fontWeight: 600, 
     color: "#030849"
   },
+  textRegular13DarkBlue: {
+    fontSize: 13,
+    fontWeight: 400,
+    color: "#030849"
+  },
+  textRegular13Gray: {
+    fontSize: 13,
+    fontWeight: 400,
+    color: "#656565"
+  },
   textRegular14Gray: {
     fontSize: 14,
     fontWeight: 400,
     color: "#656565"
   },
+  textRegular14DarkBlue: {
+    fontSize: 14,
+    fontWeight: 400,
+    color: "#030849"
+  },
   textDisclaimer: {
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: 400,
     color: '#030849'
   },
@@ -190,13 +227,48 @@ const style = StyleSheet.create({
     fontWeight: 600,
     color: "white"
   },
+  buttonOutlinePrimaryText: {
+    fontSize: 16,
+    fontWeight: 600,
+    color: colors.BaseSlot2
+  },
+  buttonOutlineSuccessText: {
+    fontSize: 16,
+    fontWeight: 600,
+    color: colors.BaseSlot4
+  },
+  buttonOutlineSuccessIconText: {
+    fontSize: 13,
+    fontWeight: 400,
+    color: colors.BaseSlot4
+  },
+  buttonOutlinePrimaryIconText: {
+    fontSize: 13,
+    fontWeight: 400,
+    color: colors.BaseSlot2
+  },
+  buttonOutlineDarkBlueIconText: {
+    fontSize: 13,
+    fontWeight: 400,
+    color: '#030849'
+  },
 
   // Safe Area
   AndroidSafeArea: {
     flex: 1,
     backgroundColor: "white",
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
-  }
+  },
+
+  // Avatar
+  avatar: {
+    paddingTop: 20,
+    height: 75,
+    width: 75,
+    borderRadius: 100,
+    padding: 20,
+  },
 });
+
 
 export default style;
