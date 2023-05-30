@@ -7,12 +7,50 @@ import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
 import InputTransparent from '../components/InputTransparent'
 import ButtonPrimary from '../components/ButtonPrimary'
+import { UserService } from "smart-caring-client/client"
+import * as LocalAuthentication from "expo-local-authentication";
+import * as Google from "expo-auth-session/providers/google";
 
 export default function Login({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(true)
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
+    const [request, response, prompAsync] = Google.useAuthRequest({
+        androidClientId:
+            "181932543433-gbl0846u9a7qa5fo72ik1o1kumkc7p0q.apps.googleusercontent.com",
+        iosClientId:
+            "181932543433-pto5d2nj943u46hk70f7p01d9via842a.apps.googleusercontent.com",
+        expoClientId:
+            "181932543433-da75ds8om0gi0l5rm38e91vf9aapsdrb.apps.googleusercontent.com",
+    });
+
+    useEffect(() => {
+        console.log("INFO LOGIN");
+        console.log(response);
+        if (response?.type === "success") {
+            accessToken = response.authentication.accessToken;
+            GetUserData();
+        }
+        if (response?.type === "error") {
+            Alert.alert("Error", response.error?.message);
+        }
+        if (response?.type === "locked") {
+            Alert.alert("Locked", "LOCKED");
+        }
+    }, [response]);
+
+    async function GetUserData() {
+        let userInfoResponse = await fetch(
+            "https://www.googleapis.com/userinfo/v2/me",
+            {
+                headers: { Authorization: `Bearer ${accessToken}` },
+            }
+        );
+        userInfoResponse.json().then((data) => {
+            console.warn(data)
+        });
+    }
 
     useEffect(() => {
         console.log('OPEN', Login.name, 'SCREEN')
@@ -79,14 +117,18 @@ export default function Login({ route, navigation }) {
                             <View style={{ height: 1, backgroundColor: colors.Base_Slot_5, flex: 1 }} />
                         </View>
                         <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
-                            <TouchableOpacity style={{ backgroundColor: colors.Base_Slot_1, width: 150, borderRadius: 30, justifyContent: "center", alignItems: "center", height: 50 }}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    prompAsync();
+                                }}
+                                style={{ backgroundColor: colors.Base_Slot_1, width: 150, borderRadius: 30, justifyContent: "center", alignItems: "center", height: 50 }}>
                                 <Image source={require("../../assets/images/google.png")} style={{ height: 35, width: 35 }} />
                             </TouchableOpacity>
                             <TouchableOpacity style={{ backgroundColor: colors.Base_Slot_1, width: 150, borderRadius: 30, justifyContent: "center", alignItems: "center" }}>
                                 <Image source={require("../../assets/images/facebook.png")} style={{ height: 35, width: 35 }} />
                             </TouchableOpacity>
                         </View>
-                        <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", marginTop: 20 }} onPress={() => {navigation.navigate("Register")}}>
+                        <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", marginTop: 20 }} onPress={() => { navigation.navigate("Register") }}>
                             <Text style={[styleSelected.textRegular16, { color: colors.Base_Slot_3 }]}>Don’t have an account? </Text>
                             <Text style={[styleSelected.textBold16, { color: colors.Base_Slot_3 }]}>Sign up</Text>
                         </TouchableOpacity>
