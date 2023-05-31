@@ -268,6 +268,20 @@ const style = StyleSheet.create({
     borderRadius: 100,
     padding: 20,
   },
+
+  //
+  datePickerButton: {
+    height: 50,
+    backgroundColor: colors.BaseSlot1,
+    flexDirection: "row",
+    width: "190%",
+    alignSelf: "flex-start",
+    borderWidth: 1,
+    borderRadius: 30,
+    borderColor: colors.BaseSlot5,
+    alignItems: "center",
+    justifyContent: "center"
+  }
 });
 
 export default style;

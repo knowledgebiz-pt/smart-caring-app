@@ -70,7 +70,6 @@ export default function Register({ route, navigation }) {
                         <InputTransparent onChangeText={(text) => setEmail(text)} inputMode='email' blurOnSubmit={false} onSubmitEditing={() => ref_input2.current?.focus()} returnKeyType='next' placeholder={"Enter your e-mail"} />
                         <InputTransparent onChangeText={(text) => setPassword(text)} inputRef={ref_input2} blurOnSubmit={false} secureTextEntry={true} onSubmitEditing={() => ref_input3.current?.focus()} returnKeyType='next' placeholder={"Enter your password"} />
                         <InputTransparent onChangeText={(text) => setConfirmPassword(text)} inputRef={ref_input3} secureTextEntry={true} placeholder={"Confirm your password"} />
-                        <Text style={[styleSelected.textDisclaimer, {width:"65%", marginTop: 5, alignSelf: "center"}]}>By clicking Continue, you agree to our <Text style={styleSelected.textBold}>Terms and Conditions</Text> and <Text style={styleSelected.textBold}>Privacy Statement</Text>.</Text>
 
                         <ButtonPrimary event={() => navigation.navigate('CreateAccount', {email: email, password: password})} title={"Continue"} />
                     </View>

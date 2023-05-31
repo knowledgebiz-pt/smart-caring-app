@@ -14,6 +14,8 @@ import SwitchSelector from "react-native-switch-selector"
  * @param fullWidth: boolean - If true, will use buttonSizeFullWidth style (width: "100%") instead of buttonSize style (width: "80%")
  * @param inputColor: string - Color of the input text
  * @param fontSize: integer - Size of the input text font
+ * @param onPress: function - Function that will execute on pressing the component
+ * @param viewWidth: string or integer - width of the View element. Defaults to "100%"
  * @param event: any
  */
 
@@ -30,6 +32,7 @@ export default function TogglerTransparentLabelAbove(
         inputColor,
         fontSize,
         onPress,
+        viewWidth="100%",
         event 
     }) {
 
@@ -50,7 +53,7 @@ export default function TogglerTransparentLabelAbove(
         inputStyles['fontSize'] = fontSize
     }
     return (
-        <View>
+        <View style={{width: viewWidth}}>
             <Text style={[styleSelected.textRegular13DarkBlue,{marginLeft: 20, marginBottom: 5}]}>{label}</Text>
             <SwitchSelector 
                 borderColor={colors.BaseSlot5}
