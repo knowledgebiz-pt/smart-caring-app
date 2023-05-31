@@ -203,6 +203,11 @@ const style = StyleSheet.create({
     fontWeight: 400,
     color: "#030849"
   },
+  textRegular10Gray: {
+    fontSize: 10,
+    fontWeight: 400,
+    color: "#656565"
+  },
   textRegular13Gray: {
     fontSize: 13,
     fontWeight: 400,
@@ -275,6 +280,15 @@ const style = StyleSheet.create({
     width: 75,
     borderRadius: 100,
     padding: 20,
+  },
+  plusCircleAvatar: {
+    alignContent: "center", 
+    borderRadius: 30, 
+    textAlignVertical: "center", 
+    position: "absolute", 
+    marginLeft: 222, 
+    marginTop: 40, 
+    backgroundColor: colors.BaseSlot3
   },
 
   //

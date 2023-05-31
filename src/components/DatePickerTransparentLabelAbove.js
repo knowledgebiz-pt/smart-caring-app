@@ -35,7 +35,7 @@ export default function DatePickerTransparentLabelAbove(
                     event()
             }}
             style={[styleSelected.datePickerButton]}>
-            <Text style={styleSelected.textRegular16}>
+            <Text style={styleSelected.textRegular13Gray}>
                 {date.getFullYear()}
             </Text>
         </TouchableOpacity>
