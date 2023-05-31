@@ -20,6 +20,7 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { UserService } from "smart-caring-client/client"
 import DatePickerTransparentLabelAbove from '../components/DatePickerTransparentLabelAbove'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import PhoneInputTransparentLabelAbove from '../components/PhoneInputTransparentLabelAbove'
 
 export default function CreateAccount({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(false)
@@ -131,10 +132,7 @@ export default function CreateAccount({ route, navigation }) {
                             <TogglerTransparentLabelLeft onPress={(value) => {setVisibility(value)}} hasBorder={false} fullWidth={true} label={"Share my role*"} optionOneLabel={"Yes"} optionOneValue={true} optionTwoLabel={"No"} optionTwoValue={false}/>
                         </View>
                         <TogglerTransparentLabelAbove hasBorder={false} fullWidth={true} label={"Language"} optionOneLabel={"Portuguese"} optionOneValue={"1"} optionTwoLabel={"English"} optionTwoValue={"2"}/>
-                        <InputTransparentLabelAbove onChangeText={(text) => {setPhone(text); console.log(phone)}} fontSize={13} inputColor={colors.BaseSlot3} inputMode='tel' fullWidth={true} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"Phone number"}/>
-                        
-
-
+                        <PhoneInputTransparentLabelAbove onChangeText={(text) => {setPhone(text); console.log(phone)}} fullWidth={true} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"Phone number"} />
                     </View>
                     <View style={{flex: 1, width:"100%", alignSelf: "center", justifyContent: "space-evenly"}}>
                         <Text style={[styleSelected.textDisclaimer, {width:"80%", marginTop: 14, alignSelf: "center"}]}>By clicking Let's go!, Sign up with Google, or Sign up with Facebook, you agree to our <Text style={styleSelected.textBold}>Terms and Conditions</Text> and <Text style={styleSelected.textBold}>Privacy Statement</Text>.</Text>

@@ -291,7 +291,7 @@ const style = StyleSheet.create({
     backgroundColor: colors.BaseSlot3
   },
 
-  //
+  // Date picker
   datePickerButton: {
     height: 50,
     backgroundColor: colors.BaseSlot1,
@@ -303,6 +303,25 @@ const style = StyleSheet.create({
     borderColor: colors.BaseSlot5,
     alignItems: "center",
     justifyContent: "center"
+  },
+
+  // Phone input
+  phoneInputTextContainer: {
+    backgroundColor: "transparent", 
+    height: 100, 
+    marginRight: 20
+  },
+  phoneInputTextInput: {
+    width: "100%", 
+    height: 50
+  },
+  phoneInputCodeText: {
+    color: "#656565",
+    fontSize: 13,
+    marginLeft: -20
+  },
+  phoneInputCountryPickerButton: {
+    marginLeft: -20
   }
 });
 
