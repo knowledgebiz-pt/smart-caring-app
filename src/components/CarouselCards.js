@@ -12,9 +12,9 @@ export default function CarouselCards({}) {
     
     const [index, setIndex] = useState(0)
     const data = [
-        require('../../assets/images/Feature1.png'),
-        require('../../assets/images/Feature2.png'),
-        require('../../assets/images/Feature3.png')
+        {title: "Xxxxx xxxx xxxx xx xxxxxxx xx xxxx xxx xxxxxxxxxx xxxxxxx xxxxxxxxx xxxxxxxx",img:require('../../assets/images/Feature1.png')},
+        {title: "Xxxxx xxxx xxxx xx xxxxxxx xx xxxx xxx xxxxxxxxxx xxxxxxx xxxxxxxxx xxxxxxxx",img:require('../../assets/images/Feature2.png')},
+        {title: "Xxxxx xxxx xxxx xx xxxxxxx xx xxxx xxx xxxxxxxxxx xxxxxxx xxxxxxxxx xxxxxxxx",img:require('../../assets/images/Feature3.png')}
       ];
 
       const isCarousel = useRef(0)
@@ -40,11 +40,11 @@ export default function CarouselCards({}) {
             dotStyle={{
                 width: 124,
                 height: 13,
-                borderRadius: 5,
+                borderRadius: 10,
                 marginHorizontal: 0,
-                backgroundColor: "#A8A8A8"
+                backgroundColor: colors.BaseSlot2
             }}
-            inactiveDotStyle={{width: 25, height: 25}}
+            inactiveDotStyle={{width: 25, height: 25, backgroundColor: colors.BaseSlot4}}
             tappableDots={true}
           />
         </View>
