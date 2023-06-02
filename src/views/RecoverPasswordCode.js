@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback, useReducer } from 'react'
-import { SafeAreaView, StatusBar, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text, TouchableOpacity, TextInput } from 'react-native'
+import { SafeAreaView, StatusBar, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text, TouchableOpacity, TextInput, Image } from 'react-native'
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
@@ -55,18 +55,14 @@ export default function RecoverPasswordCode({ route, navigation }) {
                 keyboardVerticalOffset={Platform.OS == 'android' ? -150 : -150}
             >
                 <View style={[styleSelected.backgroundPrimary, { flex: 1 }]} onTouchStart={() => Keyboard.dismiss()}>
-                    <View style={{
-                        backgroundColor: colors.BaseSlot5,
-                        height: "50%",
-                        width: "80%",
-                        alignSelf: "center",
-                        borderRadius: 15,
-                        marginTop: 20
-                    }}>
+                    <View style={[styleSelected.imageContainer, { height: "50%", marginTop: 40, backgroundColor: "transparent" }]}>
+                    <Image source={require("../../assets/images/EnterCode.png")}
+                        resizeMode='cover'
+                        style={{ height: 450, width: 353, alignSelf: "center" }} />
                     </View>
                     <View style={{ justifyContent: "space-evenly", alignItems: "center", height: 100 }}>
                         <Text style={styleSelected.textBold20DarkBlue}>Enter your passcode</Text>
-                        <Text style={[styleSelected.textRegular14Gray, { textAlign: "center" }]}>Enter the code you received in your e-mail or phone number</Text>
+                        <Text style={[styleSelected.textRegular14Gray, { textAlign: "center", width: "60%" }]}>Enter the code you received in your e-mail or phone number</Text>
                     </View>
                     <View style={{
                         backgroundColor: 'rgba(28, 163, 252, 0.1)',
@@ -74,7 +70,8 @@ export default function RecoverPasswordCode({ route, navigation }) {
                         width: "90%",
                         alignSelf: "center",
                         borderRadius: 20,
-                        justifyContent: "center"
+                        justifyContent: "center",
+                        marginTop: 20
                     }}>
                         <View style={{ height: 70, marginTop: 20, flexDirection: "row", justifyContent: "space-evenly" }}>
                             <View onTouchEnd={() => { input1.current.focus() }} style={{ backgroundColor: colors.BaseSlot1, width: 55, height: 55, borderRadius: 20, justifyContent: "center", alignItems: "center" }}>

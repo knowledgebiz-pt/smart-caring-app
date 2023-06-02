@@ -51,17 +51,14 @@ export default function RecoverPassword({ route, navigation }) {
                 behavior={Platform.OS == 'android' ? 'height' : 'padding'}
                 keyboardVerticalOffset={Platform.OS == 'android' ? -100 : -100}
             >
-                <View style={{
-                    backgroundColor: colors.BaseSlot5,
-                    height: "50%",
-                    width: "80%",
-                    alignSelf: "center",
-                    borderRadius: 15,
-                    marginTop: 20
-                }}></View>
+                <View style={[styleSelected.imageContainer, { height: "50%", marginTop: 40, backgroundColor: "transparent" }]}>
+                    <Image source={require("../../assets/images/ForgotPassword.png")}
+                        resizeMode='cover'
+                        style={{ height: 450, width: 353, alignSelf: "center" }} />
+                </View>
                 <View style={{ justifyContent: "space-evenly", alignItems: "center", height: 100 }}>
                     <Text style={styleSelected.textBold20DarkBlue}>Forgot Password?</Text>
-                    <Text style={[styleSelected.textRegular14Gray, { textAlign: "center" }]}>Enter your e-mail or phone number in order to create a new password</Text>
+                    <Text style={[styleSelected.textRegular14Gray, { textAlign: "center", width: "60%" }]}>Enter your e-mail or phone number in order to create a new password</Text>
                 </View>
                 <View style={{
                     backgroundColor: 'rgba(28, 163, 252, 0.1)',

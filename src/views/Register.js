@@ -58,8 +58,10 @@ export default function Register({ route, navigation }) {
             >
                 {/* <KeyboardAwareScrollView style={{flex:1}}> */}
                 <ScrollView style={[styleSelected.backgroundPrimary, { flex: 1 }]}>
-                    <View style={styleSelected.verySmallImageContainer}>
-
+                    <View style={[styleSelected.verySmallImageContainer, {backgroundColor: "transparent"}]}>
+                    <Image source={require("../../assets/images/CreateAccount.png")}
+                        resizeMode='cover'
+                        style={{ height: 260, width: 350, alignSelf: "center" }} />
                     </View>
                     {/* <View style={{flex:1}}> */}
                     <Text style={[styleSelected.textBold20DarkBlue, { marginTop: 45, textAlign: "center" }]}>Create an account</Text>

@@ -53,8 +53,10 @@ export default function FirstAccess({ route, navigation }) {
                     <Image source={require("../../assets/images/logo.png")}
                         resizeMode='contain'
                         style={{ height: 90, width: 183, alignSelf: "center" }} />
-                    <View style={styleSelected.imageContainerNoMarginTop}>
-
+                    <View style={[styleSelected.imageContainerNoMarginTop, {backgroundColor: "transparent"}]}>
+                    <Image source={require("../../assets/images/Inicio.png")}
+                        resizeMode='cover'
+                        style={{ height: 600, width: 350, alignSelf: "center" }} />
                     </View>
                     <View style={{ flex: 1, justifyContent: "space-evenly" }}>
                         <ButtonPrimary title={"Login"} event={() => {navigation.navigate("Login")}}/>
