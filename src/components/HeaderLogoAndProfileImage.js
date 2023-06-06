@@ -4,7 +4,11 @@ import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default function HeaderLogoAndProfileImage(img) {
+/***
+ * @param img: string - URI of the user's profile image
+ */
+
+export default function HeaderLogoAndProfileImage({img}) {
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
@@ -12,7 +16,7 @@ export default function HeaderLogoAndProfileImage(img) {
     const [image, setImage] = useState(null);
 
     useEffect(() => {
-        setImage(img.img)
+        setImage(img)
     }, [])
     return (
         <View style={{flexDirection: "row"}}>

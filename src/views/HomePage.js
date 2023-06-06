@@ -6,10 +6,16 @@ import * as NavigationBar from 'expo-navigation-bar'
 import Loader from '../components/Loader'
 import HeaderLogoAndProfileImage from '../components/HeaderLogoAndProfileImage'
 import { UserService } from "smart-caring-client/client"
+import PostInputTransparent from '../components/PostInputTransparent'
 
 export default function HomePage({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(true)
     const [user, setUser] = useState(null)
+    const [name, setName] = useState("")
+
+    const [postInput, setPostInput] = useState("")
+    const [inputLength, setInputLength] = useState(0)
+
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
@@ -17,6 +23,7 @@ export default function HomePage({ route, navigation }) {
     useEffect(() => {
         UserService.getUserDataByIdUser("Ruben@teste.com", "Teste").then(res => {
             setUser(res.data)
+            setName(res.data.name)
             setIsLoading(false)
         }).catch(e =>{ 
             console.error("e: ",e)
@@ -48,8 +55,14 @@ export default function HomePage({ route, navigation }) {
                 behavior={Platform.OS == 'android' ? 'height' : 'padding'}
                 keyboardVerticalOffset={Platform.OS == 'android' ? -150 : -150}
             >
-                <View style={[styleSelected.backgroundPrimary, { flex: 1 }]}>
+                <View style={styleSelected.backgroundPrimary}>
                     <HeaderLogoAndProfileImage img={user.picture}/>
+                </View>
+                <View style={{alignSelf: "center"}}>
+                    <Text style={[styleSelected.textBold10DarkBlue, {marginTop: -15}]}>Hello, {name.split(" ")[0]}!</Text>
+                </View>
+                <View style={{marginTop: 20}}>
+                    <PostInputTransparent blurOnSubmit={false} img={user.picture} onChangeText={(text) => {setPostInput(text)}} value={postInput} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"}/>
                 </View>
             </KeyboardAvoidingView>
         </SafeAreaView>

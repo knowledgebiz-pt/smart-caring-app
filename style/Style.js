@@ -188,6 +188,32 @@ const style = StyleSheet.create({
     borderRadius: 30,
     justifyContent: "center"
   },
+  postInputSize: {
+    width: "56%",
+    alignSelf: "center",
+    borderRadius: 10,
+    textAlignVertical:"top",
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginLeft: 15,
+    marginRight: 15,
+    marginTop:-21,
+    maxHeight: 101,
+    borderBottomLeftRadius:0,
+    borderBottomRightRadius:0
+  },
+  smallButtonPost: {
+    borderWidth: 1, 
+    borderRadius: 10, 
+    flexDirection:"row", 
+    height: 30, 
+    paddingLeft: 10, 
+    paddingRight: 10, 
+    paddingTop: 5, 
+    paddingBottom: 5
+  },
 
   // text
 
@@ -198,6 +224,11 @@ const style = StyleSheet.create({
   textBold16: {
     fontSize: 16,
     fontWeight: 600
+  },
+  textBold10DarkBlue: {
+    fontSize: 10,
+    fontWeight: 600,
+    color: "#030849"
   },
   textBold20DarkBlue: {
     fontSize: 20,
@@ -302,6 +333,12 @@ const style = StyleSheet.create({
     height: 50, 
     width: 50, 
     marginBottom: 57
+  },
+  avatarLeftSide: {
+    alignSelf: "flex-start",
+    height: 25,
+    width: 25,
+    marginLeft: 20
   },
   menuCircleAvatarRightSide: {
     height: 29,
