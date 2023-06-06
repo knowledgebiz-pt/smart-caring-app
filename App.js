@@ -13,6 +13,7 @@ import CreateAccount from './src/views/CreateAccount';
 import Features from './src/views/Features';
 import RecoverPasswordCode from './src/views/RecoverPasswordCode';
 import CreateAccountWithGmail from './src/views/CreateAccountWithGmail';
+import HomePage from './src/views/HomePage';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,9 +32,7 @@ export default function App() {
         <Stack.Screen name="CreateAccount" component={CreateAccount} />
         <Stack.Screen name="CreateAccountWithGmail" component={CreateAccountWithGmail} />
         <Stack.Screen name="Features" component={Features} />
-
-
-
+        <Stack.Screen name="HomePage" component={HomePage} />
       </Stack.Navigator>
     </NavigationContainer>
     // </MyDrawer>

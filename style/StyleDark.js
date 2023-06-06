@@ -145,6 +145,13 @@ const style = StyleSheet.create({
     justifyContent: "space-evenly", 
     height: 400
   },
+  
+  logoLeftSide: {
+    width: 150, 
+    height: 150, 
+    marginLeft: 20, 
+    alignSelf: "flex-start"
+  },
 
   //buttons
 
@@ -281,6 +288,24 @@ const style = StyleSheet.create({
     marginLeft: 222, 
     marginTop: 40, 
     backgroundColor: colors.BaseSlot3
+  },
+  avatarRightSide: {
+    alignSelf: "flex-end", 
+    marginLeft: 150, 
+    height: 50, 
+    width: 50, 
+    marginBottom: 57
+  },
+  menuCircleAvatarRightSide: {
+    height: 29,
+    width: 29,
+    borderWidth: 2,
+    borderRadius: 30,
+    paddingTop: 3,
+    paddingLeft: 3,
+    marginTop: 75,
+    marginLeft: -22,
+    backgroundColor: colors.BaseSlot1,
   },
 
   // Date picker
