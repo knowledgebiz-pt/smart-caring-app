@@ -203,6 +203,11 @@ const style = StyleSheet.create({
     fontWeight: 400,
     color: "#030849"
   },
+  textRegular10Gray: {
+    fontSize: 10,
+    fontWeight: 400,
+    color: "#656565"
+  },
   textRegular13Gray: {
     fontSize: 13,
     fontWeight: 400,
@@ -276,6 +281,48 @@ const style = StyleSheet.create({
     borderRadius: 100,
     padding: 20,
   },
+  plusCircleAvatar: {
+    alignContent: "center", 
+    borderRadius: 30, 
+    textAlignVertical: "center", 
+    position: "absolute", 
+    marginLeft: 222, 
+    marginTop: 40, 
+    backgroundColor: colors.BaseSlot3
+  },
+
+  // Date picker
+  datePickerButton: {
+    height: 50,
+    backgroundColor: colors.BaseSlot1,
+    flexDirection: "row",
+    width: "100%",
+    alignSelf: "flex-start",
+    borderWidth: 1,
+    borderRadius: 30,
+    borderColor: colors.BaseSlot5,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+
+  // Phone input
+  phoneInputTextContainer: {
+    backgroundColor: "transparent", 
+    height: 100, 
+    marginRight: 20
+  },
+  phoneInputTextInput: {
+    width: "100%", 
+    height: 50
+  },
+  phoneInputCodeText: {
+    color: "#656565",
+    fontSize: 13,
+    marginLeft: -20
+  },
+  phoneInputCountryPickerButton: {
+    marginLeft: -20
+  }
 });
 
 

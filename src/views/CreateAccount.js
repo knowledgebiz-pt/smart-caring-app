@@ -16,8 +16,11 @@ import ButtonOutlinePrimaryIcon from '../components/ButtonOutlinePrimaryIcon'
 import ButtonOutlineDarkBlueIcon from '../components/ButtonOutlineDarkBlueIcon'
 import TogglerTransparentLabelAbove from "../components/TogglerTransparentLabelAbove"
 import TogglerTransparentLabelLeft from '../components/TogglerTransparentLabelLeft'
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {UserService} from "smart-caring-client/client"
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { UserService } from "smart-caring-client/client"
+import DatePickerTransparentLabelAbove from '../components/DatePickerTransparentLabelAbove'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import PhoneInputTransparentLabelAbove from '../components/PhoneInputTransparentLabelAbove'
 
 export default function CreateAccount({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(false)
@@ -26,11 +29,13 @@ export default function CreateAccount({ route, navigation }) {
     var colors = require('../../style/Colors.json')
 
     const [name, setName] = useState("")
+    const [birthDate, setBirthDate] = useState(new Date())
     const [gender, setGender] = useState("M")
     const [role, setRole] = useState(null)
     const [visibility, setVisibility] = useState(false)
     const [language, setLanguage] = useState("en")
     const [phone, setPhone] = useState(null)
+    const [showPicker, setShowPicker] = useState(false)
 
     const [indexSelectedButton, setIndexSelectedButton] = useState(null)
 
@@ -61,7 +66,6 @@ export default function CreateAccount({ route, navigation }) {
 
     useEffect(() => {
         console.log('OPEN', CreateAccount.name, 'SCREEN')
-        console.warn(route)
         //For test loading
         setTimeout(() => {
             setIsLoading(false)
@@ -99,35 +103,40 @@ export default function CreateAccount({ route, navigation }) {
                 <ScrollView style={[styleSelected.backgroundPrimary, { flex: 1 }]}>
                     {/* <View style={{flex:1}}> */}
                         <Text style={[styleSelected.textBold20DarkBlue, {marginTop: 45, textAlign: "center"}]}>Create an account</Text>
-                        <TouchableOpacity onPress={pickImage}>
+                        <TouchableOpacity style={{marginTop:20}} onPress={pickImage}>
                             <Image
                                 style={[styleSelected.avatar, {alignSelf: "center"}]}
                                 source={{uri: image ? image : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"}}
+                            />
+                            <MaterialCommunityIcons
+                                name={'plus'}
+                                size={25}
+                                color={colors.BaseSlot1}
+                                style={styleSelected.plusCircleAvatar}
                             />
                         </TouchableOpacity>
 
                     {/* </View> */}
                     <View style={{flex: 1, width: "80%", alignSelf: "center", marginTop: 20, justifyContent: "space-evenly"}}>
                         {/* <InputDefault input={name} setInput={setName} lineFocusColor="#A8A8A8" inputColor="black" lineUnfocusColor="#A8A8A8" placeholderFocusColor="#030849" placeholderUnfocusColor="#030849" placeholder={"Name"} /> */}
-                        <InputTransparentLabelAbove onChangeText={(text) => setName(text)} fontSize={13} inputColor={colors.BaseSlot3} fullWidth={true} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"Name"}/>
-                        <View style={{marginTop: 7}}>
-                            <TogglerTransparentLabelAbove onPress={(value) => {setGender(value)}} hasBorder={false} fullWidth={true} label={"Gender"} optionOneLabel={"Masculine"} optionOneValue={"M"} optionTwoLabel={"Feminine"} optionTwoValue={"F"}/>
+                        <InputTransparentLabelAbove onChangeText={(text) => setName(text)} fontSize={13} inputColor={colors.BaseSlot3} fullWidth={true} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"Name*"}/>
+                        <View style={{marginTop: 7, flexDirection: "row"}}>
+                            <DatePickerTransparentLabelAbove viewWidth={"20%"} event={() => {setShowPicker(true)}} showPicker={showPicker} onDateChange={(date) => {setShowPicker(false);setBirthDate(new Date(date["nativeEvent"]["timestamp"]))}} date={birthDate} placeholder={"Age*"}/>
+                            <TogglerTransparentLabelAbove viewWidth={"80%"} onPress={(value) => {setGender(value)}} hasBorder={false} fullWidth={true} label={"Gender*"} optionOneLabel={"Masculine"} optionOneValue={"M"} optionTwoLabel={"Feminine"} optionTwoValue={"F"}/>
                         </View>
-                        <Text style={[styleSelected.textRegular13DarkBlue, {marginLeft: 30, marginTop: 7, marginBottom: 6}]}>Which one describes you best?</Text>
+                        <Text style={[styleSelected.textRegular13DarkBlue, {marginLeft: 30, marginTop: 7, marginBottom: 6}]}>Which role describes you best?*</Text>
                         <ButtonOutlineSuccessIcon styleButton={{backgroundColor: indexSelectedButton === "1" ? colors.BaseSlot4 : "transparent"}} styleText={{color: indexSelectedButton === "1" ? colors.BaseSlot1 : colors.BaseSlot4}} styleImage={{tintColor: indexSelectedButton === "1" ? colors.BaseSlot1 : colors.BaseSlot4}} onPress={() => {setIndexSelectedButton("1"); setRole("Caregiver")}}  fullWidth={true} title={"Caregiver"} />
                         <ButtonOutlinePrimaryIcon styleButton={{backgroundColor: indexSelectedButton === "2" ? colors.BaseSlot2 : "transparent"}} styleText={{color: indexSelectedButton === "2" ? colors.BaseSlot1 : colors.BaseSlot2}} styleImage={{tintColor: indexSelectedButton === "2" ? colors.BaseSlot1 : colors.BaseSlot2}} onPress={() => {setIndexSelectedButton("2"); setRole("Health Professional")}} fullWidth={true} title={"Health Professional"} />
                         <ButtonOutlineDarkBlueIcon styleButton={{backgroundColor: indexSelectedButton === "3" ? "#030849" : "transparent"}} styleText={{color: indexSelectedButton === "3" ? colors.BaseSlot1 : "#030849"}} styleImage={{tintColor: indexSelectedButton === "3" ? colors.BaseSlot1 : "#030849"}} onPress={() => {setIndexSelectedButton("3"); setRole("Patient")}} fullWidth={true} title={"Patient"} />
-                        <View style={{width: "40%", alignSelf: "flex-end", marginRight: 65}}>
-                            <TogglerTransparentLabelLeft onPress={(value) => {setVisibility(value)}} hasBorder={false} fullWidth={true} label={"Visibility"} optionOneLabel={"On"} optionOneValue={true} optionTwoLabel={"Off"} optionTwoValue={false}/>
+                        <View style={{width: "40%", alignSelf: "flex-end", marginRight: 110}}>
+                            <TogglerTransparentLabelLeft onPress={(value) => {setVisibility(value)}} hasBorder={false} fullWidth={true} label={"Share my role*"} optionOneLabel={"Yes"} optionOneValue={true} optionTwoLabel={"No"} optionTwoValue={false}/>
                         </View>
                         <TogglerTransparentLabelAbove hasBorder={false} fullWidth={true} label={"Language"} optionOneLabel={"Portuguese"} optionOneValue={"1"} optionTwoLabel={"English"} optionTwoValue={"2"}/>
-                        <InputTransparentLabelAbove onChangeText={(text) => {setPhone(text); console.log(phone)}} fontSize={13} inputColor={colors.BaseSlot3} inputMode='tel' fullWidth={true} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"Phone number"}/>
-                        
-
-
+                        <PhoneInputTransparentLabelAbove onChangeText={(text) => {setPhone(text); console.log(phone)}} fullWidth={true} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"Phone number"} />
                     </View>
                     <View style={{flex: 1, width:"100%", alignSelf: "center", justifyContent: "space-evenly"}}>
-                        <Text style={[styleSelected.textDisclaimer, {width:"80%", marginTop: 14, alignSelf: "center"}]}>By clicking Continue, Sign up with Google, or Sign up with Facebook, you agree to our <Text style={styleSelected.textBold}>Terms and Conditions</Text> and <Text style={styleSelected.textBold}>Privacy Statement</Text>.</Text>
+                        <Text style={[styleSelected.textDisclaimer, {width:"80%", marginTop: 14, alignSelf: "center"}]}>By clicking Let's go!, Sign up with Google, or Sign up with Facebook, you agree to our <Text style={styleSelected.textBold}>Terms and Conditions</Text> and <Text style={styleSelected.textBold}>Privacy Statement</Text>.</Text>
+                        <Text style={[styleSelected.textRegular10Gray, {width:"80%", marginTop: 14, alignSelf: "center"}]}>* Mandatory fields.</Text>
                     </View>
                     <View style={{flex: 1, width:"100%", alignSelf: "center", marginTop: 14, marginBottom: 14, justifyContent: "space-evenly"}}>
                         <ButtonOutlinePrimary event={() => { 
@@ -138,6 +147,7 @@ export default function CreateAccount({ route, navigation }) {
                                 name: name,
                                 user_gender: gender, // M, F
                                 UserType: role, // caregiver, health professional, patient
+                                birthDate: birthDate.getDate()+"/"+(birthDate.getMonth()+1)+"/"+birthDate.getFullYear(),
                                 visibilityUser: visibility,
                                 phone: phone,
                                 picture: image,

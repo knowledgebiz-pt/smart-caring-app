@@ -2,38 +2,31 @@ import React from "react";
 import { View,Text, TouchableOpacity, TextInput, useColorScheme } from "react-native";
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
-import SwitchSelector from "react-native-switch-selector"
+import PhoneInput from 'react-native-phone-number-input'
+
 /***
- * @param label: string - Text that will appear as over the input as its label
- * @param optionOneLabel: string - Text that will determine the label of the first option
- * @param optionOneValue: string - Value of the first option
- * @param optionTwoLabel: string - Text that will determine the label of the second option
- * @param optionTwoValue: string - Value of the second option
+ * @param placeholder: string - Text that will appear as placeholder
+ * @param onChangeText: function - Callback that is called when the text input's text changes. Changed text is passed as an argument to the callback handler.
  * @param hasBorder: boolean - Determine whether the component has a border around it. Defaults to false
  * @param borderColor: string - Determine the color of the component's border, in case it has one.
  * @param fullWidth: boolean - If true, will use buttonSizeFullWidth style (width: "100%") instead of buttonSize style (width: "80%")
  * @param inputColor: string - Color of the input text
  * @param fontSize: integer - Size of the input text font
- * @param onPress: function - Function that will execute on pressing the component
- * @param viewWidth: string or integer - width of the View element. Defaults to "100%"
  * @param event: any
+ * @param value: string - value of input
  */
 
-export default function TogglerTransparentLabelAbove(
+export default function PhoneInputTransparentLabelAbove(
     { 
-        label,
-        optionOneLabel,
-        optionOneValue,
-        optionTwoLabel,
-        optionTwoValue,
+        placeholder,
         hasBorder=false,
         borderColor,
+        onChangeText,
         fullWidth=false,
         inputColor,
         fontSize,
-        onPress,
-        viewWidth="100%",
-        event 
+        event,
+        value
     }) {
 
     //placeholder: 
@@ -53,16 +46,19 @@ export default function TogglerTransparentLabelAbove(
         inputStyles['fontSize'] = fontSize
     }
     return (
-        <View style={{width: viewWidth}}>
-            <Text style={[styleSelected.textRegular13DarkBlue,{marginLeft: 20, marginBottom: 5}]}>{label}</Text>
-            <SwitchSelector 
-                borderColor={colors.BaseSlot5}
-                style={[sizeStyleSelected, inputStyles]}
-                textColor={colors.BaseSlot3}
-                buttonColor={colors.BaseSlot5}
-                options={[{label: optionOneLabel, value: optionOneValue,}, {label: optionTwoLabel, value: optionTwoValue}]}
-                initial={0}
-                onPress={onPress}/>
+        <View>
+            <Text style={[styleSelected.textRegular13DarkBlue,{marginLeft: 20, marginBottom: 5}]}>{placeholder}</Text>
+            <PhoneInput
+                defaultValue={value}
+                containerStyle={[sizeStyleSelected, inputStyles]}
+                textContainerStyle={styleSelected.phoneInputTextContainer}
+                textInputStyle={[styleSelected.phoneInputTextInput, styleSelected.textRegular13Gray]}
+                codeTextStyle={styleSelected.phoneInputCodeText}
+                countryPickerButtonStyle={styleSelected.phoneInputCountryPickerButton}
+                placeholder=" "
+                onChangeFormattedText={onChangeText}
+                defaultCode="PT"
+            />
         </View>
     )
 }

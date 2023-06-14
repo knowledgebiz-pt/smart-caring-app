@@ -58,8 +58,10 @@ export default function EnterNewPassword({ route, navigation }) {
             >
             {/* <KeyboardAwareScrollView style={{flex:1}}> */}
                 <ScrollView style={[styleSelected.backgroundPrimary, { flex: 1 }]}>
-                    <View style={styleSelected.smallerImageContainer}>
-
+                    <View style={[styleSelected.smallerImageContainer, { backgroundColor: "transparent" }]}>
+                    <Image source={require("../../assets/images/NewPassword.png")}
+                        resizeMode='cover'
+                        style={{ height: 440, width: 353, alignSelf: "center" }} />
                     </View>
                     {/* <View style={{flex:1}}> */}
                         <Text style={[styleSelected.textBold20DarkBlue, {marginTop: 45, textAlign: "center"}]}>Create new password</Text>

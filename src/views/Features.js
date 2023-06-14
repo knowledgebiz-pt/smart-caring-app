@@ -8,6 +8,7 @@ import Loader from '../components/Loader'
 import ButtonPrimary from '../components/ButtonPrimary'
 import ButtonTransparent from '../components/ButtonTransparent'
 import Carousel from "react-native-snap-carousel"
+import CarouselCards from '../components/CarouselCards'
 
 export default function Features({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(true)
@@ -50,14 +51,17 @@ export default function Features({ route, navigation }) {
                 behavior={Platform.OS == 'android' ? 'height' : 'padding'}
                 keyboardVerticalOffset={Platform.OS == 'android' ? -150 : -150}
             >
-                <View style={[styleSelected.backgroundPrimary, { flex: 1 }]}>
+                <View style={[styleSelected.backgroundPrimary, {flex: 1, marginTop: 50}]}>
+                    <CarouselCards/>
+                </View>
+                {/* <View style={[styleSelected.backgroundPrimary, { flex: 1 }]}>
                     <View style={styleSelected.imageContainer}>
 
-                    </View>
+                    </View> */}
                     {/* <View style={{ flex: 1, justifyContent: "space-evenly" }}>
                         <ButtonPrimary title={"Let's start!"} />
                     </View> */}
-                </View>
+                {/* </View> */}
             </KeyboardAvoidingView>
         </SafeAreaView>
     )
