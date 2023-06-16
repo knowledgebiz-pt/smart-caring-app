@@ -201,8 +201,6 @@ const style = StyleSheet.create({
     marginRight: 15,
     marginTop:-21,
     maxHeight: 101,
-    borderBottomLeftRadius:0,
-    borderBottomRightRadius:0
   },
   smallButtonPost: {
     borderWidth: 1, 
@@ -383,6 +381,73 @@ const style = StyleSheet.create({
   },
   phoneInputCountryPickerButton: {
     marginLeft: -20
+  },
+
+  // Feed
+  feedPostContainer: {
+    width: "100%",
+    borderRadius: 15,
+    paddingTop:10,
+    paddingBottom: 20,
+    paddingRight: 10
+  },
+  feedPostUserName: {
+    marginLeft:5,
+    textAlignVertical:"center",
+    fontSize: 11
+  },
+  feedPostRoleIcon: {
+    width: 35,
+    height: 20,
+    marginRight: 20
+  },
+  feedPostHeartIconPosition: {
+    position:"absolute",
+    marginLeft: 325
+  },
+  feedPostHeartIcon: {
+    textAlignVertical:"center",
+    fontSize:20,
+    marginTop:10
+  },
+  feedPostContentView: {
+    marginLeft: 65
+  },
+  feedPostContentText: {
+    fontSize: 10, paddingRight:10
+  },
+  feedPostContentUrlPreviewImage: {
+    width:"100%",
+    height:140,
+    marginLeft:-15,
+    marginTop: 10
+  },
+  feedPostContentUrl: {
+    fontSize: 10,
+    paddingRight:10,
+    color:colors.BaseSlot2,
+    fontStyle:"italic",
+    textDecorationLine:"underline"
+  },
+  feedPostButtonsView: {
+    flexDirection:"row",
+    marginTop:10
+  },
+  feedPostButtonsText: {
+    fontSize: 10,
+    alignSelf:"center"
+  },
+  feedPostContentSeeCommentsTouchableOpacity: {
+    flex: 1,
+    textAlign: "right",
+    alignSelf:"center",
+    marginRight:20
+  },
+  feedPostContentSeeComments: {
+    textAlign: "right",
+    fontSize: 9,
+    color: colors.BaseSlot3,
+    textDecorationLine: "underline"
   }
 });
 

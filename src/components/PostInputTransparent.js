@@ -60,7 +60,7 @@ export default function PostInputTransparent(
                 source={{uri: image ? image : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"}}
             />
             <TextInput
-                style={[sizeStyleSelected, inputStyles]}
+                style={[sizeStyleSelected, inputStyles, {marginTop:0}]}
                 fontStyle={value.length == 0 ? 'italic' : "normal"}
                 placeholder={placeholder}
                 placeholderTextColor="rgba(101, 101, 101, 0.5)"
@@ -73,7 +73,7 @@ export default function PostInputTransparent(
                 onChangeText={onChangeText}
                 value={value}
                 multiline={true}
-                numberOfLines={4}
+                numberOfLines={6}
                 scrollEnabled={true}
             />
             <View style={{flexDirection:"column"}}>
@@ -104,14 +104,11 @@ export default function PostInputTransparent(
                 
             </View>
         </View>
-       
-       
-        {/* TEMPORARY SEND BUTTON */}
-        <View style={{width: "56%", marginLeft: 75, marginTop:-29}}>
-            <TouchableOpacity style={{borderWidth: 1, borderRadius: 10,borderTopLeftRadius:0, borderTopRightRadius:0, borderColor:borderColor, flexDirection:"row", height: 30, paddingLeft: 10, paddingRight: 10, paddingTop: 5, paddingBottom: 5, marginTop: 5, }}>                    
-                <FontAwesome name={'send'}
+        <View style={{width: "10%", marginLeft: 264, marginTop:-35}}>
+            <TouchableOpacity style={{borderWidth: 0, borderRadius: 10,borderTopLeftRadius:0, borderTopRightRadius:0, borderColor:borderColor, flexDirection:"row", height: 30, paddingLeft: 10, paddingRight: 10, paddingTop: 5, paddingBottom: 5, marginTop: 5, }}>                    
+                <FontAwesome name={'send-o'}
                 size={17}
-                color={borderColor}/>
+                color={colors.BaseSlot2}/>
             </TouchableOpacity>
         </View>
         </>
