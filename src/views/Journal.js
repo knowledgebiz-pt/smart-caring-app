@@ -1,0 +1,1 @@
+export default function Journal({ route, navigation }) {}
