@@ -43,6 +43,12 @@ export default function SelectTransparent(
         displaySelectedOption=false,
         align="left",
         marginLeft=0,
+        onPress,
+        open,
+        onSelectItem,
+        selectedValue,
+        ref,
+        otherRefs,
         event 
     }) {
 
@@ -51,8 +57,8 @@ export default function SelectTransparent(
         {label: 'Old', value: 'banana'}
     ]);
     
-    const [open, setOpen] = useState(false)
-    const [selectedValue, setSelectedValue] = useState({label: "Recent"})
+    // const [open, setOpen] = useState(false)
+    // const [selectedValue, setSelectedValue] = useState({label: "Recent"})
 
     //placeholder: 
     let colorScheme = useColorScheme()
@@ -99,9 +105,9 @@ export default function SelectTransparent(
     }
     const placeholderText = <Text style={textStyles}>{placeholder}{displaySelectedOption ? <Text style={{fontWeight: "bold"}}>{selectedValue.label}</Text> : ""}</Text>
     return (
-        <View style={{marginLeft: marginLeft, width: viewWidth,}}>
+        <View ref={ref} style={{marginLeft: marginLeft, width: viewWidth,}}>
             {/* <Text style={[styleSelected.textRegular13DarkBlue,{marginLeft: 20, marginTop: 25, zIndex: 999}]}>{placeholder + selectedValue.label} </Text> */}
-            <DropDownPicker dropDownContainerStyle={alignDropDownContainerStyle} labelStyle={{color:"red"}} style={[alignStyle, pickerStyles]} placeholder={placeholderText} onSelectItem={(val) => {setSelectedValue(val); setOpen(false)}} onPress={() => {setOpen(!open)}} open={open} items={items} 
+            <DropDownPicker dropDownContainerStyle={alignDropDownContainerStyle} labelStyle={{color:"red"}} style={[alignStyle, pickerStyles]} placeholder={placeholderText} onSelectItem={onSelectItem} onPress={onPress} open={open} items={items} 
             ArrowDownIconComponent={() => {
                 return <FontAwesome name="chevron-down" color={labelTextColor} />
             }}

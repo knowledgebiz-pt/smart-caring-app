@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Text, Image, View, TouchableOpacity, TextInput, useColorScheme } from "react-native";
+import { Text, Image, View, TouchableOpacity, Touchable, TextInput, useColorScheme } from "react-native";
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome } from "@expo/vector-icons"
+import * as ImagePicker from "expo-image-picker"
+
 /***
  * @param placeholder: string - Text that will appear as placeholder
  * @param inputMode: string - Determines type of keyboard to open. Defaults to "text". Valid values: 'decimal', 'email', 'none', 'numeric', 'search', 'tel', 'text', 'url'
@@ -37,7 +39,27 @@ export default function PostInputTransparent(
         event
     }) {
 
+    const [textValue, setTextValue] = useState("")
     const [image, setImage] = useState(null)
+    const [postImage, setPostImage] = useState(null)
+
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: .2,
+        allowsMultipleSelection: false
+        });
+
+        console.log(result);
+
+        if (!result.canceled) {
+        setPostImage(result.assets[0].uri);
+        }
+    };
+
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
@@ -61,7 +83,7 @@ export default function PostInputTransparent(
             />
             <TextInput
                 style={[sizeStyleSelected, inputStyles, {marginTop:0}]}
-                fontStyle={value.length == 0 ? 'italic' : "normal"}
+                fontStyle={textValue.length == 0 ? 'italic' : "normal"}
                 placeholder={placeholder}
                 placeholderTextColor="rgba(101, 101, 101, 0.5)"
                 inputMode={inputMode}
@@ -70,14 +92,14 @@ export default function PostInputTransparent(
                 returnKeyType={returnKeyType}
                 ref={inputRef}
                 blurOnSubmit={blurOnSubmit}
-                onChangeText={onChangeText}
-                value={value}
+                onChangeText={(val) => {setTextValue(val)}}
+                value={textValue}
                 multiline={true}
                 numberOfLines={6}
                 scrollEnabled={true}
             />
             <View style={{flexDirection:"column"}}>
-                <TouchableOpacity style={[styleSelected.smallButtonPost, {borderColor: borderColor}]}>
+                <TouchableOpacity onPress={pickImage} style={[styleSelected.smallButtonPost, {borderColor: borderColor}]}>
                     <MaterialCommunityIcons style={{paddingRight:2}} name={'plus'}
                     size={15}
                     color={borderColor}/>

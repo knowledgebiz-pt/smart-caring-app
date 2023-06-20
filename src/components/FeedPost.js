@@ -5,6 +5,10 @@ import styleDark from '../../style/StyleDark'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome } from "@expo/vector-icons"
 import RNUrlPreview from 'react-native-url-preview';
+import LottieView from 'lottie-react-native';
+import FeedPostCommentList from "./FeedPostCommentList";
+import FeedPostComment from "./FeedPostComment";
+
 /***
  * @param buttonColor: string - Determine the color of the component's buttons and their borders.
  * @param value: string - Value of the TextInput
@@ -26,6 +30,8 @@ export default function FeedPost(
     const [image, setImage] = useState(null)
     const [favoriteIcon, setFavoriteIcon] = useState({name: "heart-o", color: "#030849"})
     const [hasLike, setLike] = useState(false)
+    const [previewLoaded, setPreviewLoaded] = useState(false)
+    const [commentModal, setCommentModal] = useState(false)
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
@@ -74,8 +80,11 @@ export default function FeedPost(
             </View>
             <View style={styleSelected.feedPostContentView}>
                 <Text style={styleSelected.feedPostContentText}>{postContent.text}</Text>
-                
-                <RNUrlPreview text={postContent.linkInPost} title={false} description={false} descriptionNumberOfLines={0} containerStyle={{}} imageStyle={styleSelected.feedPostContentUrlPreviewImage} descriptionStyle={{fontSize:0}}  />
+                { !previewLoaded && <View style= {{height:147}}>
+                    <LottieView style={{ marginRight: 30 }} resizeMode="contain" autoPlay={true} source={require('../../assets/json/loading-heart.json')} />
+                    
+                    </View>}
+                <RNUrlPreview onLoad={() => setPreviewLoaded(true)} text={postContent.linkInPost} title={false} description={false} descriptionNumberOfLines={0} containerStyle={{}} imageStyle={styleSelected.feedPostContentUrlPreviewImage} descriptionStyle={{fontSize:0}}  />
                 <Text onPress={() => Linking.openURL(postContent.linkInPost)} style={styleSelected.feedPostContentUrl}>{postContent.linkInPost}</Text>
                 <View style={styleSelected.feedPostButtonsView}>
 
@@ -97,9 +106,12 @@ export default function FeedPost(
                         size={15}
                         color={buttonColor}/><Text style={[styleSelected.feedPostButtonsText, {color: buttonColor}]}> Comment</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styleSelected.feedPostContentSeeCommentsTouchableOpacity}>
+                    <TouchableOpacity style={styleSelected.feedPostContentSeeCommentsTouchableOpacity} onPress={() => {(setCommentModal(true)); }}>
                         <Text style={styleSelected.feedPostContentSeeComments} >{ postContent.comments.length ?  "See "+ postContent.comments.length + (postContent.comments.length === 1 ? " comment" : " comments") : "No comments"}</Text>
                     </TouchableOpacity>
+                    {/* <View style={{position: "absolute", width: 500, height: 900, marginLeft: -100, marginTop: -200}}> */}
+                    {/* {commentModal && <FeedPostComment avatarPicture={""} userName={"tedte"}  comment={"text"} /> } */}
+                    {/* </View> */}
                 </View>
             </View>
         </View>

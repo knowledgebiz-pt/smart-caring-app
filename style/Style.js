@@ -448,6 +448,31 @@ const style = StyleSheet.create({
     fontSize: 9,
     color: colors.BaseSlot3,
     textDecorationLine: "underline"
+  },
+  modalCenteredView: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)'
+  },
+  modalView: {
+    backgroundColor: 'white',
+    borderTopRightRadius: 0,
+    borderTopLeftRadius: 0,
+    borderRadius: 20,
+    paddingTop: 35,
+    paddingBottom: 35,
+  },
+  modalOpenButton: {
+      position:'absolute', 
+      marginLeft: 346, 
+      marginTop: -65, 
+      backgroundColor: colors.BaseSlot4, 
+      width: 80, 
+      borderBottomLeftRadius:30, 
+      paddingRight:30, 
+      paddingTop:10, 
+      paddingBottom:5, 
+      borderTopLeftRadius:30, 
+      alignItems:"center" 
   }
 });
 
