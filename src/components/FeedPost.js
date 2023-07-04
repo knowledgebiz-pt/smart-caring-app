@@ -75,9 +75,6 @@ export default function FeedPost(
 
     const likeButton = (giveLike) => {
         if (giveLike) {
-            console.log(giveLike)
-            console.log(user._id.$oid)
-            console.log(postContent._id.$oid)
             NewsService.addLikeToNewsArticle(postContent._id.$oid, user._id.$oid).then(res => {
                 console.log(res)
             }).catch(e => {
