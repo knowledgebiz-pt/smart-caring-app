@@ -22,7 +22,7 @@ export default function HeaderLogoAndProfileImage({img}) {
         <View style={{flexDirection: "row"}}>
             <Image source={require("../../assets/images/logo.png")} style={styleSelected.logoLeftSide} resizeMode='contain' />
             <Image
-                style={[styleSelected.avatar, styleSelected.avatarRightSide]}
+                style={[styleSelected.avatar, styleSelected.avatarRightSide, {backgroundColor:"green"}]}
                 source={{uri: image ? image : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"}}
             />
             {/* Icon style is very specific for this case and will likely not work in different situations. */}

@@ -36,8 +36,8 @@ export default function SortAndFilterSelects(
     
     return (
         <View style={{flexDirection: "row", width: "90%", alignSelf: "center", paddingBottom:5, zIndex: 9999}}>
-            <SelectTransparent items={sortItems} onPress={() => {setSortSelectOpen(!sortSelectOpen); setFilterSelectOpen(false)}} onSelectItem={onSelectSort} selectedValue={sortValue} open={sortSelectOpen} placeholder={"Sort by: "} hasBorder={1} displaySelectedOption={true} labelTextColor={colors.BaseSlot2} borderColor={colors.BaseSlot2} viewWidth="50%" width='61%' align='left' />
-            <SelectTransparent items={filterItems} onPress={() => {setSortSelectOpen(false); setFilterSelectOpen(!filterSelectOpen)}} onSelectItem={onSelectFilter} selectedValue={filterValue} open={filterSelectOpen} placeholder={"Filters"} displaySelectedOption={false} labelTextColor={colors.BaseSlot1} backgroundColor={colors.BaseSlot2} hasBorder={false} viewWidth="50%" width='39%' align='right'  />
+            <SelectTransparent key={"select1"} key2={"select1"} items={sortItems} onPress={() => {setSortSelectOpen(!sortSelectOpen); setFilterSelectOpen(false)}} onSelectItem={onSelectSort} selectedValue={sortValue} open={sortSelectOpen} placeholder={"Sort by: "} hasBorder={1} displaySelectedOption={true} labelTextColor={colors.BaseSlot2} borderColor={colors.BaseSlot2} viewWidth="50%" width='95%' align='left' />
+            <SelectTransparent key={"select2"} key2={"select2"} items={filterItems} onPress={() => {setSortSelectOpen(false); setFilterSelectOpen(!filterSelectOpen)}} onSelectItem={onSelectFilter} selectedValue={filterValue} open={filterSelectOpen} placeholder={"Filters"} displaySelectedOption={false} labelTextColor={colors.BaseSlot1} backgroundColor={colors.BaseSlot2} hasBorder={false} viewWidth="50%" width='95%' align='right'  />
         </View>
     )
 }

@@ -4,11 +4,10 @@ import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome } from "@expo/vector-icons"
-import RNUrlPreview from 'react-native-url-preview';
 import LottieView from 'lottie-react-native';
 import FeedPostCommentList from "./FeedPostCommentList";
-import FeedPostComment from "./FeedPostComment";
-import { LikesService, NewsService } from "smart-caring-client/client";
+import { NewsService } from "smart-caring-client/client";
+import { Video, ResizeMode } from 'expo-av';
 
 /***
  * @param buttonColor: string - Determine the color of the component's buttons and their borders.
@@ -43,15 +42,15 @@ export default function FeedPost(
     }
     let feedIcon = null
     
-    if (feedRole.toLowerCase() === "caregiver") {
+    if (feedRole.toLowerCase() === "caregiver" && postContent.user.visibility) {
         feedStyle["backgroundColor"] = "rgba(86, 178, 136, 0.1)"
         feedIcon = require("../../assets/images/Caregiver.png")
     }
-    else if (feedRole.toLowerCase() === "health professional") {
+    else if (feedRole.toLowerCase() === "health professional" && postContent.user.visibility) {
         feedStyle["backgroundColor"] = "rgba(28, 163, 252, 0.1)"
         feedIcon = require("../../assets/images/Healthprofessional.png")
     }
-    else if (feedRole.toLowerCase() === "patient") {
+    else if (feedRole.toLowerCase() === "patient" && postContent.user.visibility) {
         feedStyle["backgroundColor"] = "rgba(3, 8, 73, 0.1)"
         feedIcon = require("../../assets/images/Patient.png")
     }
@@ -131,8 +130,12 @@ export default function FeedPost(
                     
                     {/* </View>} */}
                 {/* <RNUrlPreview onLoad={() => setPreviewLoaded(true)} text={postContent.linkInPost} title={false} description={false} descriptionNumberOfLines={0} containerStyle={{}} imageStyle={styleSelected.feedPostContentUrlPreviewImage} descriptionStyle={{fontSize:0}}  /> */}
-                <Image source={{uri: postContent.content.path ? postContent.content.path : null}} onLoad={() => setPreviewLoaded(true)} style={styleSelected.feedPostContentUrlPreviewImage} />
-
+                {(postContent.content.type === "img" || postContent.content.type === "image") && 
+                    <Image source={{uri: postContent.content.path ? postContent.content.path : null}} onLoad={() => setPreviewLoaded(true)} style={styleSelected.feedPostContentUrlPreviewImage} />
+                }
+                {postContent.content.type === "video" && 
+                    <Video resizeMode={ResizeMode.CONTAIN} useNativeControls source={{uri: postContent.content.path ? postContent.content.path : null}} onLoad={() => setPreviewLoaded(true)} style={styleSelected.feedPostContentUrlPreviewImage} />
+                }
                 {JSON.stringify(postContent.link) !== "{}" && // postContent.link &&
                     <Text onPress={() => Linking.openURL(postContent.link)} style={styleSelected.feedPostContentUrl}>{postContent.link}</Text>
                 

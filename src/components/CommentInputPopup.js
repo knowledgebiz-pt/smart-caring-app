@@ -6,7 +6,7 @@ import PostInputTransparent from './PostInputTransparent'
 import { FontAwesome } from "@expo/vector-icons"
 
 
-export default function PostInputPopup({ 
+export default function CommentInputPopup({ 
     blurOnSubmit,
     hasBorder,
     borderColor,

@@ -148,7 +148,7 @@ const style = StyleSheet.create({
   
   logoLeftSide: {
     width: 150, 
-    height: 150, 
+    height: 110, 
     marginLeft: 20, 
     alignSelf: "flex-start"
   },
@@ -323,7 +323,7 @@ const style = StyleSheet.create({
     marginLeft: 150, 
     height: 50, 
     width: 50, 
-    marginBottom: 57
+    marginBottom: 15
   },
   avatarLeftSide: {
     alignSelf: "flex-start",
@@ -411,10 +411,11 @@ const style = StyleSheet.create({
     fontSize: 10, paddingRight:10
   },
   feedPostContentUrlPreviewImage: {
-    width:"100%",
-    height:140,
-    marginLeft:-15,
-    marginTop: 10
+    width: "92%",
+    height: 140,
+    marginLeft: 0,
+    marginTop: 10,
+    objectFit: "contain"
   },
   feedPostContentUrl: {
     fontSize: 10,
