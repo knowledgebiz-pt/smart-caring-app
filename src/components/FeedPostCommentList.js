@@ -50,9 +50,9 @@ export default function FeedPostCommentList( // IN PROGRESS
 
     return (<>        
             <TouchableOpacity style={styleSelected.feedPostContentSeeCommentsTouchableOpacity} onPress={() => {
-                if (postContent.comments && postContent.comments.length > 0) setModalVisible(true); 
+                if (comments && comments.length > 0) setModalVisible(true); 
                 }}>
-                    <Text style={styleSelected.feedPostContentSeeComments} >{ postContent.comments && postContent.comments.length ?  "See "+ postContent.comments.length + (postContent.comments.length === 1 ? " comment" : " comments") : "No comments"}</Text>
+                    <Text style={styleSelected.feedPostContentSeeComments} >{ comments && comments.length ?  "See "+ comments.length + (comments.length === 1 ? " comment" : " comments") : "No comments"}</Text>
                 </TouchableOpacity>
                 <Modal animationType='slide' transparent={true} visible={modalVisible}>
                     <Pressable style={styleSelected.modalCenteredView} onPress={(event) => event.target === event.currentTarget && setModalVisible(false)}>

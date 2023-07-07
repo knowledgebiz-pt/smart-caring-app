@@ -6,8 +6,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome } from "@expo/vector-icons"
 import LottieView from 'lottie-react-native';
 import FeedPostCommentList from "./FeedPostCommentList";
-import { NewsService } from "smart-caring-client/client";
+import { NewsService, CommentService } from "smart-caring-client/client";
 import { Video, ResizeMode } from 'expo-av';
+import CommentInputPopup from "./CommentInputPopup";
 
 /***
  * @param buttonColor: string - Determine the color of the component's buttons and their borders.
@@ -33,6 +34,8 @@ export default function FeedPost(
     const [hasLike, setLike] = useState(false)
     const [hasFavorite, setFavorite] = useState(false)
     const [previewLoaded, setPreviewLoaded] = useState(false)
+    const [modalVisible, setModalVisible] = useState(false)
+    const [comments, setComments] = useState([])
 
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
@@ -70,6 +73,7 @@ export default function FeedPost(
                 setLike(true)
             }
         }
+        retrieveComments()
     }, [])
 
     const likeButton = (giveLike) => {
@@ -106,8 +110,17 @@ export default function FeedPost(
         }
     }
 
+    const retrieveComments = () => {
+        CommentService.getCommentsByIdNews(postContent._id.$oid).then(res => {
+            setComments(res.data)
+        }).catch(e => {
+            console.error("e: ", e)
+        })
+    }
+
     return (<>
         <View style={[feedStyle, styleSelected.feedPostContainer]}>
+            <CommentInputPopup onSubmitEditing={() => retrieveComments()} newsId={postContent._id.$oid} userId={user._id.$oid} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"} modalVisible={modalVisible} closeModal={() => setModalVisible(false)} />
             <View style={{flexDirection: "row"}}>
                 <Image
                     style={[styleSelected.avatar, styleSelected.avatarLeftSide, {marginTop: 10}]}
@@ -155,13 +168,13 @@ export default function FeedPost(
                                 color={buttonColor}/><Text style={[styleSelected.feedPostButtonsText, {color: buttonColor}]}> Like</Text>
                         </TouchableOpacity>                    
                     }
-                    <TouchableOpacity style={[styleSelected.smallButtonPost, {borderColor: buttonColor, marginLeft:5}]}>
+                    <TouchableOpacity onPress={() => {setModalVisible(true)}} style={[styleSelected.smallButtonPost, {borderColor: buttonColor, marginLeft:5}]}>
                         <MaterialCommunityIcons name={'comment-outline'}
                         size={15}
                         color={buttonColor}/><Text style={[styleSelected.feedPostButtonsText, {color: buttonColor}]}> Comment</Text>
                     </TouchableOpacity>
                                         
-                    <FeedPostCommentList postContent={postContent} comments={postContent.comments} avatarPicture={""} modalVisible={true} userName={"tedte"}  comment={"text"} />
+                    <FeedPostCommentList postContent={postContent} comments={comments} avatarPicture={""} modalVisible={true} userName={"tedte"}  comment={"text"} />
                 </View>
             </View>
         </View>

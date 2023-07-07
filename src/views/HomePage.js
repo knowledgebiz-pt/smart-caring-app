@@ -13,6 +13,7 @@ import PostInputPopup from '../components/PostInputPopup'
 // import {  } from 'smart-caring-client/client'
 import SortAndFilterSelects from '../components/SortAndFilterSelects'
 import Toast from 'react-native-toast-message'
+import CommentInputPopup from '../components/CommentInputPopup'
 
 export default function HomePage({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(true)
@@ -23,6 +24,7 @@ export default function HomePage({ route, navigation }) {
     const [filterSelectOpen, setFilterSelectOpen] = useState(false)
     const [sortSelectValue, setSortSelectValue] = useState({label: "Recent", value: 'recent'})
     const [filterSelectValue, setFilterSelectValue] = useState(null)
+    const [modalVisible, setModalVisible] = useState(false)
 
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
@@ -272,6 +274,8 @@ export default function HomePage({ route, navigation }) {
             <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={colorScheme === 'light' ? 'dark-content' : 'light-content'} />
             <View style={{zIndex:9999, }}>
                 <PostInputPopup userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"} />
+                <CommentInputPopup modalVisible={modalVisible} closeModal={() => {setModalVisible(false)}}  blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"} />
+
             </View>
             <KeyboardAvoidingView
                 style={{ flex: 1 }}

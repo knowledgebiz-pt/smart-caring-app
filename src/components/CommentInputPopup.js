@@ -4,6 +4,7 @@ import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import PostInputTransparent from './PostInputTransparent'
 import { FontAwesome } from "@expo/vector-icons"
+import { NewsService, CommentService } from 'smart-caring-client/client'
 
 
 export default function CommentInputPopup({ 
@@ -13,9 +14,13 @@ export default function CommentInputPopup({
     placeholder,
     img,
     userId,
+    newsId,
+    modalVisible,
+    closeModal,
+    onSubmitEditing,
     event 
 }) {
-    const [modalVisible, setModalVisible] = useState(false)
+    // const [modalVisible, setModalVisible] = useState(false)
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json') 
@@ -26,12 +31,11 @@ export default function CommentInputPopup({
 
     return (
         <View style={{paddingTop: 10}}>
-            <TouchableOpacity style={styleSelected.modalOpenButton} onPress={() => {setModalVisible(true)}}><FontAwesome color={colors.BaseSlot1} size={40} name='plus' /></TouchableOpacity>
             <View style={styleSelected.modalCenteredView}>
                 <Modal animationType='fade' transparent={true} visible={modalVisible}>
-                    <Pressable style={styleSelected.modalCenteredView} onPress={(event) => event.target === event.currentTarget && setModalVisible(false)}>
+                    <Pressable style={styleSelected.modalCenteredView} onPress={closeModal}>
                         <View style={styleSelected.modalView}>
-                            <PostInputTransparent userId={userId} blurOnSubmit={blurOnSubmit} img={img} hasBorder={hasBorder} borderColor={borderColor} placeholder={placeholder}/>
+                            <PostInputTransparent onSubmitEditing={onSubmitEditing} showButtons={false} userId={userId} newsId={newsId} blurOnSubmit={blurOnSubmit} img={img} hasBorder={hasBorder} borderColor={borderColor} placeholder={placeholder}/>
                         </View>
                     </Pressable>
                 </Modal>

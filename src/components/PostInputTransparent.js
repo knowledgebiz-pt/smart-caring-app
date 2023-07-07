@@ -5,7 +5,7 @@ import styleDark from '../../style/StyleDark'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome } from "@expo/vector-icons"
 import * as ImagePicker from "expo-image-picker"
-import { NewsService } from "smart-caring-client/client";
+import { CommentService, NewsService } from "smart-caring-client/client";
 import * as DocumentPicker from 'expo-document-picker'
 import * as FileSystem from 'expo-file-system'
 
@@ -40,6 +40,8 @@ export default function PostInputTransparent(
         value,
         img,
         userId,
+        newsId,
+        showButtons=true,
         event
     }) {
 
@@ -98,27 +100,41 @@ export default function PostInputTransparent(
         // alert(textValue)
         console.log(textValue)
         console.log(userId)
-        let newsObject = {
-            text: textValue,
-            user_id: userId,
-            link: "",
-            content: {type:"", path: ""}
-        }
-        if (postImage) {
-            newsObject["content"] = {
-                type: postImage.type,
-                path: postImage.file
+        if (!newsId) { // Create new feed post
+            let newsObject = {
+                text: textValue,
+                user_id: userId,
+                link: "",
+                content: {type:"", path: ""}
             }
+            if (postImage) {
+                newsObject["content"] = {
+                    type: postImage.type,
+                    path: postImage.file
+                }
+            }
+            NewsService.createNews(newsObject).then(res => {
+                console.warn(res)
+                onSubmitEditing()
+            }).catch(e => {
+                console.error("e: ", e)
+            })
         }
-        console.log(newsObject)
-        NewsService.createNews(newsObject).then(res => {
-            console.warn(res)
-            onSubmitEditing()
-        }).catch(e => {
-            console.error("e: ", e)
-        })
+        else { // Create comment on feed post
+            let commentObject = {
+                user_id: userId,
+                news_id: newsId,
+                text: textValue,
+                link: ""
+            }
+            CommentService.createComment(commentObject).then(res => {
+                console.warn(res)
+                onSubmitEditing()
+            }).catch(e => {
+                console.error("e: ", e)
+            })
+        }
     }
-
     return (<>
         <View style={{flexDirection: "row"}}>
             <Image
@@ -142,7 +158,7 @@ export default function PostInputTransparent(
                 numberOfLines={6}
                 scrollEnabled={true}
             />
-            <View style={{flexDirection:"column"}}>
+            {showButtons && <View style={{flexDirection:"column"}}>
                 <TouchableOpacity onPress={pickImage} style={[styleSelected.smallButtonPost, {borderColor: borderColor}]}>
                     <MaterialCommunityIcons style={{paddingRight:2}} name={'plus'}
                     size={15}
@@ -171,7 +187,7 @@ export default function PostInputTransparent(
                     color={borderColor}/>
                 </TouchableOpacity>
                 
-            </View>
+            </View>}
         </View>
         <View style={{width: "10%", marginLeft: 264, marginTop:-35}}>
             <TouchableOpacity onPress={() => {createNews(), onSubmitEditing}} style={{borderWidth: 0, borderRadius: 10,borderTopLeftRadius:0, borderTopRightRadius:0, borderColor:borderColor, flexDirection:"row", height: 30, paddingLeft: 10, paddingRight: 10, paddingTop: 5, paddingBottom: 5, marginTop: 5, }}>                    
