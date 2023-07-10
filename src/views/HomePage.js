@@ -177,7 +177,7 @@ export default function HomePage({ route, navigation }) {
                 return post.user.visibility === false
             })
         }
-        // setDisplayFeedPosts(newArray)
+        setDisplayFeedPosts(newArray)
         if (sortSelectValue.value === "recent") {
             let array = [...newArray].sort((a, b) => {
                 return new Date(b.date) - new Date(a.date)
