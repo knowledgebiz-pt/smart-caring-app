@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, Image, View, TouchableOpacity, Touchable, TextInput, useColorScheme } from "react-native";
+import { Text, Image, View, TouchableOpacity, Touchable, TextInput, useColorScheme, Alert } from "react-native";
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -9,6 +9,7 @@ import { CommentService, NewsService } from "smart-caring-client/client";
 import * as DocumentPicker from 'expo-document-picker'
 import * as FileSystem from 'expo-file-system'
 import Toast from 'react-native-toast-message'
+import DialogInput from 'react-native-dialog-input';
 
 /***
  * @param placeholder: string - Text that will appear as placeholder
@@ -49,6 +50,8 @@ export default function PostInputTransparent(
     const [textValue, setTextValue] = useState("")
     const [image, setImage] = useState(null)
     const [postImage, setPostImage] = useState(null)
+    const [urlInputVisible, setUrlInputVisible] = useState(false)
+    const [linkText, setLinkText] = useState("")
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -110,7 +113,7 @@ export default function PostInputTransparent(
             let newsObject = {
                 text: textValue,
                 user_id: userId,
-                link: "",
+                link: linkText,
                 content: {type:"", path: ""}
             }
             if (postImage) {
@@ -145,7 +148,29 @@ export default function PostInputTransparent(
             })
         }
     }
+
+    const checkLinkValidity = (url) => {
+        setLinkText(url)
+        setUrlInputVisible(false)
+        if (url === "") {
+            showToast("No URL has been set.", "info")
+        }
+        else if (!url.includes("http://") && !url.includes("https://")) {            
+            showToast("URL missing \"http://\" or \"https://\"", "info")
+        }
+        else {
+            showToast("URL has been set!", "success")
+        }
+    }
+
     return (<>
+            <DialogInput isDialogVisible={urlInputVisible}
+                title={"URL Link"}
+                message={"Please insert the whole url to the webpage you wish to link to in your post, including either \"https://\" or \"http://\" :"}
+                hintInput ={"https://www.smartcaring.pt"}
+                submitInput={ (inputText) => {checkLinkValidity(inputText)} }
+                closeDialog={ () => {setUrlInputVisible(false)}}>
+            </DialogInput>
         <View style={{flexDirection: "row"}}>
             <Image
                 style={[styleSelected.avatar, styleSelected.avatarLeftSide]}
@@ -188,7 +213,7 @@ export default function PostInputTransparent(
                     size={15}
                     color={borderColor}/>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styleSelected.smallButtonPost, {marginTop: 5, borderColor: borderColor}]}>
+                <TouchableOpacity onPress={ () => {setUrlInputVisible(true)}} style={[styleSelected.smallButtonPost, {marginTop: 5, borderColor: borderColor}]}>
                     <MaterialCommunityIcons style={{paddingRight:2}} name={'plus'}
                     size={15}
                     color={borderColor}/>

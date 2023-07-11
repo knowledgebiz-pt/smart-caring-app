@@ -177,8 +177,8 @@ export default function FeedPost(
                 {postContent.content.type === "video" && 
                     <Video resizeMode={ResizeMode.CONTAIN} useNativeControls source={{uri: postContent.content.path ? postContent.content.path : null}} onLoad={() => setPreviewLoaded(true)} style={styleSelected.feedPostContentUrlPreviewImage} />
                 }
-                {JSON.stringify(postContent.link) !== "{}" && // postContent.link &&
-                    <Text onPress={() => Linking.openURL(postContent.link)} style={styleSelected.feedPostContentUrl}>{postContent.link}</Text>
+                {postContent.link !== "" && // postContent.link &&
+                    <Text onPress={() => {Linking.openURL(postContent.link)}} style={styleSelected.feedPostContentUrl}>{postContent.link}</Text>
                 
                 }
                 <View style={styleSelected.feedPostButtonsView}>
