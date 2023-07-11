@@ -87,6 +87,12 @@ export default function CreateAccountWithGmail({ route, navigation }) {
             <Loader />
         );
     }
+
+    const showToast = (msg, type="success") => {
+        // Types: success, error, info
+        Toast.show({type: type, text1: msg, position: 'bottom'})
+    }
+
     return (
         <SafeAreaView style={[styleSelected.backgroundPrimary, styleSelected.AndroidSafeArea, { flex: 1 }]} onLayout={onLayoutRootView}>
             <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={colorScheme === 'light' ? 'dark-content' : 'light-content'} />
@@ -161,6 +167,7 @@ export default function CreateAccountWithGmail({ route, navigation }) {
                             }).catch((e) => {
                                 console.error(e)
                                 setIsLoading(false)
+                                showToast("Error creating account.", "error")
                             })
                         }} title={"Let's go!"} />
                     </View>

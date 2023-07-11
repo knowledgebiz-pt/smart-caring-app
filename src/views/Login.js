@@ -82,6 +82,11 @@ export default function Login({ route, navigation }) {
             <Loader />
         );
     }
+    const showToast = (msg, type="success") => {
+        // Types: success, error, info
+        Toast.show({type: type, text1: msg, position: 'bottom'})
+    }
+
     return (
         <SafeAreaView style={[styleSelected.backgroundPrimary, { flex: 1 }]} onLayout={onLayoutRootView}>
             <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={colorScheme === 'light' ? 'dark-content' : 'light-content'} />
@@ -131,6 +136,7 @@ export default function Login({ route, navigation }) {
                             }).catch((error) => {
                                 console.error(error)
                                 setIsLoading(true)
+                                showToast("Error: failed to login.", "error")
                             })
                         }} />
                         <View style={{ flexDirection: "row", height: 50, justifyContent: "center", alignItems: "center" }}>

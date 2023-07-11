@@ -22,7 +22,7 @@ export default function FeedPostComment( // IN PROGRESS
         avatarPicture,
         userName,
         comment,
-        feedRole="health professional",
+        feedRole="",
         event
     }) {
 

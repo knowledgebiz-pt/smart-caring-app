@@ -76,12 +76,18 @@ export default function FeedPost(
         retrieveComments()
     }, [])
 
+    const showToast = (msg, type="success") => {
+        // Types: success, error, info
+        Toast.show({type: type, text1: msg, position: 'bottom'})
+    }
+
     const likeButton = (giveLike) => {
         if (giveLike) {
             NewsService.addLikeToNewsArticle(postContent._id.$oid, user._id.$oid).then(res => {
                 console.log(res)
             }).catch(e => {
                 console.error("e: ", e)
+                showToast("An error has occurred when trying to like a post.", "error")
             })
         }
         else {
@@ -89,6 +95,7 @@ export default function FeedPost(
                 console.log(res)
             }).catch(e => {
                 console.error("e: ", e)
+                showToast("An error has occurred when trying to remove a like from a post.", "error")
             })
         }
     }
@@ -99,6 +106,7 @@ export default function FeedPost(
                 console.log(res)
             }).catch(e => {
                 console.error("e: ", e)
+                showToast("An error has occurred when trying to favorite a post.", "error")
             })
         }
         else {
@@ -106,6 +114,7 @@ export default function FeedPost(
                 console.log(res)
             }).catch(e => {
                 console.error("e: ", e)
+                showToast("An error has occurred when trying to unfavorite a post.", "error")
             })
         }
     }
@@ -114,7 +123,10 @@ export default function FeedPost(
         CommentService.getCommentsByIdNews(postContent._id.$oid).then(res => {
             setComments(res.data)
         }).catch(e => {
-            console.error("e: ", e)
+            if (!e.includes("Not Found")) {
+                console.error("e: ", e)
+                showToast("An error has occurred when trying to fetch the comments from a post.", "error")
+            }
         })
     }
 

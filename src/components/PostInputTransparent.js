@@ -96,6 +96,11 @@ export default function PostInputTransparent(
         setImage(img)
     }, [])
 
+    const showToast = (msg, type="success") => {
+        // Types: success, error, info
+        Toast.show({type: type, text1: msg, position: 'bottom'})
+    }
+
     const createNews = () => {
         // alert(textValue)
         console.log(textValue)
@@ -116,8 +121,10 @@ export default function PostInputTransparent(
             NewsService.createNews(newsObject).then(res => {
                 console.warn(res)
                 onSubmitEditing()
+                showToast("You have created a new post!", "success")
             }).catch(e => {
                 console.error("e: ", e)
+                showToast("Error creating post.", "error")
             })
         }
         else { // Create comment on feed post
@@ -130,8 +137,10 @@ export default function PostInputTransparent(
             CommentService.createComment(commentObject).then(res => {
                 console.warn(res)
                 onSubmitEditing()
+                showToast("Comment has been created.", "success")
             }).catch(e => {
                 console.error("e: ", e)
+                showToast("Error commenting on post.", "error")
             })
         }
     }
