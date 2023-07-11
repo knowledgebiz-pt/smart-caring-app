@@ -10,6 +10,7 @@ import { NewsService, CommentService } from "smart-caring-client/client";
 import { Video, ResizeMode } from 'expo-av';
 import CommentInputPopup from "./CommentInputPopup";
 import Loader from "./Loader";
+import Toast from 'react-native-toast-message'
 
 /***
  * @param buttonColor: string - Determine the color of the component's buttons and their borders.
