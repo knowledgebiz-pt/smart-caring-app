@@ -8,6 +8,7 @@ import * as ImagePicker from "expo-image-picker"
 import { CommentService, NewsService } from "smart-caring-client/client";
 import * as DocumentPicker from 'expo-document-picker'
 import * as FileSystem from 'expo-file-system'
+import Toast from 'react-native-toast-message'
 
 /***
  * @param placeholder: string - Text that will appear as placeholder

@@ -9,6 +9,7 @@ import FeedPostCommentList from "./FeedPostCommentList";
 import { NewsService, CommentService } from "smart-caring-client/client";
 import { Video, ResizeMode } from 'expo-av';
 import CommentInputPopup from "./CommentInputPopup";
+import Loader from "./Loader";
 
 /***
  * @param buttonColor: string - Determine the color of the component's buttons and their borders.
@@ -29,6 +30,7 @@ export default function FeedPost(
         event
     }) {
 
+    const [isLoading, setIsLoading] = useState(false)
     const [image, setImage] = useState(null)
     const [favoriteIcon, setFavoriteIcon] = useState({name: "heart-o", color: "#030849"})
     const [hasLike, setLike] = useState(false)
@@ -120,14 +122,27 @@ export default function FeedPost(
     }
 
     const retrieveComments = () => {
+        setIsLoading(true)
         CommentService.getCommentsByIdNews(postContent._id.$oid).then(res => {
             setComments(res.data)
+            console.warn(1)
+            setIsLoading(false)
         }).catch(e => {
             if (!e.includes("Not Found")) {
                 console.error("e: ", e)
                 showToast("An error has occurred when trying to fetch the comments from a post.", "error")
             }
+            setIsLoading(false)
+            console.warn(2)
         })
+        console.warn(3)
+        setIsLoading(false)
+    }
+
+    if (isLoading) {
+        return (
+            <Loader />
+        );
     }
 
     return (<>

@@ -10,6 +10,7 @@ import ButtonPrimary from '../components/ButtonPrimary'
 import { UserService } from "smart-caring-client/client"
 import * as LocalAuthentication from "expo-local-authentication";
 import * as Google from "expo-auth-session/providers/google";
+import Toast from 'react-native-toast-message'
 
 export default function Login({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(true)
