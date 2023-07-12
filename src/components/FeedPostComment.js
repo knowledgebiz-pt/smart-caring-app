@@ -22,6 +22,7 @@ export default function FeedPostComment( // IN PROGRESS
         avatarPicture,
         userName,
         comment,
+        feedRole="health professional",
         event
     }) {
 
@@ -33,22 +34,22 @@ export default function FeedPostComment( // IN PROGRESS
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
     let feedStyle = {
-        backgroundColor: "#5B5E8910" // in case of no role
+        backgroundColor: "#5B5E8910", // in case of no role
     }
-    // let feedIcon = null
+    let feedIcon = null
     
-    // if (feedRole.toLowerCase() === "caregiver") {
-    //     feedStyle["backgroundColor"] = "rgba(86, 178, 136, 0.1)"
-    //     feedIcon = require("../../assets/images/Caregiver.png")
-    // }
-    // else if (feedRole.toLowerCase() === "health professional") {
-    //     feedStyle["backgroundColor"] = "rgba(28, 163, 252, 0.1)"
-    //     feedIcon = require("../../assets/images/Healthprofessional.png")
-    // }
-    // else if (feedRole.toLowerCase() === "patient") {
-    //     feedStyle["backgroundColor"] = "rgba(3, 8, 73, 0.1)"
-    //     feedIcon = require("../../assets/images/Patient.png")
-    // }
+    if (feedRole.toLowerCase() === "caregiver") {
+        feedStyle["backgroundColor"] = "rgba(86, 178, 136, 0.1)"
+        feedIcon = require("../../assets/images/Caregiver.png")
+    }
+    else if (feedRole.toLowerCase() === "health professional") {
+        feedStyle["backgroundColor"] = "rgba(28, 163, 252, 0.1)"
+        feedIcon = require("../../assets/images/Healthprofessional.png")
+    }
+    else if (feedRole.toLowerCase() === "patient") {
+        feedStyle["backgroundColor"] = "rgba(3, 8, 73, 0.1)"
+        feedIcon = require("../../assets/images/Patient.png")
+    }
 
     useEffect(() => {
         // setImage(img)
@@ -61,7 +62,7 @@ export default function FeedPostComment( // IN PROGRESS
     }, [])
 
     return (<>
-        <View style={[feedStyle, styleSelected.feedPostContainer, {position:"absolute", backgroundColor:"white", zIndex:99999999}]}>
+        <View style={[feedStyle, styleSelected.feedPostContainer, { zIndex:99999999}]}>
             <View style={{flexDirection: "row"}}>
                 <Image
                     style={[styleSelected.avatar, styleSelected.avatarLeftSide, {marginTop: 10}]}

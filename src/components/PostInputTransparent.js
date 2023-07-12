@@ -5,6 +5,7 @@ import styleDark from '../../style/StyleDark'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome } from "@expo/vector-icons"
 import * as ImagePicker from "expo-image-picker"
+import { NewsService } from "smart-caring-client/client";
 
 /***
  * @param placeholder: string - Text that will appear as placeholder
@@ -36,6 +37,7 @@ export default function PostInputTransparent(
         onChangeText,
         value,
         img,
+        userId,
         event
     }) {
 
@@ -74,6 +76,22 @@ export default function PostInputTransparent(
     useEffect(() => {
         setImage(img)
     }, [])
+
+    const createNews = () => {
+        // alert(textValue)
+        console.log(textValue)
+        console.log(userId)
+        NewsService.createNews({
+            text: textValue,
+            content: "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541",
+            user_id: userId,
+            date: "2023-06-30T16:51:59.151Z"
+        }).then(res => {
+            console.warn(res)
+        }).catch(e => {
+            console.error("e: ", e)
+        })
+    }
 
     return (<>
         <View style={{flexDirection: "row"}}>
@@ -127,7 +145,7 @@ export default function PostInputTransparent(
             </View>
         </View>
         <View style={{width: "10%", marginLeft: 264, marginTop:-35}}>
-            <TouchableOpacity style={{borderWidth: 0, borderRadius: 10,borderTopLeftRadius:0, borderTopRightRadius:0, borderColor:borderColor, flexDirection:"row", height: 30, paddingLeft: 10, paddingRight: 10, paddingTop: 5, paddingBottom: 5, marginTop: 5, }}>                    
+            <TouchableOpacity onPress={() => createNews()} style={{borderWidth: 0, borderRadius: 10,borderTopLeftRadius:0, borderTopRightRadius:0, borderColor:borderColor, flexDirection:"row", height: 30, paddingLeft: 10, paddingRight: 10, paddingTop: 5, paddingBottom: 5, marginTop: 5, }}>                    
                 <FontAwesome name={'send-o'}
                 size={17}
                 color={colors.BaseSlot2}/>

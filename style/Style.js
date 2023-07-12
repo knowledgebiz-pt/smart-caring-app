@@ -343,8 +343,8 @@ const style = StyleSheet.create({
     width: 29,
     borderWidth: 2,
     borderRadius: 30,
-    paddingTop: 3,
-    paddingLeft: 3,
+    paddingTop: 4.5,
+    paddingLeft: 4.5,
     marginTop: 75,
     marginLeft: -22,
     backgroundColor: colors.BaseSlot1,
@@ -441,7 +441,7 @@ const style = StyleSheet.create({
     flex: 1,
     textAlign: "right",
     alignSelf:"center",
-    marginRight:20
+    marginRight:26
   },
   feedPostContentSeeComments: {
     textAlign: "right",
@@ -462,17 +462,28 @@ const style = StyleSheet.create({
     paddingBottom: 35,
   },
   modalOpenButton: {
-      position:'absolute', 
-      marginLeft: 346, 
-      marginTop: -65, 
-      backgroundColor: colors.BaseSlot4, 
-      width: 80, 
-      borderBottomLeftRadius:30, 
-      paddingRight:30, 
-      paddingTop:10, 
-      paddingBottom:5, 
-      borderTopLeftRadius:30, 
-      alignItems:"center" 
+    position:'absolute', 
+    marginLeft: 346, 
+    marginTop: 725, 
+    backgroundColor: colors.BaseSlot4, 
+    width: 80, 
+    borderBottomLeftRadius:30, 
+    paddingRight:30, 
+    paddingTop:10, 
+    paddingBottom:5, 
+    borderTopLeftRadius:30, 
+    alignItems:"center" 
+  },
+  feedCommentModalView: {
+    flex: 1,
+    backgroundColor: 'white',
+    verticalAlign: "bottom",
+    borderBottomRightRadius: 0,
+    borderBottomLeftRadius: 0,
+    height:"100%",
+    marginTop: 200,
+    borderRadius: 20,
+    paddingBottom: 35,
   }
 });
 

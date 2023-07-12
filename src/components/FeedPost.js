@@ -8,6 +8,7 @@ import RNUrlPreview from 'react-native-url-preview';
 import LottieView from 'lottie-react-native';
 import FeedPostCommentList from "./FeedPostCommentList";
 import FeedPostComment from "./FeedPostComment";
+import { LikesService } from "smart-caring-client/client";
 
 /***
  * @param buttonColor: string - Determine the color of the component's buttons and their borders.
@@ -22,16 +23,18 @@ export default function FeedPost(
     {
         buttonColor,
         img,
-        feedRole,
+        feedRole="",
         postContent,
+        user,
         event
     }) {
 
     const [image, setImage] = useState(null)
     const [favoriteIcon, setFavoriteIcon] = useState({name: "heart-o", color: "#030849"})
     const [hasLike, setLike] = useState(false)
+    const [hasFavorite, setFavorite] = useState(false)
     const [previewLoaded, setPreviewLoaded] = useState(false)
-    const [commentModal, setCommentModal] = useState(false)
+
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
@@ -55,22 +58,46 @@ export default function FeedPost(
 
     useEffect(() => {
         setImage(img)
-        if (postContent.isFavorite) {
-            setFavoriteIcon({name: "heart", color: "#CB1000"})        
+        if (postContent.favorites && postContent.favorites.length) {
+            let foundId = postContent.favorites.find((id) => {return id === user._id.$oid})
+            if (foundId) {
+                setFavoriteIcon({name: "heart", color: "#CB1000"})
+                setFavorite(true)
+            }
         }
-        if (postContent.hasLike) {
-            setLike(true)
+        if (postContent.likes && postContent.likes.length) {
+            let foundId = postContent.likes.find((id) => {return id === user._id.$oid})
+            if (foundId) {
+                setLike(true)
+            }
         }
     }, [])
+
+    const likeButton = (giveLike) => {
+        if (giveLike) {
+            console.log(giveLike)
+            console.log(user._id.$oid)
+            console.log(postContent._id.$oid)
+            // LikesService.createLike({
+            //     is_like: giveLike,
+            //     user_id: user._id.$oid,
+            //     news_id: postContent._id.$oid
+            // }).then(res => {
+            //     console.warn(res)
+            // }).catch(e => {
+            //     console.error("e: ", e)
+            // })
+        }
+    }
 
     return (<>
         <View style={[feedStyle, styleSelected.feedPostContainer]}>
             <View style={{flexDirection: "row"}}>
                 <Image
                     style={[styleSelected.avatar, styleSelected.avatarLeftSide, {marginTop: 10}]}
-                    source={{uri: postContent.avatarPicture ? postContent.avatarPicture : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"}}
+                    source={{uri: postContent.user.picture ? postContent.user.picture : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"}}
                 /> 
-                <Text style={styleSelected.feedPostUserName}>{postContent.userName} <Image style={styleSelected.feedPostRoleIcon} source={feedIcon}/></Text>
+                <Text style={styleSelected.feedPostUserName}>{postContent.user.name} <Image style={styleSelected.feedPostRoleIcon} source={feedIcon}/></Text>
                 <TouchableOpacity style={styleSelected.feedPostHeartIconPosition} onPress={() => {
                     if (favoriteIcon.name === "heart-o") setFavoriteIcon({name: "heart", color: "#CB1000"})
                     else setFavoriteIcon({name: "heart-o", color: "#030849"})
@@ -80,12 +107,17 @@ export default function FeedPost(
             </View>
             <View style={styleSelected.feedPostContentView}>
                 <Text style={styleSelected.feedPostContentText}>{postContent.text}</Text>
-                { !previewLoaded && <View style= {{height:147}}>
-                    <LottieView style={{ marginRight: 30 }} resizeMode="contain" autoPlay={true} source={require('../../assets/json/loading-heart.json')} />
+                {/* { !previewLoaded && <View style= {{height:147}}> */}
+                    {/* <LottieView style={{ marginRight: 30 }} resizeMode="contain" autoPlay={true} source={require('../../assets/json/loading-heart.json')} /> */}
                     
-                    </View>}
-                <RNUrlPreview onLoad={() => setPreviewLoaded(true)} text={postContent.linkInPost} title={false} description={false} descriptionNumberOfLines={0} containerStyle={{}} imageStyle={styleSelected.feedPostContentUrlPreviewImage} descriptionStyle={{fontSize:0}}  />
-                <Text onPress={() => Linking.openURL(postContent.linkInPost)} style={styleSelected.feedPostContentUrl}>{postContent.linkInPost}</Text>
+                    {/* </View>} */}
+                {/* <RNUrlPreview onLoad={() => setPreviewLoaded(true)} text={postContent.linkInPost} title={false} description={false} descriptionNumberOfLines={0} containerStyle={{}} imageStyle={styleSelected.feedPostContentUrlPreviewImage} descriptionStyle={{fontSize:0}}  /> */}
+                <Image source={{uri: postContent.content.path ? postContent.content.path : null}} onLoad={() => setPreviewLoaded(true)} style={styleSelected.feedPostContentUrlPreviewImage} />
+
+                {JSON.stringify(postContent.link) !== "{}" && // postContent.link &&
+                    <Text onPress={() => Linking.openURL(postContent.link)} style={styleSelected.feedPostContentUrl}>{postContent.link}</Text>
+                
+                }
                 <View style={styleSelected.feedPostButtonsView}>
 
                     { hasLike ?
@@ -95,7 +127,7 @@ export default function FeedPost(
                                 color={"#56B288"}/><Text style={[styleSelected.feedPostButtonsText, {color: buttonColor}]}> Like</Text>
                         </TouchableOpacity> :
                         
-                        <TouchableOpacity onPress={() => setLike(true)} style={[styleSelected.smallButtonPost, {borderColor: buttonColor}]}>
+                        <TouchableOpacity onPress={() => {setLike(true); likeButton(true)}} style={[styleSelected.smallButtonPost, {borderColor: buttonColor}]}>
                             <MaterialCommunityIcons  name={'thumb-up-outline'}
                                 size={15}
                                 color={buttonColor}/><Text style={[styleSelected.feedPostButtonsText, {color: buttonColor}]}> Like</Text>
@@ -106,12 +138,8 @@ export default function FeedPost(
                         size={15}
                         color={buttonColor}/><Text style={[styleSelected.feedPostButtonsText, {color: buttonColor}]}> Comment</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styleSelected.feedPostContentSeeCommentsTouchableOpacity} onPress={() => {(setCommentModal(true)); }}>
-                        <Text style={styleSelected.feedPostContentSeeComments} >{ postContent.comments.length ?  "See "+ postContent.comments.length + (postContent.comments.length === 1 ? " comment" : " comments") : "No comments"}</Text>
-                    </TouchableOpacity>
-                    {/* <View style={{position: "absolute", width: 500, height: 900, marginLeft: -100, marginTop: -200}}> */}
-                    {/* {commentModal && <FeedPostComment avatarPicture={""} userName={"tedte"}  comment={"text"} /> } */}
-                    {/* </View> */}
+                                        
+                    <FeedPostCommentList postContent={postContent} comments={postContent.comments} avatarPicture={""} modalVisible={true} userName={"tedte"}  comment={"text"} />
                 </View>
             </View>
         </View>

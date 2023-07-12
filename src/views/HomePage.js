@@ -5,11 +5,13 @@ import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
 import Loader from '../components/Loader'
 import HeaderLogoAndProfileImage from '../components/HeaderLogoAndProfileImage'
-import { UserService } from "smart-caring-client/client"
+import { UserService, NewsService, OpenAPI } from "smart-caring-client/client"
 import PostInputTransparent from '../components/PostInputTransparent'
 import SelectTransparent from '../components/SelectTransparent'
 import FeedPost from '../components/FeedPost'
 import PostInputPopup from '../components/PostInputPopup'
+// import {  } from 'smart-caring-client/client'
+import SortAndFilterSelects from '../components/SortAndFilterSelects'
 
 export default function HomePage({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(true)
@@ -20,9 +22,6 @@ export default function HomePage({ route, navigation }) {
     const [filterSelectOpen, setFilterSelectOpen] = useState(false)
     const [sortSelectValue, setSortSelectValue] = useState({label: "Recent"})
     const [filterSelectValue, setFilterSelectValue] = useState(null)
-    
-    const sortRef = useRef()
-    const filterRef = useRef()
 
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
@@ -132,11 +131,32 @@ export default function HomePage({ route, navigation }) {
         },
     ]
 
+    const [feedPosts, setFeedPosts] = useState([])
+
+    const [sortItems, setSortItems] = useState([
+        {label: 'Recent', value: 'recent'},
+        {label: 'Old', value: 'old'}
+    ])
+
+    const [filterItems, setFilterItems] = useState([
+        {label: 'Caregiver', value: 'caregiver'},
+        {label: 'Patient', value: 'patient'}
+    ])
+
     useEffect(() => {
         UserService.getUserDataByIdUser("Ruben@teste.com", "Teste").then(res => {
             setUser(res.data)
+            OpenAPI.TOKEN = res.token.access_token
+            // console.log(res.data._id.$oid)
             setName(res.data.name)
-            setIsLoading(false)
+            NewsService.getNewsAllArticles().then(result => {
+                setFeedPosts(result.data)
+                console.warn(result.data[1])
+                setIsLoading(false)
+            }).catch(e => {
+                console.error("e: ",e)
+                setIsLoading(false)
+            })
         }).catch(e =>{ 
             console.error("e: ",e)
             setIsLoading(false)
@@ -166,22 +186,22 @@ export default function HomePage({ route, navigation }) {
                     <Text style={[styleSelected.textBold10DarkBlue, {marginTop: -15}]}>Hello, {name.split(" ")[0]}!</Text>
                 </View>
                 <View style={{marginTop: 20}}>
-                    <PostInputTransparent blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"}/>
+                    <PostInputTransparent userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"}/>
                 </View>
-                <View style={{borderBottomColor: "rgba(28, 163, 252, 0.1)", borderBottomWidth: 1, marginTop:10, width: "90%", alignSelf: "center"}}></View>
-                <View style={{flexDirection: "row", width: "90%", alignSelf: "center", paddingBottom:5, zIndex: 9999}}>
-                    <SelectTransparent ref={sortRef} otherRefs={[filterRef]} onPress={() => {setSortSelectOpen(!sortSelectOpen); setFilterSelectOpen(false)}} onSelectItem={(val) => {setSortSelectValue(val); setSortSelectOpen(false)}} selectedValue={sortSelectValue} open={sortSelectOpen} placeholder={"Sort by: "} hasBorder={1} displaySelectedOption={true} labelTextColor={colors.BaseSlot2} borderColor={colors.BaseSlot2} viewWidth="50%" width='61%' align='left' />
-                    <SelectTransparent ref={filterRef} otherRefs={[sortRef]} onPress={() => {setSortSelectOpen(false); setFilterSelectOpen(!filterSelectOpen)}} onSelectItem={(val) => {setFilterSelectValue(val); setFilterSelectOpen(false)}} selectedValue={filterSelectValue} open={filterSelectOpen} placeholder={"Filters"} displaySelectedOption={false} labelTextColor={colors.BaseSlot1} backgroundColor={colors.BaseSlot2} hasBorder={false} viewWidth="50%" width='39%' align='right'  />
-                </View>
+                <View style={{borderBottomColor: "rgba(28, 163, 252, 0.1)", borderBottomWidth: 1, marginTop:10, width: "90%", alignSelf: "center"}}></View> 
+                <SortAndFilterSelects sortItems={sortItems} filterItems={filterItems} onSelectSort={(val) => {setSortSelectValue(val)}} sortValue={sortSelectValue} onSelectFilter={(val) => setFilterSelectValue(val)} filterValue={filterSelectValue} />
                 </>}
         <View style={{flexDirection: "row", width: "90%", alignSelf: "center", marginTop: 20}}>
-            <FeedPost postContent={postContent} feedRole={postContent.userRole} buttonColor={"#030849"}/>
+            <FeedPost postContent={postContent} user={user} feedRole={postContent.user.user_type} buttonColor={"#030849"}/>
         </View>
         </>
     )
     return (
         <SafeAreaView style={[styleSelected.backgroundPrimary, { flex: 1 }]} onLayout={onLayoutRootView}>
             <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={colorScheme === 'light' ? 'dark-content' : 'light-content'} />
+            <View style={{zIndex:9999, }}>
+                <PostInputPopup userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"} />
+            </View>
             <KeyboardAvoidingView
                 style={{ flex: 1 }}
                 enabled={true}
@@ -194,15 +214,13 @@ export default function HomePage({ route, navigation }) {
 
                     </View>
                     <FlatList
-                        data={mockFeedPosts}
+                        data={feedPosts}
                         renderItem={({item, index}) => {return <Item postContent={item} index={index}/>}}
                         keyExtractor={item => item.id}
                         style={{zIndex:-5}}
                     />
-                    <View style={{zIndex:9999, }}>
-                        <PostInputPopup blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"} />
-                    </View>
                 </View>
+                
 
             </KeyboardAvoidingView>
         </SafeAreaView>

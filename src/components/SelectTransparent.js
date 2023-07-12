@@ -8,35 +8,32 @@ import { FontAwesome } from "@expo/vector-icons"
 
 /***
  * @param placeholder: string - Text that will appear as placeholder
- * @param inputMode: string - Determines type of keyboard to open. Defaults to "text". Valid values: 'decimal', 'email', 'none', 'numeric', 'search', 'tel', 'text', 'url'
- * @param secureTextEntry: boolean - If true, the text input obscures the text entered so that sensitive text like passwords stay secure. Defaults to false.
- * @param onSubmitEditing: function - Callback that is called when the text input's submit button is pressed.
- * @param returnKeyType: string - Determines how the return key looks. Valid values: 'default', 'go', 'google', 'join', 'next', 'route', 'search', 'send', 'yahoo', 'done', 'emergency-call'. Defaults to 'default'
- * @param inputRef: React.MutableRefObject<undefined> - Allows getting a ref to the component instance. Defaults to null
- * @param blurOnSubmit: boolean - If true, closes the keyboard on pressing the submit button. Defaults to true
- * @param onChangeText: function - Callback that is called when the text input's text changes. Changed text is passed as an argument to the callback handler.
  * @param hasBorder: boolean - Determine whether the component has a border around it. Defaults to false
  * @param borderColor: string - Determine the color of the component's border, in case it has one.
- * @param width: string or integer - Set element width. Defaults to "100%"
- * @param inputColor: string - Color of the input text
+ * @param backgroundColor: string - Determine the background color of the select element
+ * @param labelTextColor: string - Determine the color of the label text of the select element
  * @param fontSize: integer - Size of the input text font
+ * @param width: string or integer - Set element width. Defaults to "100%"
+ * @param viewWidth: string or integer - Set width of the view encompassing the element Defaults to "100%"
+ * @param displaySelectedOption: boolean - Sets whether or not the current selected option should be displayed. Defaults to false
+ * @param align: string - Sets element styles to align the element on the left of a view with flexDirection set to "row". Defaults to "left"
+ * @param marginLeft: integer, float or string - Sets marginLeft property of the element's view
+ * @param onPress: function - Callback triggered on pressing the select element
+ * @param open: boolean - Sets whether select element is open or not
+ * @param onSelectItem: function - Callback triggered on selecting an item from the dropdown list
+ * @param selectedvalue: object - Currently selected value of the select element
+ * @param ref: React.MutableRefObject<undefined> - Allows getting a ref to the component instance. Defaults to null
+ * @param items: array - List of options for the select element's dropdown list
  * @param event: any
  */
 
 export default function SelectTransparent(
     { 
-        placeholder, 
-        inputMode="text", 
-        secureTextEntry=false,
-        onSubmitEditing, 
-        returnKeyType="default", 
-        inputRef=null,
-        blurOnSubmit=true,
+        placeholder,
         hasBorder=false,
         borderColor,
         backgroundColor,
         labelTextColor,
-        onChangeText,
         fontSize=9,
         width = "100%",
         viewWidth = "100%",
@@ -48,14 +45,9 @@ export default function SelectTransparent(
         onSelectItem,
         selectedValue,
         ref,
-        otherRefs,
+        items,
         event 
     }) {
-
-    const [items, setItems] = useState([
-        {label: 'Recent', value: 'apple'},
-        {label: 'Old', value: 'banana'}
-    ]);
     
     // const [open, setOpen] = useState(false)
     // const [selectedValue, setSelectedValue] = useState({label: "Recent"})

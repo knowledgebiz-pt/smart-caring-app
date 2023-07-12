@@ -28,7 +28,7 @@ export default function HeaderLogoAndProfileImage({img}) {
             {/* Icon style is very specific for this case and will likely not work in different situations. */}
             <MaterialCommunityIcons
                 name={'menu'}
-                size={23}
+                size={20}
                 color={"#030849"}
                 style={styleSelected.menuCircleAvatarRightSide}
             />

@@ -12,6 +12,7 @@ export default function PostInputPopup({
     borderColor,
     placeholder,
     img,
+    userId,
     event 
 }) {
     const [modalVisible, setModalVisible] = useState(false)
@@ -30,7 +31,7 @@ export default function PostInputPopup({
                 <Modal animationType='fade' transparent={true} visible={modalVisible}>
                     <Pressable style={styleSelected.modalCenteredView} onPress={(event) => event.target === event.currentTarget && setModalVisible(false)}>
                         <View style={styleSelected.modalView}>
-                            <PostInputTransparent blurOnSubmit={blurOnSubmit} img={img} hasBorder={hasBorder} borderColor={borderColor} placeholder={placeholder}/>
+                            <PostInputTransparent userId={userId} blurOnSubmit={blurOnSubmit} img={img} hasBorder={hasBorder} borderColor={borderColor} placeholder={placeholder}/>
                         </View>
                     </Pressable>
                 </Modal>

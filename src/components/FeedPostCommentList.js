@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, Modal, Pressable, Image, View, Linking, TouchableOpacity, TextInput, useColorScheme, Touchable } from "react-native";
+import { Text, ScrollView, Modal, Pressable, Image, View, Linking, TouchableOpacity, TextInput, useColorScheme, Touchable } from "react-native";
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -24,6 +24,7 @@ export default function FeedPostCommentList( // IN PROGRESS
         img,
         feedRole,
         comments,
+        postContent,
         event
     }) {
 
@@ -36,51 +37,36 @@ export default function FeedPostCommentList( // IN PROGRESS
     let feedStyle = {
         backgroundColor: "#5B5E8910" // in case of no role
     }
-    // let feedIcon = null
-    
-    // if (feedRole.toLowerCase() === "caregiver") {
-    //     feedStyle["backgroundColor"] = "rgba(86, 178, 136, 0.1)"
-    //     feedIcon = require("../../assets/images/Caregiver.png")
-    // }
-    // else if (feedRole.toLowerCase() === "health professional") {
-    //     feedStyle["backgroundColor"] = "rgba(28, 163, 252, 0.1)"
-    //     feedIcon = require("../../assets/images/Healthprofessional.png")
-    // }
-    // else if (feedRole.toLowerCase() === "patient") {
-    //     feedStyle["backgroundColor"] = "rgba(3, 8, 73, 0.1)"
-    //     feedIcon = require("../../assets/images/Patient.png")
-    // }
 
     useEffect(() => {
         setImage(img)
-        console.info('absd')
-        // if (postContent.isFavorite) {
-        //     setFavoriteIcon({name: "heart", color: "#CB1000"})        
-        // }
-        // if (postContent.hasLike) {
-        //     setLike(true)
-        // }
     }, [])
 
     const Item = ({comment, index}) => (<>
-        <FeedPostComment comment={comment.text} img={comment.avatarPicture} userName={comment.userName}/>
+    <View style={{marginBottom:5}}>
+        <FeedPostComment comment={comment.text} avatarPicture={comment.avatarPicture} userName={comment.userName}/>
+    </View>
     </>)
 
-    return (<>
-    <View style={styleSelected.modalCenteredView}>
-                <Modal animationType='fade' transparent={true} visible={modalVisible}>
+    return (<>        
+            <TouchableOpacity style={styleSelected.feedPostContentSeeCommentsTouchableOpacity} onPress={() => {
+                if (postContent.comments && postContent.comments.length > 0) setModalVisible(true); 
+                }}>
+                    <Text style={styleSelected.feedPostContentSeeComments} >{ postContent.comments && postContent.comments.length ?  "See "+ postContent.comments.length + (postContent.comments.length === 1 ? " comment" : " comments") : "No comments"}</Text>
+                </TouchableOpacity>
+                <Modal animationType='slide' transparent={true} visible={modalVisible}>
                     <Pressable style={styleSelected.modalCenteredView} onPress={(event) => event.target === event.currentTarget && setModalVisible(false)}>
-                        <View style={styleSelected.modalView}>
-                        <FlatList
-                            data={comments}
-                            renderItem={({item, index}) => {return <Item postContent={item} index={index}/>}}
-                            keyExtractor={item => item.id}
-                        />
-                        </View>
+                        <ScrollView style={styleSelected.feedCommentModalView}>
+                            <View onStartShouldSetResponder={() => true}>
+                                <FlatList
+                                    data={comments}
+                                    renderItem={({item, index}) => {console.log(item);return <Item comment={item} index={index}/>}}
+                                    keyExtractor={item => item.id}
+                                />
+                            </View>
+                        </ScrollView>
                     </Pressable>
                 </Modal>
-            </View>
-        
         </>
     )
 }
