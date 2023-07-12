@@ -3,14 +3,10 @@ import { TouchableOpacity, SafeAreaView, KeyboardAvoidingView, StatusBar, Scroll
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
-import * as SplashScreen from 'expo-splash-screen';
 import * as ImagePicker from "expo-image-picker"
 import Loader from '../components/Loader'
 import ButtonOutlinePrimary from '../components/ButtonOutlinePrimary'
-import ButtonOutlineSuccess from '../components/ButtonOutlineSuccess'
-import InputTransparent from '../components/InputTransparent'
 import InputTransparentLabelAbove from '../components/InputTransparentLabelAbove'
-import InputDefault from '../components/InputDefault'
 import ButtonOutlineSuccessIcon from '../components/ButtonOutlineSuccessIcon'
 import ButtonOutlinePrimaryIcon from '../components/ButtonOutlinePrimaryIcon'
 import ButtonOutlineDarkBlueIcon from '../components/ButtonOutlineDarkBlueIcon'
@@ -21,6 +17,7 @@ import { UserService } from "smart-caring-client/client"
 import DatePickerTransparentLabelAbove from '../components/DatePickerTransparentLabelAbove'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import PhoneInputTransparentLabelAbove from '../components/PhoneInputTransparentLabelAbove'
+import Toast from 'react-native-toast-message'
 
 export default function CreateAccountWithGmail({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(false)
@@ -87,6 +84,12 @@ export default function CreateAccountWithGmail({ route, navigation }) {
             <Loader />
         );
     }
+
+    const showToast = (msg, type="success") => {
+        // Types: success, error, info
+        Toast.show({type: type, text1: msg, position: 'bottom'})
+    }
+
     return (
         <SafeAreaView style={[styleSelected.backgroundPrimary, styleSelected.AndroidSafeArea, { flex: 1 }]} onLayout={onLayoutRootView}>
             <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={colorScheme === 'light' ? 'dark-content' : 'light-content'} />
@@ -161,6 +164,7 @@ export default function CreateAccountWithGmail({ route, navigation }) {
                             }).catch((e) => {
                                 console.error(e)
                                 setIsLoading(false)
+                                showToast("Error creating account.", "error")
                             })
                         }} title={"Let's go!"} />
                     </View>

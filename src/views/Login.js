@@ -10,6 +10,7 @@ import ButtonPrimary from '../components/ButtonPrimary'
 import { UserService } from "smart-caring-client/client"
 import * as LocalAuthentication from "expo-local-authentication";
 import * as Google from "expo-auth-session/providers/google";
+import Toast from 'react-native-toast-message'
 
 export default function Login({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(true)
@@ -82,6 +83,11 @@ export default function Login({ route, navigation }) {
             <Loader />
         );
     }
+    const showToast = (msg, type="success") => {
+        // Types: success, error, info
+        Toast.show({type: type, text1: msg, position: 'bottom'})
+    }
+
     return (
         <SafeAreaView style={[styleSelected.backgroundPrimary, { flex: 1 }]} onLayout={onLayoutRootView}>
             <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={colorScheme === 'light' ? 'dark-content' : 'light-content'} />
@@ -131,6 +137,7 @@ export default function Login({ route, navigation }) {
                             }).catch((error) => {
                                 console.error(error)
                                 setIsLoading(true)
+                                showToast("Error: failed to login.", "error")
                             })
                         }} />
                         <View style={{ flexDirection: "row", height: 50, justifyContent: "center", alignItems: "center" }}>

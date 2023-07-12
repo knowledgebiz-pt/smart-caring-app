@@ -215,6 +215,7 @@ export default function HomePage({ route, navigation }) {
         }).catch(e =>{ 
             console.error("e: ",e)
             setIsLoading(false)
+            showToast("Error: failed to login.", "error")
         })
     }, [])
     Appearance.getColorScheme()
