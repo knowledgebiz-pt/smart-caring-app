@@ -149,6 +149,12 @@ const style = StyleSheet.create({
     justifyContent: "space-evenly",
     height: 400
   },
+  logoLeftSide: {
+    width: 150, 
+    height: 150, 
+    marginLeft: 20, 
+    alignSelf: "flex-start"
+  },
 
   //buttonSize
 
@@ -182,6 +188,30 @@ const style = StyleSheet.create({
     borderRadius: 30,
     justifyContent: "center"
   },
+  postInputSize: {
+    width: "56%",
+    alignSelf: "center",
+    borderRadius: 10,
+    textAlignVertical:"top",
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginLeft: 15,
+    marginRight: 15,
+    marginTop:-21,
+    maxHeight: 101,
+  },
+  smallButtonPost: {
+    borderWidth: 1, 
+    borderRadius: 10, 
+    flexDirection:"row", 
+    height: 30, 
+    paddingLeft: 10, 
+    paddingRight: 10, 
+    paddingTop: 5, 
+    paddingBottom: 5
+  },
 
   // text
 
@@ -192,6 +222,11 @@ const style = StyleSheet.create({
   textBold16: {
     fontSize: 16,
     fontWeight: 600
+  },
+  textBold10DarkBlue: {
+    fontSize: 10,
+    fontWeight: 600,
+    color: "#030849"
   },
   textBold20DarkBlue: {
     fontSize: 20,
@@ -290,6 +325,30 @@ const style = StyleSheet.create({
     marginTop: 40, 
     backgroundColor: colors.BaseSlot3
   },
+  avatarRightSide: {
+    alignSelf: "flex-end", 
+    marginLeft: 150, 
+    height: 50, 
+    width: 50, 
+    marginBottom: 57
+  },
+  avatarLeftSide: {
+    alignSelf: "flex-start",
+    height: 25,
+    width: 25,
+    marginLeft: 20
+  },
+  menuCircleAvatarRightSide: {
+    height: 29,
+    width: 29,
+    borderWidth: 2,
+    borderRadius: 30,
+    paddingTop: 3,
+    paddingLeft: 3,
+    marginTop: 75,
+    marginLeft: -22,
+    backgroundColor: colors.BaseSlot1,
+  },
 
   // Date picker
   datePickerButton: {
@@ -322,6 +381,98 @@ const style = StyleSheet.create({
   },
   phoneInputCountryPickerButton: {
     marginLeft: -20
+  },
+
+  // Feed
+  feedPostContainer: {
+    width: "100%",
+    borderRadius: 15,
+    paddingTop:10,
+    paddingBottom: 20,
+    paddingRight: 10
+  },
+  feedPostUserName: {
+    marginLeft:5,
+    textAlignVertical:"center",
+    fontSize: 11
+  },
+  feedPostRoleIcon: {
+    width: 35,
+    height: 20,
+    marginRight: 20
+  },
+  feedPostHeartIconPosition: {
+    position:"absolute",
+    marginLeft: 325
+  },
+  feedPostHeartIcon: {
+    textAlignVertical:"center",
+    fontSize:20,
+    marginTop:10
+  },
+  feedPostContentView: {
+    marginLeft: 65
+  },
+  feedPostContentText: {
+    fontSize: 10, paddingRight:10
+  },
+  feedPostContentUrlPreviewImage: {
+    width:"100%",
+    height:140,
+    marginLeft:-15,
+    marginTop: 10
+  },
+  feedPostContentUrl: {
+    fontSize: 10,
+    paddingRight:10,
+    color:colors.BaseSlot2,
+    fontStyle:"italic",
+    textDecorationLine:"underline"
+  },
+  feedPostButtonsView: {
+    flexDirection:"row",
+    marginTop:10
+  },
+  feedPostButtonsText: {
+    fontSize: 10,
+    alignSelf:"center"
+  },
+  feedPostContentSeeCommentsTouchableOpacity: {
+    flex: 1,
+    textAlign: "right",
+    alignSelf:"center",
+    marginRight:20
+  },
+  feedPostContentSeeComments: {
+    textAlign: "right",
+    fontSize: 9,
+    color: colors.BaseSlot3,
+    textDecorationLine: "underline"
+  },
+  modalCenteredView: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)'
+  },
+  modalView: {
+    backgroundColor: 'white',
+    borderTopRightRadius: 0,
+    borderTopLeftRadius: 0,
+    borderRadius: 20,
+    paddingTop: 35,
+    paddingBottom: 35,
+  },
+  modalOpenButton: {
+      position:'absolute', 
+      marginLeft: 346, 
+      marginTop: -65, 
+      backgroundColor: colors.BaseSlot4, 
+      width: 80, 
+      borderBottomLeftRadius:30, 
+      paddingRight:30, 
+      paddingTop:10, 
+      paddingBottom:5, 
+      borderTopLeftRadius:30, 
+      alignItems:"center" 
   }
 });
 

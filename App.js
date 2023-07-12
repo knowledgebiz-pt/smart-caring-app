@@ -13,6 +13,8 @@ import CreateAccount from './src/views/CreateAccount';
 import Features from './src/views/Features';
 import RecoverPasswordCode from './src/views/RecoverPasswordCode';
 import CreateAccountWithGmail from './src/views/CreateAccountWithGmail';
+import HomePage from './src/views/HomePage';
+import { BottomTab } from './src/components/BottomTab';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,7 +22,7 @@ export default function App() {
   return (
     //<MyDrawer>
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='FirstAccess'>
+      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='BottomTab'>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="RecoverPassword" component={RecoverPassword} />
@@ -31,9 +33,8 @@ export default function App() {
         <Stack.Screen name="CreateAccount" component={CreateAccount} />
         <Stack.Screen name="CreateAccountWithGmail" component={CreateAccountWithGmail} />
         <Stack.Screen name="Features" component={Features} />
-
-
-
+        <Stack.Screen name="HomePage" component={HomePage} />
+        <Stack.Screen name="BottomTab" component={BottomTab}/>
       </Stack.Navigator>
     </NavigationContainer>
     // </MyDrawer>

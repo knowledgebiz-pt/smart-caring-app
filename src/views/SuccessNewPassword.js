@@ -50,9 +50,10 @@ export default function SuccessNewPassword({ route, navigation }) {
                 keyboardVerticalOffset={Platform.OS == 'android' ? -150 : -150}
             >
                 <View style={[styleSelected.backgroundPrimary, { flex: 1 }]}>
-                    <View style={styleSelected.imageContainer}>
-
-                    </View>
+                <Image source={require("../../assets/images/Inicio.png")}
+                        resizeMode='cover'
+                        style={{ height: 600, width: 350, alignSelf: "center" }} />
+                    
                     <View style={{ flex: 1, justifyContent: "space-evenly" }}>
                         <ButtonPrimary title={"Let's start!"} event={() => {navigation.navigate("Login")}}/>
                     </View>
