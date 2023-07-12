@@ -75,9 +75,6 @@ export default function FeedPost(
 
     const likeButton = (giveLike) => {
         if (giveLike) {
-            console.log(giveLike)
-            console.log(user._id.$oid)
-            console.log(postContent._id.$oid)
             NewsService.addLikeToNewsArticle(postContent._id.$oid, user._id.$oid).then(res => {
                 console.log(res)
             }).catch(e => {
@@ -86,6 +83,23 @@ export default function FeedPost(
         }
         else {
             NewsService.deleteLikeToNewsArticle(postContent._id.$oid, user._id.$oid).then(res => {
+                console.log(res)
+            }).catch(e => {
+                console.error("e: ", e)
+            })
+        }
+    }
+
+    const favoriteButton = (giveFavorite) => {
+        if (giveFavorite) {
+            NewsService.addFavoritesToNewsArticle(postContent._id.$oid, user._id.$oid).then(res => {
+                console.log(res)
+            }).catch(e => {
+                console.error("e: ", e)
+            })
+        }
+        else {
+            NewsService.deleteFavoritesToNewsArticle(postContent._id.$oid, user._id.$oid).then(res => {
                 console.log(res)
             }).catch(e => {
                 console.error("e: ", e)
@@ -102,8 +116,10 @@ export default function FeedPost(
                 /> 
                 <Text style={styleSelected.feedPostUserName}>{postContent.user.name} <Image style={styleSelected.feedPostRoleIcon} source={feedIcon}/></Text>
                 <TouchableOpacity style={styleSelected.feedPostHeartIconPosition} onPress={() => {
-                    if (favoriteIcon.name === "heart-o") setFavoriteIcon({name: "heart", color: "#CB1000"})
+                    if (!hasFavorite) setFavoriteIcon({name: "heart", color: "#CB1000"})
                     else setFavoriteIcon({name: "heart-o", color: "#030849"})
+                    favoriteButton(!hasFavorite)
+                    setFavorite(!hasFavorite)
                 }}>
                     <FontAwesome name={favoriteIcon.name} style={[styleSelected.feedPostHeartIcon, {color: favoriteIcon.color}]} />
                 </TouchableOpacity>
