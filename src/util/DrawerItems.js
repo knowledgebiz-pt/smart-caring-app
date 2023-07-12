@@ -1,7 +1,8 @@
+import HomePage from "../views/HomePage"
 import Login from "../views/Login"
 export default [
     {
-        name:'Profile',
+        name:'Homepage',
         iconType:'Material',
         iconName:'face-man',
         component: Login

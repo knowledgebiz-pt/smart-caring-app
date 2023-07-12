@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, Image, View, TouchableOpacity, Touchable, TextInput, useColorScheme, Alert } from "react-native";
+import { Text, Image, View, Linking, TouchableOpacity, Touchable, TextInput, useColorScheme, Alert } from "react-native";
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -52,6 +52,7 @@ export default function PostInputTransparent(
     const [postImage, setPostImage] = useState(null)
     const [urlInputVisible, setUrlInputVisible] = useState(false)
     const [linkText, setLinkText] = useState("")
+    const [clicked, setClicked] = useState(false)
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -71,8 +72,6 @@ export default function PostInputTransparent(
             base64 = await FileSystem.readAsStringAsync(result.assets[0].uri, { encoding:"base64"})
         }
 
-        console.log(result);
-
         if (!result.canceled) {
             setPostImage({type: result.assets[0].type, file: base64});
         }
@@ -82,7 +81,6 @@ export default function PostInputTransparent(
         let result = await DocumentPicker.getDocumentAsync({
             type: "&ast;/*"
         })
-        console.log(result)
     }
 
     let colorScheme = useColorScheme()
@@ -106,9 +104,7 @@ export default function PostInputTransparent(
     }
 
     const createNews = () => {
-        // alert(textValue)
-        console.log(textValue)
-        console.log(userId)
+        setClicked(true)
         if (!newsId) { // Create new feed post
             let newsObject = {
                 text: textValue,
@@ -123,12 +119,13 @@ export default function PostInputTransparent(
                 }
             }
             NewsService.createNews(newsObject).then(res => {
-                console.warn(res)
                 onSubmitEditing()
                 showToast("You have created a new post!", "success")
+                setClicked(false)
             }).catch(e => {
                 console.error("e: ", e)
                 showToast("Error creating post.", "error")
+                setClicked(false)
             })
         }
         else { // Create comment on feed post
@@ -139,17 +136,18 @@ export default function PostInputTransparent(
                 link: ""
             }
             CommentService.createComment(commentObject).then(res => {
-                console.warn(res)
                 onSubmitEditing()
                 showToast("Comment has been created.", "success")
+                setClicked(false)
             }).catch(e => {
                 console.error("e: ", e)
                 showToast("Error commenting on post.", "error")
+                setClicked(false)
             })
         }
     }
 
-    const checkLinkValidity = (url) => {
+    const checkLinkValidity = (url) => {    
         setLinkText(url)
         setUrlInputVisible(false)
         if (url === "") {
@@ -159,7 +157,14 @@ export default function PostInputTransparent(
             showToast("URL missing \"http://\" or \"https://\"", "info")
         }
         else {
-            showToast("URL has been set!", "success")
+            Linking.canOpenURL(url).then(res => {
+                if (res) {
+                    showToast("Valid URL has been set!", "success")
+                }
+                else {
+                    showToast("URL has been set, but is invalid.", "info")
+                }
+            })
         }
     }
 
@@ -225,7 +230,7 @@ export default function PostInputTransparent(
             </View>}
         </View>
         <View style={{width: "10%", marginLeft: 264, marginTop:-35}}>
-            <TouchableOpacity onPress={() => {createNews(), onSubmitEditing}} style={{borderWidth: 0, borderRadius: 10,borderTopLeftRadius:0, borderTopRightRadius:0, borderColor:borderColor, flexDirection:"row", height: 30, paddingLeft: 10, paddingRight: 10, paddingTop: 5, paddingBottom: 5, marginTop: 5, }}>                    
+            <TouchableOpacity onPress={!clicked ? () => {createNews(), onSubmitEditing, event} : () => {}} style={{borderWidth: 0, borderRadius: 10,borderTopLeftRadius:0, borderTopRightRadius:0, borderColor:borderColor, flexDirection:"row", height: 30, paddingLeft: 10, paddingRight: 10, paddingTop: 5, paddingBottom: 5, marginTop: 5, }}>                    
                 <FontAwesome name={'send-o'}
                 size={17}
                 color={colors.BaseSlot2}/>

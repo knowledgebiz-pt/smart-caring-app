@@ -1,11 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Text, Image, View, Pressable, Linking, TouchableOpacity, TextInput, useColorScheme, Touchable } from "react-native";
+import React, { useState, useEffect, memo } from "react";
+import { Text, Image, View, useColorScheme } from "react-native";
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { FontAwesome } from "@expo/vector-icons"
-import RNUrlPreview from 'react-native-url-preview';
-import LottieView from 'lottie-react-native';
 
 /***
  * @param buttonColor: string - Determine the color of the component's buttons and their borders.
@@ -16,7 +12,7 @@ import LottieView from 'lottie-react-native';
  * @param event: any
  */
 
-export default function FeedPostComment( // IN PROGRESS
+const FeedPostComment =( // IN PROGRESS
     {
         buttonColor,
         avatarPicture,
@@ -24,7 +20,7 @@ export default function FeedPostComment( // IN PROGRESS
         comment,
         feedRole="",
         event
-    }) {
+    }) => {
 
     const [image, setImage] = useState(null)
     const [favoriteIcon, setFavoriteIcon] = useState({name: "heart-o", color: "#030849"})
@@ -77,3 +73,4 @@ export default function FeedPostComment( // IN PROGRESS
         </>
     )
 }   
+export default memo(FeedPostComment)

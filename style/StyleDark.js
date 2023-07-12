@@ -402,7 +402,7 @@ const style = StyleSheet.create({
   feedPostHeartIcon: {
     textAlignVertical:"center",
     fontSize:20,
-    marginTop:10
+    marginTop:20
   },
   feedPostContentView: {
     marginLeft: 65

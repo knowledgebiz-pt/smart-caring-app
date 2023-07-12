@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Text, Image, View, Linking, TouchableOpacity, TextInput, useColorScheme, Touchable } from "react-native";
+import React, { useState, useEffect, useRef, memo } from "react";
+import { Text, KeyboardAvoidingView, Image, View, Linking, TouchableOpacity, TextInput, useColorScheme, Touchable } from "react-native";
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -11,6 +11,8 @@ import { Video, ResizeMode } from 'expo-av';
 import CommentInputPopup from "./CommentInputPopup";
 import Loader from "./Loader";
 import Toast from 'react-native-toast-message'
+import RBSheet from 'react-native-raw-bottom-sheet'
+import PostInputTransparent from "./PostInputTransparent";
 
 /***
  * @param buttonColor: string - Determine the color of the component's buttons and their borders.
@@ -21,7 +23,7 @@ import Toast from 'react-native-toast-message'
  * @param event: any
  */
 
-export default function FeedPost(
+const FeedPost =(
     {
         buttonColor,
         img,
@@ -29,7 +31,7 @@ export default function FeedPost(
         postContent,
         user,
         event
-    }) {
+    }) => {
 
     const [isLoading, setIsLoading] = useState(false)
     const [image, setImage] = useState(null)
@@ -39,6 +41,8 @@ export default function FeedPost(
     const [previewLoaded, setPreviewLoaded] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
     const [comments, setComments] = useState([])
+
+    const refRBSheet = useRef()
 
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
@@ -76,7 +80,7 @@ export default function FeedPost(
                 setLike(true)
             }
         }
-        retrieveComments()
+        // retrieveComments()
     }, [])
 
     const showToast = (msg, type="success") => {
@@ -87,7 +91,6 @@ export default function FeedPost(
     const likeButton = (giveLike) => {
         if (giveLike) {
             NewsService.addLikeToNewsArticle(postContent._id.$oid, user._id.$oid).then(res => {
-                console.log(res)
             }).catch(e => {
                 console.error("e: ", e)
                 showToast("An error has occurred when trying to like a post.", "error")
@@ -95,7 +98,6 @@ export default function FeedPost(
         }
         else {
             NewsService.deleteLikeToNewsArticle(postContent._id.$oid, user._id.$oid).then(res => {
-                console.log(res)
             }).catch(e => {
                 console.error("e: ", e)
                 showToast("An error has occurred when trying to remove a like from a post.", "error")
@@ -106,7 +108,6 @@ export default function FeedPost(
     const favoriteButton = (giveFavorite) => {
         if (giveFavorite) {
             NewsService.addFavoritesToNewsArticle(postContent._id.$oid, user._id.$oid).then(res => {
-                console.log(res)
             }).catch(e => {
                 console.error("e: ", e)
                 showToast("An error has occurred when trying to favorite a post.", "error")
@@ -114,7 +115,6 @@ export default function FeedPost(
         }
         else {
             NewsService.deleteFavoritesToNewsArticle(postContent._id.$oid, user._id.$oid).then(res => {
-                console.log(res)
             }).catch(e => {
                 console.error("e: ", e)
                 showToast("An error has occurred when trying to unfavorite a post.", "error")
@@ -148,7 +148,58 @@ export default function FeedPost(
 
     return (<>
         <View style={[feedStyle, styleSelected.feedPostContainer]}>
-            <CommentInputPopup onSubmitEditing={() => retrieveComments()} newsId={postContent._id.$oid} userId={user._id.$oid} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"} modalVisible={modalVisible} closeModal={() => setModalVisible(false)} />
+            <CommentInputPopup onSubmitEditing={() => {postContent.total_comments += 1; setModalVisible(false)}} newsId={postContent._id.$oid} userId={user._id.$oid} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"} modalVisible={modalVisible} closeModal={() => {setModalVisible(false)}} />
+            <View >
+                <RBSheet
+                    keyboardAvoidingViewEnabled={false}
+                    ref={refRBSheet}
+                    closeOnDragDown={true}
+                    closeOnPressMask={true}
+                    animationType="fade"
+                    closeDuration={50}
+                    height={400}
+                    customStyles={{
+                    wrapper: {
+                        backgroundColor: "#00000070"
+                    },
+                    draggableIcon: {
+                        backgroundColor: "#000"
+                    },
+                    container: {
+                        borderTopRightRadius: 15,
+                        borderTopLeftRadius: 15
+                    }
+                    }}
+                >
+                    <View style={[feedStyle, styleSelected.feedPostContainer, { zIndex:99999999}]}>
+                    <View style={{flexDirection: "row"}}>
+                        <Image
+                            style={[styleSelected.avatar, styleSelected.avatarLeftSide, {marginTop: 10}]}
+                            source={{uri: postContent.user.picture ? postContent.user.picture : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"}}
+                        /> 
+                        <Text style={styleSelected.feedPostUserName}>{postContent.user.name} <Image style={styleSelected.feedPostRoleIcon} source={feedIcon}/> </Text>
+                    </View>
+                    <View style={styleSelected.feedPostContentView}>
+                        <Text style={styleSelected.feedPostContentText}>{postContent.text}</Text>                                             
+                    </View>
+                </View>
+                <View style={{flex: 1, justifyContent: "flex-end"}}>
+                <View style={{borderTopWidth: 1.5,borderTopColor: "#ccc",flexDirection: "row",alignItems: "center",padding: 10}}>
+                    <MaterialCommunityIcons name="camera" 
+                        style={{fontSize: 24,color: "#666",marginHorizontal: 5}} />
+                    <MaterialCommunityIcons name="tag-faces" 
+                        style={{fontSize: 24,color: "#666",marginHorizontal: 5}} />
+                    <TextInput style={{flex: 1,height: 36,borderRadius: 36,paddingHorizontal: 10,backgroundColor: "#f1f1f1",
+                        marginHorizontal: 10}} autoFocus placeholder="Write a comment..." />
+                    <MaterialCommunityIcons name="send"
+                        style={[{fontSize: 24,color: "#666",marginHorizontal: 5},{color: "#006BFF"}]}
+                        onPress={() => this.Input.close()} />
+                </View>
+
+                </View>
+                    {/* <PostInputTransparent img={user.picture} /> */}
+                </RBSheet>
+                </View>
             <View style={{flexDirection: "row"}}>
                 <Image
                     style={[styleSelected.avatar, styleSelected.avatarLeftSide, {marginTop: 10}]}
@@ -196,16 +247,26 @@ export default function FeedPost(
                                 color={buttonColor}/><Text style={[styleSelected.feedPostButtonsText, {color: buttonColor}]}> Like</Text>
                         </TouchableOpacity>                    
                     }
-                    <TouchableOpacity onPress={() => {setModalVisible(true)}} style={[styleSelected.smallButtonPost, {borderColor: buttonColor, marginLeft:5}]}>
+                    <TouchableOpacity onPress={() => {
+                        refRBSheet.current.open()
+                        // if (modalVisible) {
+                        //     setModalVisible(false)
+                        //     setTimeout(() => {
+                        //         setModalVisible(true)
+                        //     }, 250)
+                        // }
+                        // else setModalVisible(true)
+                        }} style={[styleSelected.smallButtonPost, {borderColor: buttonColor, marginLeft:5}]}>
                         <MaterialCommunityIcons name={'comment-outline'}
                         size={15}
                         color={buttonColor}/><Text style={[styleSelected.feedPostButtonsText, {color: buttonColor}]}> Comment</Text>
                     </TouchableOpacity>
                                         
-                    <FeedPostCommentList postContent={postContent} comments={comments} avatarPicture={""} modalVisible={true} userName={"tedte"}  comment={"text"} />
+                    <FeedPostCommentList postContent={postContent} commentAmount={postContent.total_comments} avatarPicture={""} modalVisible={true} userName={"tedte"}  comment={"text"} />
                 </View>
             </View>
         </View>
         </>
     )
 }
+export default memo(FeedPost)

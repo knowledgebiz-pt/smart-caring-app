@@ -14,9 +14,13 @@ import PostInputPopup from '../components/PostInputPopup'
 import SortAndFilterSelects from '../components/SortAndFilterSelects'
 import Toast from 'react-native-toast-message'
 import CommentInputPopup from '../components/CommentInputPopup'
+import CustomLoader from '../components/CustomLoader'
+import RBSheet from 'react-native-raw-bottom-sheet'
+// import { MyDrawer } from '../components/Drawer'
 
 export default function HomePage({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(true)
+    const [isLoadingSort, setIsLoadingSort] = useState(false)
     const [user, setUser] = useState(null)
     const [name, setName] = useState("")
     const [open, setOpen] = useState(false)
@@ -25,6 +29,8 @@ export default function HomePage({ route, navigation }) {
     const [sortSelectValue, setSortSelectValue] = useState({label: "Recent", value: 'recent'})
     const [filterSelectValue, setFilterSelectValue] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
+
+    const refRBSheet = useRef()
 
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
@@ -154,18 +160,27 @@ export default function HomePage({ route, navigation }) {
     ])
 
     const sortPosts = (val) => { // affects current displayFeedPosts
+        console.log("?")
+        setIsLoadingSort(true)
         if (val.value === "recent") {
             let array = [...displayFeedPosts].sort((a, b) => {
                 return new Date(b.date) - new Date(a.date)
             })
             setDisplayFeedPosts(array)
+            setIsLoadingSort(false)
         }
         else if (val.value === "old") {
             displayFeedPosts.reverse()
+            setTimeout(() => {
+                setIsLoadingSort(false)
+
+            }, 2000)
+
         }
     }
 
     const filterPosts = (val) => { // Will get data from original feedPosts array, but won't modify directly
+        setIsLoadingSort(true)
         let newArray = [...feedPosts]
         if (val.value !== "All" && val.value !== "Unlabeled") {
             newArray = newArray.filter(post => {
@@ -183,9 +198,11 @@ export default function HomePage({ route, navigation }) {
                 return new Date(b.date) - new Date(a.date)
             })
             setDisplayFeedPosts(array)
+            setIsLoadingSort(false)
         }
         else if (sortSelectValue.value === "old") {
             displayFeedPosts.reverse()
+            setIsLoadingSort(false)
         }
     }
 
@@ -265,18 +282,18 @@ export default function HomePage({ route, navigation }) {
                 <SortAndFilterSelects sortItems={sortItems} filterItems={filterItems} onSelectSort={(val) => {setSortSelectValue(val); setSortSelectOpen(false); sortPosts(val)}} sortValue={sortSelectValue} onSelectFilter={(val) => {setFilterSelectValue(val); setFilterSelectOpen(false); filterPosts(val)}} filterValue={filterSelectValue} />
             </>
             }
-            <View style={{flexDirection: "row", width: "90%", alignSelf: "center", marginTop: 20}}>
+            <View key={index} style={{flexDirection: "row", width: "90%", alignSelf: "center", marginTop: 20}}>
                 <FeedPost postContent={postContent} user={user} feedRole={postContent.user.user_type} buttonColor={"#030849"}/>
             </View>
         </>
     )
     return (
         <SafeAreaView style={[styleSelected.backgroundPrimary, { flex: 1 }]} onLayout={onLayoutRootView}>
+            {/* <MyDrawer/> */}
             <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={colorScheme === 'light' ? 'dark-content' : 'light-content'} />
             <View style={{zIndex:9999, }}>
-                <PostInputPopup userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"} />
-                <CommentInputPopup modalVisible={modalVisible} closeModal={() => {setModalVisible(false)}}  blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"} />
-
+                <PostInputPopup onSubmitEditing={() => {getArticleData()}} userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"} />
+                <CommentInputPopup modalVisible={modalVisible} closeModal={() => {setModalVisible(false)}}  blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"Leave your comment:"} />
             </View>
             <KeyboardAvoidingView
                 style={{ flex: 1 }}
@@ -297,16 +314,34 @@ export default function HomePage({ route, navigation }) {
                             <PostInputTransparent onSubmitEditing={() => {getArticleData()}} userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"}/>
                         </View>
                         <View style={{borderBottomColor: "rgba(28, 163, 252, 0.1)", borderBottomWidth: 1, marginTop:10, width: "90%", alignSelf: "center"}}></View>
-                        <SortAndFilterSelects sortItems={sortItems} filterItems={filterItems} onSelectSort={(val) => {setSortSelectValue(val); setSortSelectOpen(false); sortPosts(val)}} sortValue={sortSelectValue} onSelectFilter={(val) => {setFilterSelectValue(val); setFilterSelectOpen(false); filterPosts(val)}} filterValue={filterSelectValue} />
+                        <SortAndFilterSelects sortItems={sortItems} filterItems={filterItems} onSelectSort={(val) => {if (val.value !== sortSelectValue.value) {console.log(val.value); console.log(sortSelectValue.value);setSortSelectValue(val); setSortSelectOpen(false); sortPosts(val)}}} sortValue={sortSelectValue} onSelectFilter={(val) => {setFilterSelectValue(val); setFilterSelectOpen(false); filterPosts(val)}} filterValue={filterSelectValue} />
                     </>
                     }
                     
-                    <FlatList
-                        data={displayFeedPosts}
-                        renderItem={({item, index}) => {return <Item postContent={item} index={index}/>}}
-                        keyExtractor={item => item.id}
-                        style={{zIndex:-5}}
-                    />
+                    {isLoadingSort && 
+                        <>
+                            <View style={{alignSelf: "center"}}>
+                                <Text style={[styleSelected.textBold10DarkBlue]}>Hello, {name.split(" ")[0]}!</Text>
+                            </View>
+                            <View style={{marginTop: 20}}>
+                                <PostInputTransparent onSubmitEditing={() => {getArticleData()}} userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"}/>
+                            </View>
+                            <View style={{borderBottomColor: "rgba(28, 163, 252, 0.1)", borderBottomWidth: 1, marginTop:10, width: "90%", alignSelf: "center"}}></View>
+                            <SortAndFilterSelects sortItems={sortItems} filterItems={filterItems} onSelectSort={(val) => {if (val.value !== sortSelectValue.value) {console.log(val.value); console.log(sortSelectValue.value);setSortSelectValue(val); setSortSelectOpen(false); sortPosts(val)}}} sortValue={sortSelectValue} onSelectFilter={(val) => {setFilterSelectValue(val); setFilterSelectOpen(false); filterPosts(val)}} filterValue={filterSelectValue} />
+                            <View style={{paddingTop: -800}}>
+                                <CustomLoader height={200} customStyle={{height:"75%"}} />
+                            </View>
+                        </>
+                    }
+                    {!isLoadingSort && 
+                        <FlatList
+                            data={displayFeedPosts}
+                            renderItem={({item, index}) => {return <Item postContent={item} index={index}/>}}
+                            keyExtractor={item => item.id}
+                            style={{zIndex:-5}}
+                            removeClippedSubviews={false}
+                        />                    
+                    }
                 </View>
                 
 
