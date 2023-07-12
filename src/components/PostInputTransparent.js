@@ -6,6 +6,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome } from "@expo/vector-icons"
 import * as ImagePicker from "expo-image-picker"
 import { NewsService } from "smart-caring-client/client";
+import * as DocumentPicker from 'expo-document-picker'
+import * as FileSystem from 'expo-file-system'
 
 /***
  * @param placeholder: string - Text that will appear as placeholder
@@ -48,19 +50,34 @@ export default function PostInputTransparent(
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [1, 1],
-        quality: .2,
-        allowsMultipleSelection: false
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [16, 9],
+            quality: .2,
+            allowsMultipleSelection: false,
+            selectionLimit: 1,
+            videoQuality: ImagePicker.UIImagePickerControllerQualityType.Low,
+            videoMaxDuration: 30,
+            base64: true
         });
+        let base64 = result.assets[0].base64
+        if (result.assets[0].type === "video") {
+            base64 = await FileSystem.readAsStringAsync(result.assets[0].uri, { encoding:"base64"})
+        }
 
         console.log(result);
 
         if (!result.canceled) {
-        setPostImage(result.assets[0].uri);
+            setPostImage({type: result.assets[0].type, file: base64});
         }
     };
+
+    const pickDocument = async () => {
+        let result = await DocumentPicker.getDocumentAsync({
+            type: "&ast;/*"
+        })
+        console.log(result)
+    }
 
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
@@ -81,13 +98,22 @@ export default function PostInputTransparent(
         // alert(textValue)
         console.log(textValue)
         console.log(userId)
-        NewsService.createNews({
+        let newsObject = {
             text: textValue,
-            content: "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541",
             user_id: userId,
-            date: "2023-06-30T16:51:59.151Z"
-        }).then(res => {
+            link: "",
+            content: {type:"", path: ""}
+        }
+        if (postImage) {
+            newsObject["content"] = {
+                type: postImage.type,
+                path: postImage.file
+            }
+        }
+        console.log(newsObject)
+        NewsService.createNews(newsObject).then(res => {
             console.warn(res)
+            onSubmitEditing()
         }).catch(e => {
             console.error("e: ", e)
         })
@@ -125,11 +151,14 @@ export default function PostInputTransparent(
                     size={15}
                     color={borderColor}/>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styleSelected.smallButtonPost, {marginTop: 5, borderColor: borderColor}]}>
+                <TouchableOpacity onPress={pickDocument} style={[styleSelected.smallButtonPost, {marginTop: 5, borderColor: borderColor}]}>
                     <MaterialCommunityIcons style={{paddingRight:2}} name={'plus'}
                     size={15}
                     color={borderColor}/>
-                    <MaterialCommunityIcons  name={'movie-open-play'}
+                    {/* <MaterialCommunityIcons  name={'movie-open-play'}
+                    size={15}
+                    color={borderColor}/> */}
+                    <FontAwesome  name={'file-text-o'}
                     size={15}
                     color={borderColor}/>
                 </TouchableOpacity>
@@ -137,7 +166,7 @@ export default function PostInputTransparent(
                     <MaterialCommunityIcons style={{paddingRight:2}} name={'plus'}
                     size={15}
                     color={borderColor}/>
-                    <FontAwesome  name={'file-text-o'}
+                    <MaterialCommunityIcons  name={'link-variant'}
                     size={15}
                     color={borderColor}/>
                 </TouchableOpacity>
@@ -145,7 +174,7 @@ export default function PostInputTransparent(
             </View>
         </View>
         <View style={{width: "10%", marginLeft: 264, marginTop:-35}}>
-            <TouchableOpacity onPress={() => createNews()} style={{borderWidth: 0, borderRadius: 10,borderTopLeftRadius:0, borderTopRightRadius:0, borderColor:borderColor, flexDirection:"row", height: 30, paddingLeft: 10, paddingRight: 10, paddingTop: 5, paddingBottom: 5, marginTop: 5, }}>                    
+            <TouchableOpacity onPress={() => {createNews(), onSubmitEditing}} style={{borderWidth: 0, borderRadius: 10,borderTopLeftRadius:0, borderTopRightRadius:0, borderColor:borderColor, flexDirection:"row", height: 30, paddingLeft: 10, paddingRight: 10, paddingTop: 5, paddingBottom: 5, marginTop: 5, }}>                    
                 <FontAwesome name={'send-o'}
                 size={17}
                 color={colors.BaseSlot2}/>

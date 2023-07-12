@@ -46,6 +46,7 @@ export default function SelectTransparent(
         selectedValue,
         ref,
         items,
+        key2,
         event 
     }) {
     
@@ -84,22 +85,22 @@ export default function SelectTransparent(
         alignStyle["alignSelf"] = "flex-start"       
         alignDropDownContainerStyle["marginTop"] = 15
         alignDropDownContainerStyle["borderRadius"] = 10
-        alignDropDownContainerStyle["width"] = "61%"
+        alignDropDownContainerStyle["width"] = "95%"
         alignDropDownContainerStyle["borderColor"] = colors.BaseSlot2
     }
     if (align === "right") {
         alignStyle["alignSelf"] = "flex-end"
         alignDropDownContainerStyle["marginTop"] = 15
         alignDropDownContainerStyle["borderRadius"] = 10
-        alignDropDownContainerStyle["width"] = "39%"
+        alignDropDownContainerStyle["width"] = "95%"
         alignDropDownContainerStyle["borderColor"] = colors.BaseSlot2
         alignDropDownContainerStyle["alignSelf"] = "flex-end"
     }
     const placeholderText = <Text style={textStyles}>{placeholder}{displaySelectedOption ? <Text style={{fontWeight: "bold"}}>{selectedValue.label}</Text> : ""}</Text>
     return (
-        <View ref={ref} style={{marginLeft: marginLeft, width: viewWidth,}}>
+        <View ref={ref} style={{marginLeft: marginLeft, width: "50%",}}>
             {/* <Text style={[styleSelected.textRegular13DarkBlue,{marginLeft: 20, marginTop: 25, zIndex: 999}]}>{placeholder + selectedValue.label} </Text> */}
-            <DropDownPicker dropDownContainerStyle={alignDropDownContainerStyle} labelStyle={{color:"red"}} style={[alignStyle, pickerStyles]} placeholder={placeholderText} onSelectItem={onSelectItem} onPress={onPress} open={open} items={items} 
+            <DropDownPicker listMode="SCROLLVIEW" key={key2} dropDownContainerStyle={alignDropDownContainerStyle} labelStyle={{color:"red"}} style={[alignStyle, pickerStyles]} placeholder={placeholderText} onSelectItem={onSelectItem} onPress={onPress} open={open} items={items} 
             ArrowDownIconComponent={() => {
                 return <FontAwesome name="chevron-down" color={labelTextColor} />
             }}

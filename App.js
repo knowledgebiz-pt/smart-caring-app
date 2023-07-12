@@ -15,28 +15,32 @@ import RecoverPasswordCode from './src/views/RecoverPasswordCode';
 import CreateAccountWithGmail from './src/views/CreateAccountWithGmail';
 import HomePage from './src/views/HomePage';
 import { BottomTab } from './src/components/BottomTab';
+import Toast from 'react-native-toast-message';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     //<MyDrawer>
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='BottomTab'>
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="RecoverPassword" component={RecoverPassword} />
-        <Stack.Screen name="RecoverPasswordCode" component={RecoverPasswordCode} />
-        <Stack.Screen name="FirstAccess" component={FirstAccess} />
-        <Stack.Screen name="EnterNewPassword" component={EnterNewPassword} />
-        <Stack.Screen name="SuccessNewPassword" component={SuccessNewPassword} />
-        <Stack.Screen name="CreateAccount" component={CreateAccount} />
-        <Stack.Screen name="CreateAccountWithGmail" component={CreateAccountWithGmail} />
-        <Stack.Screen name="Features" component={Features} />
-        <Stack.Screen name="HomePage" component={HomePage} />
-        <Stack.Screen name="BottomTab" component={BottomTab}/>
-      </Stack.Navigator>
-    </NavigationContainer>
+    <>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='BottomTab'>
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen name="RecoverPassword" component={RecoverPassword} />
+          <Stack.Screen name="RecoverPasswordCode" component={RecoverPasswordCode} />
+          <Stack.Screen name="FirstAccess" component={FirstAccess} />
+          <Stack.Screen name="EnterNewPassword" component={EnterNewPassword} />
+          <Stack.Screen name="SuccessNewPassword" component={SuccessNewPassword} />
+          <Stack.Screen name="CreateAccount" component={CreateAccount} />
+          <Stack.Screen name="CreateAccountWithGmail" component={CreateAccountWithGmail} />
+          <Stack.Screen name="Features" component={Features} />
+          <Stack.Screen name="HomePage" component={HomePage} />
+          <Stack.Screen name="BottomTab" component={BottomTab}/>
+        </Stack.Navigator>
+      </NavigationContainer>
+      <Toast />
+    </>
     // </MyDrawer>
   );
 }
