@@ -8,6 +8,7 @@ import { FontAwesome } from "@expo/vector-icons"
 
 export default function PostInputPopup({ 
     blurOnSubmit,
+    onSubmitEditing,
     hasBorder,
     borderColor,
     placeholder,
@@ -31,7 +32,7 @@ export default function PostInputPopup({
                 <Modal animationType='fade' transparent={true} visible={modalVisible}>
                     <Pressable style={styleSelected.modalCenteredView} onPress={(event) => event.target === event.currentTarget && setModalVisible(false)}>
                         <View style={styleSelected.modalView}>
-                            <PostInputTransparent userId={userId} blurOnSubmit={blurOnSubmit} img={img} hasBorder={hasBorder} borderColor={borderColor} placeholder={placeholder}/>
+                            <PostInputTransparent event={() => setModalVisible(false)} onSubmitEditing={onSubmitEditing} userId={userId} blurOnSubmit={blurOnSubmit} img={img} hasBorder={hasBorder} borderColor={borderColor} placeholder={placeholder}/>
                         </View>
                     </Pressable>
                 </Modal>

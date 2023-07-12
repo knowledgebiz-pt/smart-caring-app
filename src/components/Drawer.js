@@ -6,6 +6,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import DrawerItems from '../util/DrawerItems';
 import { Text, Image, FlatList } from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import HeaderLogoAndProfileImage from './HeaderLogoAndProfileImage';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator()
@@ -50,11 +51,11 @@ const Item = ({ drawer }) => (
 )
 export function MyDrawer() {
     return (<>
-        <NavigationContainer>
+        {/* <NavigationContainer> */}
 
             <Drawer.Navigator initialRouteName="Feed" screenOptions={{
-                headerStatusBarHeight: 50, drawerPosition: "right", headerLeft: false,
-                headerRight: () => <DrawerToggleButton />,
+                headerStatusBarHeight: 0, drawerPosition: "right", headerLeft: false,
+                headerRight: false,
             }}>
                 {/* <FlatList data={DrawerItems}
                     renderItem={({item}) => <Item drawer={item}/>} keyExtractor={item => item.name}>
@@ -67,7 +68,7 @@ export function MyDrawer() {
                             name={drawer.name}
                             component={drawer.component}
                             options={{
-                                headerTitle: (props) => <LogoTitle {...props}/>,
+                                headerTitle: (props) => {},
                                 drawerLabel: drawer.name,
                                 drawerIcon: ({ focused }) =>
                                     drawer.iconType === 'Material' ?
@@ -93,6 +94,7 @@ export function MyDrawer() {
                         />)
                 }
             </Drawer.Navigator>
-        </NavigationContainer></>
+        {/* </NavigationContainer> */}
+        </>
     );
 }

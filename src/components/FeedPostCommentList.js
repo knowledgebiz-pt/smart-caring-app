@@ -8,6 +8,8 @@ import RNUrlPreview from 'react-native-url-preview';
 import LottieView from 'lottie-react-native';
 import { FlatList } from "react-native-gesture-handler";
 import FeedPostComment from "./FeedPostComment";
+import { CommentService } from "smart-caring-client/client";
+import Loader from "./Loader";
 
 /***
  * @param buttonColor: string - Determine the color of the component's buttons and their borders.
@@ -18,18 +20,20 @@ import FeedPostComment from "./FeedPostComment";
  * @param event: any
  */
 
-export default function FeedPostCommentList( // IN PROGRESS
+export default function FeedPostCommentList(
     {
         buttonColor,
         img,
         feedRole,
-        comments,
+        comment_amount,
         postContent,
         event
     }) {
 
     const [image, setImage] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
+    const [comments, setComments] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
 
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
@@ -42,27 +46,50 @@ export default function FeedPostCommentList( // IN PROGRESS
         setImage(img)
     }, [])
 
+    const retrieveComments = () => {
+        setModalVisible(true)
+        setIsLoading(true)
+        CommentService.getCommentsByIdNews(postContent._id.$oid).then(res => {
+            setComments(res.data)
+            setIsLoading(false)
+        }).catch(e => {
+            if (!e.includes("Not Found")) {
+                console.error("e: ", e)
+                showToast("An error has occurred when trying to fetch the comments from a post.", "error")
+            }
+            setIsLoading(false)
+        })
+        // setIsLoading(false)
+    }
+
     const Item = ({comment, index}) => (<>
     <View style={{marginBottom:5}}>
-        <FeedPostComment comment={comment.text} avatarPicture={comment.avatarPicture} userName={comment.userName}/>
+        <FeedPostComment comment={comment.text} avatarPicture={comment.user_info.user_picture} feedRole={comment.user_info.user_type} userName={comment.user_info.user_name}/>
     </View>
     </>)
 
+    // if (isLoading) {
+    //     return (
+    //         <Loader />
+    //     );
+    // }
+
     return (<>        
             <TouchableOpacity style={styleSelected.feedPostContentSeeCommentsTouchableOpacity} onPress={() => {
-                if (comments && comments.length > 0) setModalVisible(true); 
+                if (postContent.total_comments && postContent.total_comments > 0) retrieveComments(); 
                 }}>
-                    <Text style={styleSelected.feedPostContentSeeComments} >{ comments && comments.length ?  "See "+ comments.length + (comments.length === 1 ? " comment" : " comments") : "No comments"}</Text>
+                    <Text style={styleSelected.feedPostContentSeeComments} >{ postContent.total_comments && postContent.total_comments > 0 ?  "See "+ postContent.total_comments + (postContent.total_comments === 1 ? " comment" : " comments") : "No comments"}</Text>
                 </TouchableOpacity>
                 <Modal animationType='slide' transparent={true} visible={modalVisible}>
                     <Pressable style={styleSelected.modalCenteredView} onPress={(event) => event.target === event.currentTarget && setModalVisible(false)}>
                         <ScrollView style={styleSelected.feedCommentModalView}>
-                            <View onStartShouldSetResponder={() => true}>
-                                <FlatList
+                            <View style={isLoading && {borderTopLeftRadius: 15, borderTopRightRadius: 15, marginTop: 20}} onStartShouldSetResponder={() => true}>
+                                {!isLoading && <FlatList
                                     data={comments}
-                                    renderItem={({item, index}) => {console.log(item);return <Item comment={item} index={index}/>}}
+                                    renderItem={({item, index}) => {return <Item comment={item} index={index}/>}}
                                     keyExtractor={item => item.id}
-                                />
+                                />}
+                                {isLoading &&  <Loader />}
                             </View>
                         </ScrollView>
                     </Pressable>
