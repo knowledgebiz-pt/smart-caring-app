@@ -8,7 +8,7 @@ import RNUrlPreview from 'react-native-url-preview';
 import LottieView from 'lottie-react-native';
 import FeedPostCommentList from "./FeedPostCommentList";
 import FeedPostComment from "./FeedPostComment";
-import { LikesService } from "smart-caring-client/client";
+import { LikesService, NewsService } from "smart-caring-client/client";
 
 /***
  * @param buttonColor: string - Determine the color of the component's buttons and their borders.
@@ -78,15 +78,18 @@ export default function FeedPost(
             console.log(giveLike)
             console.log(user._id.$oid)
             console.log(postContent._id.$oid)
-            // LikesService.createLike({
-            //     is_like: giveLike,
-            //     user_id: user._id.$oid,
-            //     news_id: postContent._id.$oid
-            // }).then(res => {
-            //     console.warn(res)
-            // }).catch(e => {
-            //     console.error("e: ", e)
-            // })
+            NewsService.addLikeToNewsArticle(postContent._id.$oid, user._id.$oid).then(res => {
+                console.log(res)
+            }).catch(e => {
+                console.error("e: ", e)
+            })
+        }
+        else {
+            NewsService.deleteLikeToNewsArticle(postContent._id.$oid, user._id.$oid).then(res => {
+                console.log(res)
+            }).catch(e => {
+                console.error("e: ", e)
+            })
         }
     }
 
@@ -121,7 +124,7 @@ export default function FeedPost(
                 <View style={styleSelected.feedPostButtonsView}>
 
                     { hasLike ?
-                        <TouchableOpacity onPress={() => setLike(false)} style={[styleSelected.smallButtonPost, {borderColor: buttonColor}]}>
+                        <TouchableOpacity onPress={() => {setLike(false); likeButton(false)}} style={[styleSelected.smallButtonPost, {borderColor: buttonColor}]}>
                             <MaterialCommunityIcons  name={'thumb-up'}
                                 size={15}
                                 color={"#56B288"}/><Text style={[styleSelected.feedPostButtonsText, {color: buttonColor}]}> Like</Text>
