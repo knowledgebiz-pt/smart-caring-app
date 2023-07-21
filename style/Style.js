@@ -339,15 +339,29 @@ const style = StyleSheet.create({
     marginLeft: 20
   },
   menuCircleAvatarRightSide: {
-    height: 29,
-    width: 29,
-    borderWidth: 2,
-    borderRadius: 30,
-    paddingTop: 4.5,
-    paddingLeft: 4.5,
-    marginTop: 75,
-    marginLeft: -22,
-    backgroundColor: colors.BaseSlot1,
+    // height: 29,
+    // width: 29,
+    // borderWidth: 2,
+    // borderRadius: 30,
+    // paddingTop: 4.5,
+    // paddingLeft: 4.5,
+    // marginTop: -40,
+    // marginLeft: 32,
+    // backgroundColor: colors.BaseSlot1,
+
+    height: 30, 
+    width: 30, 
+    backgroundColor: colors.BaseSlot1, 
+    position: "absolute", 
+    bottom: -5, 
+    right: -10, 
+    borderRadius: 50, 
+    overflow: "hidden", 
+    justifyContent: "center", 
+    alignItems: "center", 
+    alignContent: "center", 
+    borderWidth: 2, 
+    borderColor: colors.BaseSlot6 
   },
 
   // Date picker

@@ -1,5 +1,5 @@
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useColorScheme } from 'react-native';
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
@@ -29,6 +29,8 @@ export function BottomTab() {
     const [scheduleIcon, setScheduleIcon] = useState("calendar-month-outline")
     const [journalIcon, setJournalIcon] = useState("notebook-outline")
 
+    const [goUp, setGoUp] = useState(false)
+
   return (
     <Tab.Navigator
       initialRouteName="HomePage"
@@ -53,8 +55,13 @@ export function BottomTab() {
                 setToolBoxIcon("account-cog-outline")
                 setScheduleIcon("calendar-month-outline")
                 setJournalIcon("notebook-outline")
+                setGoUp(true)
+                setTimeout(() => {
+                  setGoUp(false)
+                }, 250)
             }
         }}
+        initialParams={{goUp: goUp}}
       />
       <Tab.Screen
         name="Chat"

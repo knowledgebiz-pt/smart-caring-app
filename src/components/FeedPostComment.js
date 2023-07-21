@@ -19,6 +19,7 @@ const FeedPostComment =( // IN PROGRESS
         userName,
         comment,
         feedRole="",
+        isSelected,
         event
     }) => {
 
@@ -58,7 +59,7 @@ const FeedPostComment =( // IN PROGRESS
     }, [])
 
     return (<>
-        <View style={[feedStyle, styleSelected.feedPostContainer, { zIndex:99999999}]}>
+        <View style={[feedStyle, styleSelected.feedPostContainer, { zIndex:99999999}, isSelected && {backgroundColor:"#1CA3FC", borderRadius:0}]}>
             <View style={{flexDirection: "row"}}>
                 <Image
                     style={[styleSelected.avatar, styleSelected.avatarLeftSide, {marginTop: 10}]}

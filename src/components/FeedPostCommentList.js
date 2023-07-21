@@ -34,6 +34,7 @@ export default function FeedPostCommentList(
     const [modalVisible, setModalVisible] = useState(false)
     const [comments, setComments] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    const [selectedComment, setSelectedComment] = useState(null)
 
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
@@ -47,6 +48,7 @@ export default function FeedPostCommentList(
     }, [])
 
     const retrieveComments = () => {
+        setSelectedComment(null)
         setModalVisible(true)
         setIsLoading(true)
         CommentService.getCommentsByIdNews(postContent._id.$oid).then(res => {
@@ -62,9 +64,16 @@ export default function FeedPostCommentList(
         // setIsLoading(false)
     }
 
+    const selectComment = (item, index) => {
+        setSelectedComment({data: item, index})
+        console.log(item)
+    }
+
     const Item = ({comment, index}) => (<>
     <View style={{marginBottom:5}}>
-        <FeedPostComment comment={comment.text} avatarPicture={comment.user_info.user_picture} feedRole={comment.user_info.user_type} userName={comment.user_info.user_name}/>
+        <Pressable onLongPress={() => selectComment(comment,index)} onPress={() =>setSelectedComment(null)}>
+            <FeedPostComment isSelected={selectedComment && selectedComment.index === index} comment={comment.text} avatarPicture={comment.user_info.user_picture} feedRole={comment.user_info.user_type} userName={comment.user_info.user_name}/>
+        </Pressable>
     </View>
     </>)
 
