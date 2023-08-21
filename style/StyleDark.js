@@ -483,6 +483,19 @@ const style = StyleSheet.create({
     borderTopLeftRadius:30, 
     alignItems:"center" 
   },
+  journalEntryCreationOpenButton: {
+    position:'absolute', 
+    marginLeft: 346, 
+    marginTop: 700, 
+    backgroundColor: colors.BaseSlot4, 
+    width: 80, 
+    borderBottomLeftRadius:30, 
+    paddingRight:30, 
+    paddingTop:10, 
+    paddingBottom:5, 
+    borderTopLeftRadius:30, 
+    alignItems:"center" 
+  },
   feedCommentModalView: {
     flex: 1,
     backgroundColor: 'white',

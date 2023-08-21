@@ -32,6 +32,8 @@ export default function CarouselCards({}) {
             inactiveSlideShift={0}
             onSnapToItem={(index) => setIndex(index)}
             useScrollView={true}
+            enableMomentum={true}
+            decelerationRate={5}
           />
           <Pagination
             dotsLength={data.length}

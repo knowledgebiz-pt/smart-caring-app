@@ -26,7 +26,6 @@ export default function HeaderLogoAndProfileImage({img, onPressImage, user}) {
         {id: 3,name:"Terms of Use", value:"termsofuse", icon: "file-check", iconType: "MaterialCommunityIcons"},
         {id: 4,name:"Settings", value:"settings", icon: "cog", iconType: "FontAwesome"},
         {id: 5,name:"Logout", value:"logout", icon: "logout", iconType: "MaterialCommunityIcons"},
-
     ]
 
     useEffect(() => {

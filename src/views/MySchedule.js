@@ -1,1 +1,262 @@
-export default function MySchedule({ route, navigation }) {}
+import React, { useEffect, useRef, useState, useCallback } from 'react'
+import { SafeAreaView, StatusBar, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text, TouchableOpacity, TextInput } from 'react-native'
+import style from '../../style/Style'
+import styleDark from '../../style/StyleDark'
+import * as NavigationBar from 'expo-navigation-bar'
+import * as SplashScreen from 'expo-splash-screen';
+import Loader from '../components/Loader'
+import { Calendar, CalendarList, Agenda, WeekCalendar, CalendarProvider } from 'react-native-calendars';
+import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons"
+import { FlashList } from '@shopify/flash-list'
+import RBSheet from 'react-native-raw-bottom-sheet'
+
+export default function MySchedule({ route, navigation }) {
+    const [isLoading, setIsLoading] = useState(true)
+    let colorScheme = useColorScheme()
+    var styleSelected = colorScheme == 'light' ? style : styleDark
+    var colors = require('../../style/Colors.json')
+    const [selected, setSelected] = useState(`${new Date().getFullYear()}-${(new Date().getMonth() + 1).toString().padStart(2, "0")}-${new Date().getDate().toString().padStart(2, "0")}`);
+    const [initialDate, setInitialDate] = useState(new Date())
+
+    const [calendarViews, setCalendarViews] = useState([{ label: "Monthly", value: 1 }, { label: "Weekly", value: 2 }])
+    const [currentView, setCurrentView] = useState({ label: "Monthly", value: 1 })
+
+    const [mockData, setMockData] = useState([
+        {
+            title: "Doctor appointment",
+            description: "ifodsjghiovxkjvsd saofjvsindjagnew fdsagqwefwe",
+            date: "23/07/2023",
+            startHour: "14h30",
+            endHour: "15h00",
+            recursion: "Occur every Friday",
+            testingColor: "beige"
+        },
+        {
+            title: "Doctor appointment 2",
+            description: "ifodsjghiovxkjvsd saofjvsindjagnew fdsagqwefwe 2",
+            date: "23/07/2023",
+            startHour: "14h40",
+            endHour: "15h10",
+            recursion: "Occur every Friday 2",
+            testingColor: "orange"
+        },
+    ])
+
+    const today = new Date()
+    const todayFormatted = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}`
+
+    const onDayPress = useCallback(day => {
+        setSelected(day.dateString)
+    })
+
+    const options = [
+        { id: 1, name: "Delete", value: "delete", icon: "trash", iconType: "FontAwesome" },
+    ]
+
+    const optionPressed = (option) => {
+        if (option.value === "delete") {
+            console.log("Delete")
+        }
+    }
+
+    const changeView = () => {
+        if (currentView.value === 1) setCurrentView(calendarViews[1])
+        else setCurrentView(calendarViews[0])
+    }
+
+    const refModalMenu = useRef()
+
+    useEffect(() => {
+        console.log('OPEN', MySchedule.name, 'SCREEN')
+        //For test loading
+        setTimeout(() => {
+            setIsLoading(false)
+        }, 1000);
+        return () => {
+            console.log('SCREEN', MySchedule.name, 'CLOSE')
+        }
+    }, [])
+    Appearance.getColorScheme()
+    Appearance.addChangeListener(({ colorScheme }) => {
+        console.log('COLOR THEME WAS ALTER')
+        console.log(colorScheme)
+        if (Platform.OS === 'android')
+            NavigationBar.setBackgroundColorAsync(colorScheme === 'light' ? colors.Base_Slot_1 : colors.Base_Slot_1)
+    })
+    const onLayoutRootView = useCallback(async () => {
+        if (isLoading) {
+        }
+    }, [isLoading]);
+    if (isLoading) {
+        return (
+            <Loader />
+        );
+    }
+    const renderArrowFunction = (direction) => {
+        if (direction === "left") {
+            return <Text>Previous</Text>
+        }
+        else return <Text>Next</Text>
+    }
+
+    const Header = ({ }) => (
+        <>
+            <View style={[styleSelected.backgroundPrimary, { flex: 1, height: 40, backgroundColor: "red", justifyContent: "center", alignItems: "center" }]}>
+                <Text style={{ fontWeight: 600, color: "#030849", fontSize: 20 }}>My Schedule</Text>
+            </View>
+
+            <View style={{ flex: 1, backgroundColor: "yellow", height: 50, justifyContent: "center", alignItems: "center" }}>
+                <View style={{ borderWidth: 1, width: "90%", flexDirection: "row", borderRadius: 30, padding: 3 }}>
+                    <View style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
+                        <FontAwesome size={15} name='search' />
+                    </View>
+                    <TextInput style={{ marginLeft: 10, }} placeholder='Search'></TextInput>
+                </View>
+            </View>
+
+            <View style={{ flex: 1, flexDirection: "row", backgroundColor: "cyan", height: 50, }}>
+                <View style={{ width: "5%" }}></View>
+                <View style={{ flex: 1, backgroundColor: "#cccccc", justifyContent: "center" }}>
+                    <TouchableOpacity style={{ borderWidth: 1, padding: 5, paddingLeft: 15, paddingRight: 15, borderRadius: 30, width: "85%", alignItems: "center", justifyContent: "center" }}>
+                        <Text>Export Schedule</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <View style={{ flex: 1, backgroundColor: "#afafaf", justifyContent: "center", alignItems: "flex-end", }}>
+                    <TouchableOpacity onPress={changeView} style={{ borderWidth: 1, padding: 5, paddingLeft: 15, paddingRight: 15, borderRadius: 30, width: "85%", alignItems: "center", justifyContent: "center" }}>
+                        <Text>{currentView.label}</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={{ width: "5%" }}></View>
+
+            </View>
+            <CalendarProvider date={selected}>
+                {currentView.value === 1 &&
+                    <View style={{ flex: 1, backgroundColor: "blue", height: 350 }}>
+                        <Calendar style={{ opacity: 1 }}
+                            onDayPress={(day) => onDayPress(day)}
+                            current={selected}
+                            key={selected}
+                            markedDates={{
+                                [selected]: { selected: true, disableTouchEvent: true, selectedColor: '#1CA3FC' }
+                            }}
+                            hideExtraDays={true}
+                            headerStyle={{ color: "red" }}
+                            enableSwipeMonths={true}
+                            renderArrow={renderArrowFunction}
+                            theme={{
+                                monthTextColor: "#1CA3FC"
+                            }}
+                        />
+                    </View>
+                }
+                {currentView.value === 2 &&
+                    <View style={{ flex: 1 }}>
+
+
+                        <WeekCalendar current={selected} onDayPress={(day) => onDayPress(day)} />
+                    </View>
+                }
+            </CalendarProvider>
+        </>
+    )
+
+    const Item = ({ item }) => (
+        <View style={{ flex: 1, backgroundColor: "white", marginLeft: "10%", marginRight: "10%", marginTop: 50 }}>
+            {/* <View style={{width:"10%"}}></View> */}
+            <View style={{ flex: 1 }}>
+                <View>
+                    <Text style={{ fontSize: 15, fontWeight: 600, marginBottom: 10 }}>Friday - June 23</Text>
+                </View>
+                <View style={{ borderWidth: .5, borderRadius: 20, flex: 1, padding: 20, borderColor: "#A8A8A8" }}>
+                    <View style={{ flexDirection: "row", width: "100%", }}>
+                        <View style={{ alignItems: "baseline", width: "90%", justifyContent: "center" }}>
+                            <Text style={{ color: "#1CA3FC", fontSize: 14, fontWeight: 600 }}>{item.title}</Text>
+                        </View>
+                        <TouchableOpacity onPress={() => { refModalMenu.current.open() }} style={{ position: "absolute", right: 0, justifyContent: "center", alignItems: "center", }}>
+                            <MaterialCommunityIcons name='dots-horizontal' size={25} />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{ marginTop: 10, }}>
+                        <Text style={{ fontSize: 12 }}>{item.description}</Text>
+                    </View>
+                    <View style={{ marginTop: 15, flexDirection: "row" }}>
+                        <View style={{ flexDirection: "column" }}>
+                            <Text style={{ fontWeight: 600, fontSize: 13 }}>{item.date}</Text>
+                            <Text style={{ color: "#A8A8A8", fontSize: 13 }}>{item.recursion}</Text>
+                        </View>
+                        <View style={{ position: "absolute", right: 0 }}>
+                            <View style={{ alignItems: "center", justifyContent: "center", flexDirection: "row", }}>
+                                <FontAwesome style={{ height: "100%", }} name='clock-o' size={20} />
+                                <Text style={{ fontWeight: 600, fontSize: 13 }}>&nbsp;&nbsp;{item.startHour} - {item.endHour}</Text>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            </View>
+            {/* <View style={{width:"10%"}}></View> */}
+
+        </View>
+    )
+
+    return (
+        <SafeAreaView style={[styleSelected.backgroundPrimary, { flex: 1 }]} onLayout={onLayoutRootView}>
+            <StatusBar translucent={true} backgroundColor={'white'} barStyle={colorScheme === 'light' ? 'dark-content' : 'light-content'} />
+            <KeyboardAvoidingView
+                style={{ flex: 1, }}
+                enabled={true}
+                behavior={Platform.OS == 'android' ? 'height' : 'padding'}
+                keyboardVerticalOffset={Platform.OS == 'android' ? -150 : -150}
+            >
+                <FlashList
+                    ListHeaderComponent={<Header />}
+                    ListHeaderComponentStyle={{ zIndex: 9999, marginTop: 30 }}
+                    data={mockData}
+                    estimatedItemSize={287}
+                    renderItem={({ item, index }) => { return <Item item={item} /> }}
+                />
+                <RBSheet
+                    height={130}
+                    customStyles={{
+                        wrapper: {
+                            backgroundColor: "#00000070"
+                        },
+                        draggableIcon: {
+                            backgroundColor: "#000"
+                        },
+                        container: {
+                            borderTopRightRadius: 15,
+                            borderTopLeftRadius: 15,
+                            backgroundColor: "#030849"
+
+                        }
+                    }} ref={refModalMenu}>
+                    <View style={{ flex: 1, padding: 25, borderTopLeftRadius: 15, borderTopRightRadius: 15, }}>
+                        {/* <View style={{flexDirection: "row"}}>
+                            <Text style={{color:"white", fontSize:14}}>{user.name}</Text>
+                            <Image style={[{width: 35, height: 20, marginLeft: 10, tintColor:"white"}, ]} source={userType}/>
+                        </View> */}
+                        {options.map(list => (
+                            <View style={{ flex: 1 }}>
+                                <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", backgroundColor: "#D00", marginTop: 15, borderRadius: 10, height: 50 }}
+                                    key={list.id}
+                                    onPress={() => optionPressed(list)}
+                                >
+                                    <View style={{ flex: .5, height: "100%", justifyContent: "center", alignItems: "center" }}>
+                                        {list.iconType === "FontAwesome" && <FontAwesome style={{ fontSize: 26, color: "white" }} name={list.icon} />}
+                                        {list.iconType === "MaterialCommunityIcons" && <MaterialCommunityIcons style={{ fontSize: 26, color: "white" }} name={list.icon} />}
+                                    </View>
+                                    <View style={{ flex: 2, height: "100%", justifyContent: "center", alignItems: "flex-start" }}>
+                                        <Text style={[{ fontSize: 16, color: "white" }, list.iconType === "FontAwesome" && { marginLeft: 0 }]}>{list.name}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                        ))}
+                    </View>
+                </RBSheet>
+
+            </KeyboardAvoidingView>
+
+        </SafeAreaView>
+    )
+}

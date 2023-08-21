@@ -51,8 +51,6 @@ export default function HomePage({ route, navigation }) {
         {label: 'Patient', value: 'Patient'},
         {label: 'Health Professional', value: 'Health Professional'},
         {label: 'Unlabeled', value: 'Unlabeled'},
-
-
     ])
 
     const sortPosts = (val) => { // affects current displayFeedPosts
@@ -254,7 +252,7 @@ export default function HomePage({ route, navigation }) {
                             keyExtractor={item => item._id.$oid}
                             // style={{zIndex:-5}}
                             removeClippedSubviews={false}
-                            estimatedItemSize={300}
+                            estimatedItemSize={194}
                         />                    
                     }
                 </View>
