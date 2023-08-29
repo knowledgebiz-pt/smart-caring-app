@@ -41,6 +41,7 @@ const FeedPost = (
     const [previewLoaded, setPreviewLoaded] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
     const [comments, setComments] = useState([])
+    const [commentAmount, setCommentAmount] = useState(0)
 
     const refRBSheet = useRef()
 
@@ -66,6 +67,7 @@ const FeedPost = (
     }
 
     useEffect(() => {
+        setCommentAmount(postContent.total_comments)
         setImage(img)
         if (postContent.favorites && postContent.favorites.length) {
             let foundId = postContent.favorites.find((id) => { return id === user._id.$oid })
@@ -148,7 +150,7 @@ const FeedPost = (
 
     return (<>
         <View style={[feedStyle, styleSelected.feedPostContainer]}>
-            <CommentInputPopup onSubmitEditing={() => { postContent.total_comments += 1; setModalVisible(false) }} newsId={postContent._id.$oid} userId={user._id.$oid} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"} modalVisible={modalVisible} closeModal={() => { setModalVisible(false) }} />
+            {/* <CommentInputPopup onSubmitEditing={() => {postContent.total_comments += 1; setModalVisible(false)}} newsId={postContent._id.$oid} userId={user._id.$oid} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"} modalVisible={modalVisible} closeModal={() => {setModalVisible(false)}} /> */}
             <View >
                 <RBSheet
                     keyboardAvoidingViewEnabled={false}
@@ -171,78 +173,65 @@ const FeedPost = (
                         }
                     }}
                 >
-                    <View style={[feedStyle, styleSelected.feedPostContainer, { zIndex: 99999999 }]}>
-                        <View style={{ flexDirection: "row" }}>
-                            <Image
-                                style={[styleSelected.avatar, styleSelected.avatarLeftSide, { marginTop: 10 }]}
-                                source={{ uri: postContent.user.picture ? postContent.user.picture : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541" }}
-                            />
-                            <Text style={styleSelected.feedPostUserName}>{postContent.user.name} <Image style={styleSelected.feedPostRoleIcon} resizeMode="cover" source={feedIcon} /> </Text>
-                        </View>
-                        <View style={styleSelected.feedPostContentView}>
-                            <Text style={styleSelected.feedPostContentText}>{postContent.text}</Text>
-                        </View>
-                    </View>
-                    <View style={{ flex: 1, justifyContent: "flex-end" }}>
-                        <View style={{ borderTopWidth: 1.5, borderTopColor: "#ccc", flexDirection: "row", alignItems: "center", padding: 10 }}>
-                            <MaterialCommunityIcons name="camera"
-                                style={{ fontSize: 24, color: "#666", marginHorizontal: 5 }} />
-                            <MaterialCommunityIcons name="tag-faces"
-                                style={{ fontSize: 24, color: "#666", marginHorizontal: 5 }} />
-                            <TextInput style={{
-                                flex: 1, height: 36, borderRadius: 36, paddingHorizontal: 10, backgroundColor: "#f1f1f1",
-                                marginHorizontal: 10
-                            }} autoFocus placeholder="Write a comment..." />
-                            <MaterialCommunityIcons name="send"
-                                style={[{ fontSize: 24, color: "#666", marginHorizontal: 5 }, { color: "#006BFF" }]}
-                                onPress={() => this.Input.close()} />
-                        </View>
-
-                    </View>
-                    {/* <PostInputTransparent img={user.picture} /> */}
+                    <CommentInputPopup placeholder={"Write a comment..."} feedStyle={feedStyle} postContent={postContent} user={user} feedIcon={feedIcon} newsId={postContent._id.$oid} userId={user._id.$oid} onSubmit={() => {postContent.total_comments += 1; refRBSheet.current.close(); setCommentAmount(postContent.total_comments)}} />                    
                 </RBSheet>
             </View>
-            <View style={{ flexDirection: "row" }}>
-                {/* <Image
-                    style={[styleSelected.avatar, styleSelected.avatarLeftSide, {marginTop: 10}]}
-                    source={{uri: postContent.user.picture ? postContent.user.picture : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"}}
-                />  */}
-                <View style={{ height: 40, flex: 1, flexDirection: "row" }}>
-                    <View style={{ flex: .7, }}>
-                        <Image
-                            style={[styleSelected.avatar, styleSelected.avatarLeftSide, {}]}
-                            source={{ uri: postContent.user.picture ? postContent.user.picture : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541" }}
-                        />
-                    </View>
-                    <View style={{ flex: 2, flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
-                        <Text style={styleSelected.feedPostUserName}>{postContent.user.name}</Text>
-                        <Image style={styleSelected.feedPostRoleIcon} resizeMode="contain" source={feedIcon} />
-                    </View>
-                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                        <Text>10-07-2023</Text>
-                    </View>
-                    <View style={{ flex: .6, justifyContent: "center", alignItems: "center" }}>
-                        <TouchableOpacity onPress={() => {
-                            if (!hasFavorite) setFavoriteIcon({ name: "heart", color: "#CB1000" })
-                            else setFavoriteIcon({ name: "heart-o", color: "#030849" })
-                            favoriteButton(!hasFavorite)
-                            setFavorite(!hasFavorite)
-                        }}>
-                            <FontAwesome name={favoriteIcon.name} style={[styleSelected.feedPostHeartIcon, { color: favoriteIcon.color, marginTop: 0 }]} />
-                        </TouchableOpacity>
-                    </View>
-
+            <View style={{flexDirection: "row", height:40, flex: 1}}>
+                <View style={{flex: .75}} >
+                <Image
+                    style={[styleSelected.avatar, styleSelected.avatarLeftSide, {marginTop: 0, justifyContent:"center", alignItems:"center"}]}
+                    source={{uri: postContent?.user?.picture ? postContent?.user?.picture : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"}}
+                /> 
                 </View>
-                {/* <Text style={styleSelected.feedPostUserName}>{postContent.user.name} <Image style={styleSelected.feedPostRoleIcon} resizeMode="contain" source={feedIcon}/></Text> */}
-                {/* <TouchableOpacity style={styleSelected.feedPostHeartIconPosition} onPress={() => {
-                    if (!hasFavorite) setFavoriteIcon({ name: "heart", color: "#CB1000" })
-                    else setFavoriteIcon({ name: "heart-o", color: "#030849" })
+                <View style={{flex: 2, flexDirection:"row", justifyContent:"flex-start", alignItems:"center"}} >
+                    <Text style={[styleSelected?.feedPostUserName, {marginLeft: 0}]}>{postContent?.user?.name.substring(0,25)}{postContent?.user?.name.length > 25 && "..."}</Text>
+                    <Image style={[styleSelected?.feedPostRoleIcon, {height: 35}]} resizeMode="contain" source={feedIcon}/>
+                    
+                </View>
+                <View style={{flex: 1, justifyContent:"center", alignItems:"flex-end"}} >
+                    <Text style={[styleSelected.feedPostContentSeeComments, {textDecorationLine: "none"}]}>{postContent.date.substring(0,10)}</Text>
+                </View>
+                <View style={{flex: .6, justifyContent:"center", alignItems:"center"}} >
+                <TouchableOpacity onPress={() => {
+                    if (!hasFavorite) setFavoriteIcon({name: "heart", color: "#CB1000"})
+                    else setFavoriteIcon({name: "heart-o", color: "#030849"})
                     favoriteButton(!hasFavorite)
                     setFavorite(!hasFavorite)
                 }}>
-                    <FontAwesome name={favoriteIcon.name} style={[styleSelected.feedPostHeartIcon, { color: favoriteIcon.color }]} />
+                    <FontAwesome name={favoriteIcon.name} style={[styleSelected.feedPostHeartIcon, {color: favoriteIcon.color, marginTop:0,justifyContent:"center", alignItems:"center" }]} />
+                </TouchableOpacity>
+                </View>
+                {/* <Image
+                    style={[styleSelected.avatar, styleSelected.avatarLeftSide, {marginTop: 10}]}
+                    source={{uri: postContent.user.picture ? postContent.user.picture : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"}}
+                /> 
+                <Text style={styleSelected.feedPostUserName}>{postContent.user.name.substring(0,25)}{postContent.user.name.length > 25 && "..."} <Image style={styleSelected.feedPostRoleIcon} source={feedIcon}/></Text>
+                <Text style={[styleSelected.feedPostContentSeeComments, {verticalAlign: "middle", flex: 1, marginRight:45, marginTop:5, textDecorationLine: "none"}]}>{postContent.date.substring(0,10)}</Text>
+                <TouchableOpacity style={styleSelected.feedPostHeartIconPosition} onPress={() => {
+                    if (!hasFavorite) setFavoriteIcon({name: "heart", color: "#CB1000"})
+                    else setFavoriteIcon({name: "heart-o", color: "#030849"})
+                    favoriteButton(!hasFavorite)
+                    setFavorite(!hasFavorite)
+                }}>
+                    <FontAwesome name={favoriteIcon.name} style={[styleSelected.feedPostHeartIcon, {color: favoriteIcon.color}]} />
                 </TouchableOpacity> */}
             </View>
+            {/* <View style={{flexDirection:"row"}}>
+            <Image
+                    style={[styleSelected.avatar, styleSelected.avatarLeftSide, {marginTop: 10}]}
+                    source={{uri: postContent.user.picture ? postContent.user.picture : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"}}
+                /> 
+                <Text style={styleSelected.feedPostUserName}>{postContent.user.name.substring(0,25)}{postContent.user.name.length > 25 && "..."} <Image style={styleSelected.feedPostRoleIcon} source={feedIcon}/></Text>
+                <Text style={[styleSelected.feedPostContentSeeComments, {verticalAlign: "middle", flex: 1, marginRight:45, marginTop:5, textDecorationLine: "none"}]}>{postContent.date.substring(0,10)}</Text>
+                <TouchableOpacity style={styleSelected.feedPostHeartIconPosition} onPress={() => {
+                    if (!hasFavorite) setFavoriteIcon({name: "heart", color: "#CB1000"})
+                    else setFavoriteIcon({name: "heart-o", color: "#030849"})
+                    favoriteButton(!hasFavorite)
+                    setFavorite(!hasFavorite)
+                }}>
+                    <FontAwesome name={favoriteIcon.name} style={[styleSelected.feedPostHeartIcon, {color: favoriteIcon.color}]} />
+                </TouchableOpacity>
+            </View> */}
             <View style={styleSelected.feedPostContentView}>
                 <Text style={styleSelected.feedPostContentText}>{postContent.text}</Text>
                 {/* { !previewLoaded && <View style= {{height:147}}> */}
@@ -289,8 +278,8 @@ const FeedPost = (
                             size={15}
                             color={buttonColor} /><Text style={[styleSelected.feedPostButtonsText, { color: buttonColor }]}> Comment</Text>
                     </TouchableOpacity>
-
-                    <FeedPostCommentList postContent={postContent} commentAmount={postContent.total_comments} avatarPicture={""} modalVisible={true} userName={"tedte"} comment={"text"} />
+                                        
+                    <FeedPostCommentList postContent={postContent} commentAmount={commentAmount} avatarPicture={""} modalVisible={true} userName={"tedte"}  comment={"text"} />
                 </View>
             </View>
         </View>

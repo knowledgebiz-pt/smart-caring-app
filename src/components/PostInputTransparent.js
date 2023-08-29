@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, Image, View, Linking, TouchableOpacity, Touchable, TextInput, useColorScheme, Alert } from "react-native";
+import { Text, Image, View, Linking, TouchableOpacity, Touchable, TextInput, useColorScheme, Alert, Platform } from "react-native";
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -54,10 +54,10 @@ export default function PostInputTransparent(
     const [linkText, setLinkText] = useState("")
     const [clicked, setClicked] = useState(false)
 
-    const pickImage = async () => {
+    const pickImage = async (type) => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            mediaTypes: type,
             allowsEditing: true,
             aspect: [16, 9],
             quality: .2,
@@ -79,8 +79,23 @@ export default function PostInputTransparent(
 
     const pickDocument = async () => {
         let result = await DocumentPicker.getDocumentAsync({
-            type: "&ast;/*"
+            copyToCacheDirectory: true,
+            type: "application/pdf"
         })
+        let filePath = result.uri
+        if (Platform.OS === "android") {
+            filePath = encodeURI(`${filePath}`)
+            // change the file:// to content:// uri
+            // FileSystem.getContentUriAsync(filePath).then((uri) => {filePath = uri; console.log(uri)});
+            console.log(filePath)
+            // filePath = filePath.replace("file", "content")
+            // console.log(filePath)
+          }
+        let fileBase64 = await FileSystem.readAsStringAsync(filePath, {encoding: "base64"})
+        console.warn(fileBase64)
+        // let base64 = result.assets[0].base64
+        // console.log("base64: ",base64)
+        // console.warn(result.assets[0])
     }
 
     let colorScheme = useColorScheme()
@@ -199,7 +214,7 @@ export default function PostInputTransparent(
                 scrollEnabled={true}
             />
             {showButtons && <View style={{flexDirection:"column"}}>
-                <TouchableOpacity onPress={pickImage} style={[styleSelected.smallButtonPost, {borderColor: borderColor}]}>
+                <TouchableOpacity onPress={() => pickImage(ImagePicker.MediaTypeOptions.Images)} style={[styleSelected.smallButtonPost, {borderColor: borderColor}]}>
                     <MaterialCommunityIcons style={{paddingRight:2}} name={'plus'}
                     size={15}
                     color={borderColor}/>
@@ -207,16 +222,16 @@ export default function PostInputTransparent(
                     size={15}
                     color={borderColor}/>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={pickDocument} style={[styleSelected.smallButtonPost, {marginTop: 5, borderColor: borderColor}]}>
+                <TouchableOpacity onPress={() => pickImage(ImagePicker.MediaTypeOptions.Videos)} style={[styleSelected.smallButtonPost, {marginTop: 5, borderColor: borderColor}]}>
                     <MaterialCommunityIcons style={{paddingRight:2}} name={'plus'}
                     size={15}
                     color={borderColor}/>
-                    {/* <MaterialCommunityIcons  name={'movie-open-play'}
-                    size={15}
-                    color={borderColor}/> */}
-                    <FontAwesome  name={'file-text-o'}
+                    <MaterialCommunityIcons  name={'movie-open-play'}
                     size={15}
                     color={borderColor}/>
+                    {/* <FontAwesome  name={'file-text-o'}
+                    size={15}
+                    color={borderColor}/> */}
                 </TouchableOpacity>
                 <TouchableOpacity onPress={ () => {setUrlInputVisible(true)}} style={[styleSelected.smallButtonPost, {marginTop: 5, borderColor: borderColor}]}>
                     <MaterialCommunityIcons style={{paddingRight:2}} name={'plus'}

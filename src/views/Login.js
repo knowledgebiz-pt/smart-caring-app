@@ -134,6 +134,7 @@ export default function Login({ route, navigation }) {
                             UserService.getUserDataByIdUser(email, password).then(response => {
                                 setIsLoading(true)
                                 console.warn(response.data)
+                                navigation.navigate("BottomTab", { userData: response.data })
                             }).catch((error) => {
                                 console.error(error)
                                 setIsLoading(true)

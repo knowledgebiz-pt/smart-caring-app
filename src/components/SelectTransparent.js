@@ -100,7 +100,7 @@ export default function SelectTransparent(
     return (
         <View ref={ref} style={{marginLeft: marginLeft, width: "50%",}}>
             {/* <Text style={[styleSelected.textRegular13DarkBlue,{marginLeft: 20, marginTop: 25, zIndex: 999}]}>{placeholder + selectedValue.label} </Text> */}
-            <DropDownPicker listMode="SCROLLVIEW" key={key2} dropDownContainerStyle={alignDropDownContainerStyle} labelStyle={{color:"red"}} style={[alignStyle, pickerStyles]} placeholder={placeholderText} onSelectItem={onSelectItem} onPress={onPress} open={open} items={items} 
+            <DropDownPicker listMode="SCROLLVIEW" key={key2} maxHeight={200} dropDownContainerStyle={[alignDropDownContainerStyle, {maxHeight: 300}]} labelStyle={{color:"red"}} style={[alignStyle, pickerStyles]} placeholder={placeholderText} onSelectItem={onSelectItem} onPress={onPress} open={open} items={items} 
             ArrowDownIconComponent={() => {
                 return <FontAwesome name="chevron-down" color={labelTextColor} />
             }}

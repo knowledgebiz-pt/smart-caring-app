@@ -7164,10 +7164,10 @@ slugify@^1.3.4:
   resolved "https://registry.yarnpkg.com/slugify/-/slugify-1.6.6.tgz#2d4ac0eacb47add6af9e04d3be79319cbcc7924b"
   integrity sha512-h+z7HKHYXj6wJU+AnS/+IH8Uh9fdcX1Lrhg1/VMdf9PwoBQXFcXiAdsy2tSK0P6gKwJLXp02r90ahUCqHk9rrw==
 
-smart-caring-client@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/smart-caring-client/-/smart-caring-client-1.0.7.tgz#df1b78313d37dddc721f30ecd3f4dc53a4243b42"
-  integrity sha512-PiGYWyovVjTG/qtQSjg98lyMuhupDsUnjhxn5/ZlHaaFurqPprzzbJ73pkw9DpXovWF5gX8iPHPYY17JAw02Pg==
+smart-caring-client@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/smart-caring-client/-/smart-caring-client-1.0.8.tgz#6aa37ea7dde4aed6722a6da5890c814a5bea92ae"
+  integrity sha512-r+O0Jn78wuEahaxZW2+dor+zL37jJ31LPAL/uRumOSbe4bJee1Fti+bHnhYjl2oa9Eb7S8Yo12JHYQqwOO7xsw==
 
 snapdragon-node@^2.0.1:
   version "2.1.1"
