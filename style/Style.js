@@ -341,13 +341,13 @@ const style = StyleSheet.create({
   menuCircleAvatarRightSide: {
     height: 29,
     width: 29,
-    borderWidth: 2,
-    borderRadius: 30,
-    paddingTop: 4.5,
-    paddingLeft: 4.5,
-    marginTop: 75,
-    marginLeft: -22,
-    backgroundColor: colors.BaseSlot1,
+    // borderWidth: 2,
+    // borderRadius: 30,
+    // paddingTop: 4.5,
+    // paddingLeft: 4.5,
+    // marginTop: 75,
+    // marginLeft: -22,
+    // backgroundColor: colors.BaseSlot1,
   },
 
   // Date picker
@@ -398,7 +398,7 @@ const style = StyleSheet.create({
   },
   feedPostRoleIcon: {
     width: 35,
-    height: 20,
+    height: 35,
     marginRight: 20
   },
   feedPostHeartIconPosition: {

@@ -16,6 +16,8 @@ import Toast from 'react-native-toast-message'
 import CommentInputPopup from '../components/CommentInputPopup'
 import CustomLoader from '../components/CustomLoader'
 import RBSheet from 'react-native-raw-bottom-sheet'
+import { VirtualizedList } from 'react-native'
+import { FlashList } from '@shopify/flash-list'
 // import { MyDrawer } from '../components/Drawer'
 
 export default function HomePage({ route, navigation }) {
@@ -26,7 +28,7 @@ export default function HomePage({ route, navigation }) {
     const [open, setOpen] = useState(false)
     const [sortSelectOpen, setSortSelectOpen] = useState(false)
     const [filterSelectOpen, setFilterSelectOpen] = useState(false)
-    const [sortSelectValue, setSortSelectValue] = useState({label: "Recent", value: 'recent'})
+    const [sortSelectValue, setSortSelectValue] = useState({ label: "Recent", value: 'recent' })
     const [filterSelectValue, setFilterSelectValue] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
 
@@ -38,7 +40,7 @@ export default function HomePage({ route, navigation }) {
 
     const mockFeedPosts = [
         {
-            id:1,
+            id: 1,
             avatarPicture: "https://st2.depositphotos.com/3917667/11003/i/950/depositphotos_110038202-stock-photo-the-smiling-male-office-worker.jpg",
             userName: "Rodrigo Sousa",
             userRole: "Caregiver",
@@ -48,19 +50,19 @@ export default function HomePage({ route, navigation }) {
             hasLike: false,
             comments: [
                 {
-                    id:1,
+                    id: 1,
                     avatarPicture: "https://st2.depositphotos.com/3917667/11003/i/950/depositphotos_110038202-stock-photo-the-smiling-male-office-worker.jpg",
                     userName: "Rodrigo Sousa",
                     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce accumsan luctus quam, id pharetra mauris vehicula ut. Donec non iaculis ligula, ut commodo libero. Aenean iaculis mollis efficitur.",
                 },
                 {
-                    id:2,
+                    id: 2,
                     avatarPicture: "https://st2.depositphotos.com/3917667/11003/i/950/depositphotos_110038202-stock-photo-the-smiling-male-office-worker.jpg",
                     userName: "Rodrigo Sousa",
                     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce accumsan luctus quam, id pharetra mauris vehicula ut. Donec non iaculis ligula, ut commodo libero. Aenean iaculis mollis efficitur.",
                 },
                 {
-                    id:3,
+                    id: 3,
                     avatarPicture: "https://st2.depositphotos.com/3917667/11003/i/950/depositphotos_110038202-stock-photo-the-smiling-male-office-worker.jpg",
                     userName: "Rodrigo Sousa",
                     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce accumsan luctus quam, id pharetra mauris vehicula ut. Donec non iaculis ligula, ut commodo libero. Aenean iaculis mollis efficitur.",
@@ -68,7 +70,7 @@ export default function HomePage({ route, navigation }) {
             ]
         },
         {
-            id:2,
+            id: 2,
             avatarPicture: "https://t4.ftcdn.net/jpg/00/66/01/29/360_F_66012928_ztFfdS8dnLgghWKWxrDOH8FfhrzAkI2Z.jpg",
             userName: "Sara Santos",
             userRole: "Health Professional",
@@ -79,7 +81,7 @@ export default function HomePage({ route, navigation }) {
             comments: []
         },
         {
-            id:3,
+            id: 3,
             avatarPicture: "https://t4.ftcdn.net/jpg/00/66/01/29/360_F_66012928_ztFfdS8dnLgghWKWxrDOH8FfhrzAkI2Z.jpg",
             userName: "Sara Santos",
             userRole: "Patient",
@@ -90,7 +92,7 @@ export default function HomePage({ route, navigation }) {
             comments: []
         },
         {
-            id:4,
+            id: 4,
             avatarPicture: "https://st2.depositphotos.com/3917667/11003/i/950/depositphotos_110038202-stock-photo-the-smiling-male-office-worker.jpg",
             userName: "Rodrigo Sousa",
             userRole: "Caregiver",
@@ -117,7 +119,7 @@ export default function HomePage({ route, navigation }) {
             ]
         },
         {
-            id:5,
+            id: 5,
             avatarPicture: "https://t4.ftcdn.net/jpg/00/66/01/29/360_F_66012928_ztFfdS8dnLgghWKWxrDOH8FfhrzAkI2Z.jpg",
             userName: "Sara Santos",
             userRole: "Health Professional",
@@ -128,7 +130,7 @@ export default function HomePage({ route, navigation }) {
             comments: []
         },
         {
-            id:6,
+            id: 6,
             avatarPicture: "https://t4.ftcdn.net/jpg/00/66/01/29/360_F_66012928_ztFfdS8dnLgghWKWxrDOH8FfhrzAkI2Z.jpg",
             userName: "Sara Santos",
             userRole: "Patient",
@@ -145,16 +147,16 @@ export default function HomePage({ route, navigation }) {
     const [displayFeedPosts, setDisplayFeedPosts] = useState([]) // feed posts to display and manipulate
 
     const [sortItems, setSortItems] = useState([
-        {label: 'Recent', value: 'recent'},
-        {label: 'Old', value: 'old'}
+        { label: 'Recent', value: 'recent' },
+        { label: 'Old', value: 'old' }
     ])
 
     const [filterItems, setFilterItems] = useState([
-        {label: "All", value: "All"},
-        {label: 'Caregiver', value: 'Caregiver'},
-        {label: 'Patient', value: 'Patient'},
-        {label: 'Health Professional', value: 'Health Professional'},
-        {label: 'Unlabeled', value: 'Unlabeled'}
+        { label: "All", value: "All" },
+        { label: 'Caregiver', value: 'Caregiver' },
+        { label: 'Patient', value: 'Patient' },
+        { label: 'Health Professional', value: 'Health Professional' },
+        { label: 'Unlabeled', value: 'Unlabeled' }
 
 
     ])
@@ -206,9 +208,9 @@ export default function HomePage({ route, navigation }) {
         }
     }
 
-    const showToast = (msg, type="success") => {
+    const showToast = (msg, type = "success") => {
         // Types: success, error, info
-        Toast.show({type: type, text1: msg, position: 'bottom'})
+        Toast.show({ type: type, text1: msg, position: 'bottom' })
     }
 
     useEffect(() => {
@@ -225,12 +227,12 @@ export default function HomePage({ route, navigation }) {
                 setDisplayFeedPosts(array)
                 setIsLoading(false)
             }).catch(e => {
-                console.error("e: ",e)
+                console.error("e: ", e)
                 setIsLoading(false)
                 showToast("Error getting feed posts.", "error")
             })
-        }).catch(e =>{ 
-            console.error("e: ",e)
+        }).catch(e => {
+            console.error("e: ", e)
             setIsLoading(false)
             showToast("Error: failed to login.", "error")
         })
@@ -262,28 +264,35 @@ export default function HomePage({ route, navigation }) {
             setDisplayFeedPosts(array)
             setIsLoading(false)
         }).catch(e => {
-            console.error("e: ",e)
+            console.error("e: ", e)
             setIsLoading(false)
             showToast("Error getting feed posts.", "error")
         })
     }
 
-    const Item = ({postContent, index}) => (
+    const getItem = (_data, index) => ({
+        id: Math.random().toString(12).substring(0),
+        title: `Item ${index + 1}`,
+    });
+
+    const getItemCount = _data => 50;
+
+    const Item = ({ postContent, index }) => (
         <>
-            {index === 0  && 
-            <>            
-                <View style={{alignSelf: "center"}}>
-                    <Text style={[styleSelected.textBold10DarkBlue]}>Hello, {name.split(" ")[0]}!</Text>
-                </View>
-                <View style={{marginTop: 20}}>
-                    <PostInputTransparent onSubmitEditing={() => {getArticleData()}} userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"}/>
-                </View>
-                <View style={{borderBottomColor: "rgba(28, 163, 252, 0.1)", borderBottomWidth: 1, marginTop:10, width: "90%", alignSelf: "center"}}></View>
-                <SortAndFilterSelects sortItems={sortItems} filterItems={filterItems} onSelectSort={(val) => {setSortSelectValue(val); setSortSelectOpen(false); sortPosts(val)}} sortValue={sortSelectValue} onSelectFilter={(val) => {setFilterSelectValue(val); setFilterSelectOpen(false); filterPosts(val)}} filterValue={filterSelectValue} />
-            </>
+            {index === 0 &&
+                <>
+                    <View style={{ alignSelf: "center" }}>
+                        <Text style={[styleSelected.textBold10DarkBlue]}>Hello, {name.split(" ")[0]}!</Text>
+                    </View>
+                    <View style={{ marginTop: 20 }}>
+                        <PostInputTransparent onSubmitEditing={() => { getArticleData() }} userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"} />
+                    </View>
+                    <View style={{ borderBottomColor: "rgba(28, 163, 252, 0.1)", borderBottomWidth: 1, marginTop: 10, width: "90%", alignSelf: "center" }}></View>
+                    <SortAndFilterSelects sortItems={sortItems} filterItems={filterItems} onSelectSort={(val) => { setSortSelectValue(val); setSortSelectOpen(false); sortPosts(val) }} sortValue={sortSelectValue} onSelectFilter={(val) => { setFilterSelectValue(val); setFilterSelectOpen(false); filterPosts(val) }} filterValue={filterSelectValue} />
+                </>
             }
-            <View key={index} style={{flexDirection: "row", width: "90%", alignSelf: "center", marginTop: 20}}>
-                <FeedPost postContent={postContent} user={user} feedRole={postContent.user.user_type} buttonColor={"#030849"}/>
+            <View key={index} style={{ flexDirection: "row", width: "90%", alignSelf: "center", marginTop: 20 }}>
+                <FeedPost postContent={postContent} user={user} feedRole={postContent.user.user_type} buttonColor={"#030849"} />
             </View>
         </>
     )
@@ -291,9 +300,9 @@ export default function HomePage({ route, navigation }) {
         <SafeAreaView style={[styleSelected.backgroundPrimary, { flex: 1 }]} onLayout={onLayoutRootView}>
             {/* <MyDrawer/> */}
             <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={colorScheme === 'light' ? 'dark-content' : 'light-content'} />
-            <View style={{zIndex:9999, }}>
-                <PostInputPopup onSubmitEditing={() => {getArticleData()}} userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"} />
-                <CommentInputPopup modalVisible={modalVisible} closeModal={() => {setModalVisible(false)}}  blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"Leave your comment:"} />
+            <View style={{ zIndex: 9999, }}>
+                <PostInputPopup onSubmitEditing={() => { getArticleData() }} userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"} />
+                <CommentInputPopup modalVisible={modalVisible} closeModal={() => { setModalVisible(false) }} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"Leave your comment:"} />
             </View>
             <KeyboardAvoidingView
                 style={{ flex: 1 }}
@@ -301,49 +310,52 @@ export default function HomePage({ route, navigation }) {
                 behavior={Platform.OS == 'android' ? 'height' : 'padding'}
                 keyboardVerticalOffset={Platform.OS == 'android' ? -150 : -150}
             >
-                <View style={[styleSelected.backgroundPrimary, {paddingBottom: 115}]}>
-                    <View style={{height:110}}>
-                        <HeaderLogoAndProfileImage img={user.picture}/>
+                <View style={[styleSelected.backgroundPrimary, { paddingBottom: 115, height: "100%" }]}>
+                    <View style={{ height: 110 }}>
+                        <HeaderLogoAndProfileImage img={user.picture} />
                     </View>
                     {displayFeedPosts.length === 0 &&
-                    <>
-                        <View style={{alignSelf: "center"}}>
-                            <Text style={[styleSelected.textBold10DarkBlue]}>Hello, {name.split(" ")[0]}!</Text>
-                        </View>
-                        <View style={{marginTop: 20}}>
-                            <PostInputTransparent onSubmitEditing={() => {getArticleData()}} userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"}/>
-                        </View>
-                        <View style={{borderBottomColor: "rgba(28, 163, 252, 0.1)", borderBottomWidth: 1, marginTop:10, width: "90%", alignSelf: "center"}}></View>
-                        <SortAndFilterSelects sortItems={sortItems} filterItems={filterItems} onSelectSort={(val) => {if (val.value !== sortSelectValue.value) {console.log(val.value); console.log(sortSelectValue.value);setSortSelectValue(val); setSortSelectOpen(false); sortPosts(val)}}} sortValue={sortSelectValue} onSelectFilter={(val) => {setFilterSelectValue(val); setFilterSelectOpen(false); filterPosts(val)}} filterValue={filterSelectValue} />
-                    </>
-                    }
-                    
-                    {isLoadingSort && 
                         <>
-                            <View style={{alignSelf: "center"}}>
+                            <View style={{ alignSelf: "center" }}>
                                 <Text style={[styleSelected.textBold10DarkBlue]}>Hello, {name.split(" ")[0]}!</Text>
                             </View>
-                            <View style={{marginTop: 20}}>
-                                <PostInputTransparent onSubmitEditing={() => {getArticleData()}} userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"}/>
+                            <View style={{ marginTop: 20 }}>
+                                <PostInputTransparent onSubmitEditing={() => { getArticleData() }} userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"} />
                             </View>
-                            <View style={{borderBottomColor: "rgba(28, 163, 252, 0.1)", borderBottomWidth: 1, marginTop:10, width: "90%", alignSelf: "center"}}></View>
-                            <SortAndFilterSelects sortItems={sortItems} filterItems={filterItems} onSelectSort={(val) => {if (val.value !== sortSelectValue.value) {console.log(val.value); console.log(sortSelectValue.value);setSortSelectValue(val); setSortSelectOpen(false); sortPosts(val)}}} sortValue={sortSelectValue} onSelectFilter={(val) => {setFilterSelectValue(val); setFilterSelectOpen(false); filterPosts(val)}} filterValue={filterSelectValue} />
-                            <View style={{paddingTop: -800}}>
-                                <CustomLoader height={200} customStyle={{height:"75%"}} />
+                            <View style={{ borderBottomColor: "rgba(28, 163, 252, 0.1)", borderBottomWidth: 1, marginTop: 10, width: "90%", alignSelf: "center" }}></View>
+                            <SortAndFilterSelects sortItems={sortItems} filterItems={filterItems} onSelectSort={(val) => { if (val.value !== sortSelectValue.value) { console.log(val.value); console.log(sortSelectValue.value); setSortSelectValue(val); setSortSelectOpen(false); sortPosts(val) } }} sortValue={sortSelectValue} onSelectFilter={(val) => { setFilterSelectValue(val); setFilterSelectOpen(false); filterPosts(val) }} filterValue={filterSelectValue} />
+                        </>
+                    }
+
+                    {isLoadingSort &&
+                        <>
+                            <View style={{ alignSelf: "center" }}>
+                                <Text style={[styleSelected.textBold10DarkBlue]}>Hello, {name.split(" ")[0]}!</Text>
+                            </View>
+                            <View style={{ marginTop: 20 }}>
+                                <PostInputTransparent onSubmitEditing={() => { getArticleData() }} userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"} />
+                            </View>
+                            <View style={{ borderBottomColor: "rgba(28, 163, 252, 0.1)", borderBottomWidth: 1, marginTop: 10, width: "90%", alignSelf: "center" }}></View>
+                            <SortAndFilterSelects sortItems={sortItems} filterItems={filterItems} onSelectSort={(val) => { if (val.value !== sortSelectValue.value) { console.log(val.value); console.log(sortSelectValue.value); setSortSelectValue(val); setSortSelectOpen(false); sortPosts(val) } }} sortValue={sortSelectValue} onSelectFilter={(val) => { setFilterSelectValue(val); setFilterSelectOpen(false); filterPosts(val) }} filterValue={filterSelectValue} />
+                            <View style={{ paddingTop: -800 }}>
+                                <CustomLoader height={200} customStyle={{ height: "75%" }} />
                             </View>
                         </>
                     }
-                    {!isLoadingSort && 
-                        <FlatList
-                            data={displayFeedPosts}
-                            renderItem={({item, index}) => {return <Item postContent={item} index={index}/>}}
-                            keyExtractor={item => item.id}
-                            style={{zIndex:-5}}
-                            removeClippedSubviews={false}
-                        />                    
+                    {!isLoadingSort &&
+                        <View style={{ height: "100%" }}>
+                            <FlashList
+                                data={displayFeedPosts}
+                                renderItem={({ item, index }) => { return <Item postContent={item} index={index} /> }}
+                                keyExtractor={item => item._id.$oid}
+                                style={{ zIndex: -5 }}
+                                estimatedItemSize={100}
+                            // removeClippedSubviews={false}
+                            />
+                        </View>
                     }
                 </View>
-                
+
 
             </KeyboardAvoidingView>
         </SafeAreaView>

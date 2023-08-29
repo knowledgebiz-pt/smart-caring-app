@@ -23,11 +23,11 @@ import PostInputTransparent from "./PostInputTransparent";
  * @param event: any
  */
 
-const FeedPost =(
+const FeedPost = (
     {
         buttonColor,
         img,
-        feedRole="",
+        feedRole = "",
         postContent,
         user,
         event
@@ -35,7 +35,7 @@ const FeedPost =(
 
     const [isLoading, setIsLoading] = useState(false)
     const [image, setImage] = useState(null)
-    const [favoriteIcon, setFavoriteIcon] = useState({name: "heart-o", color: "#030849"})
+    const [favoriteIcon, setFavoriteIcon] = useState({ name: "heart-o", color: "#030849" })
     const [hasLike, setLike] = useState(false)
     const [hasFavorite, setFavorite] = useState(false)
     const [previewLoaded, setPreviewLoaded] = useState(false)
@@ -51,7 +51,7 @@ const FeedPost =(
         backgroundColor: "#5B5E8910" // in case of no role
     }
     let feedIcon = null
-    
+
     if (feedRole.toLowerCase() === "caregiver" && postContent.user.visibility) {
         feedStyle["backgroundColor"] = "rgba(86, 178, 136, 0.1)"
         feedIcon = require("../../assets/images/Caregiver.png")
@@ -68,14 +68,14 @@ const FeedPost =(
     useEffect(() => {
         setImage(img)
         if (postContent.favorites && postContent.favorites.length) {
-            let foundId = postContent.favorites.find((id) => {return id === user._id.$oid})
+            let foundId = postContent.favorites.find((id) => { return id === user._id.$oid })
             if (foundId) {
-                setFavoriteIcon({name: "heart", color: "#CB1000"})
+                setFavoriteIcon({ name: "heart", color: "#CB1000" })
                 setFavorite(true)
             }
         }
         if (postContent.likes && postContent.likes.length) {
-            let foundId = postContent.likes.find((id) => {return id === user._id.$oid})
+            let foundId = postContent.likes.find((id) => { return id === user._id.$oid })
             if (foundId) {
                 setLike(true)
             }
@@ -83,9 +83,9 @@ const FeedPost =(
         // retrieveComments()
     }, [])
 
-    const showToast = (msg, type="success") => {
+    const showToast = (msg, type = "success") => {
         // Types: success, error, info
-        Toast.show({type: type, text1: msg, position: 'bottom'})
+        Toast.show({ type: type, text1: msg, position: 'bottom' })
     }
 
     const likeButton = (giveLike) => {
@@ -148,7 +148,7 @@ const FeedPost =(
 
     return (<>
         <View style={[feedStyle, styleSelected.feedPostContainer]}>
-            <CommentInputPopup onSubmitEditing={() => {postContent.total_comments += 1; setModalVisible(false)}} newsId={postContent._id.$oid} userId={user._id.$oid} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"} modalVisible={modalVisible} closeModal={() => {setModalVisible(false)}} />
+            <CommentInputPopup onSubmitEditing={() => { postContent.total_comments += 1; setModalVisible(false) }} newsId={postContent._id.$oid} userId={user._id.$oid} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"} modalVisible={modalVisible} closeModal={() => { setModalVisible(false) }} />
             <View >
                 <RBSheet
                     keyboardAvoidingViewEnabled={false}
@@ -159,93 +159,121 @@ const FeedPost =(
                     closeDuration={50}
                     height={400}
                     customStyles={{
-                    wrapper: {
-                        backgroundColor: "#00000070"
-                    },
-                    draggableIcon: {
-                        backgroundColor: "#000"
-                    },
-                    container: {
-                        borderTopRightRadius: 15,
-                        borderTopLeftRadius: 15
-                    }
+                        wrapper: {
+                            backgroundColor: "#00000070"
+                        },
+                        draggableIcon: {
+                            backgroundColor: "#000"
+                        },
+                        container: {
+                            borderTopRightRadius: 15,
+                            borderTopLeftRadius: 15
+                        }
                     }}
                 >
-                    <View style={[feedStyle, styleSelected.feedPostContainer, { zIndex:99999999}]}>
-                    <View style={{flexDirection: "row"}}>
-                        <Image
-                            style={[styleSelected.avatar, styleSelected.avatarLeftSide, {marginTop: 10}]}
-                            source={{uri: postContent.user.picture ? postContent.user.picture : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"}}
-                        /> 
-                        <Text style={styleSelected.feedPostUserName}>{postContent.user.name} <Image style={styleSelected.feedPostRoleIcon} source={feedIcon}/> </Text>
+                    <View style={[feedStyle, styleSelected.feedPostContainer, { zIndex: 99999999 }]}>
+                        <View style={{ flexDirection: "row" }}>
+                            <Image
+                                style={[styleSelected.avatar, styleSelected.avatarLeftSide, { marginTop: 10 }]}
+                                source={{ uri: postContent.user.picture ? postContent.user.picture : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541" }}
+                            />
+                            <Text style={styleSelected.feedPostUserName}>{postContent.user.name} <Image style={styleSelected.feedPostRoleIcon} resizeMode="cover" source={feedIcon} /> </Text>
+                        </View>
+                        <View style={styleSelected.feedPostContentView}>
+                            <Text style={styleSelected.feedPostContentText}>{postContent.text}</Text>
+                        </View>
                     </View>
-                    <View style={styleSelected.feedPostContentView}>
-                        <Text style={styleSelected.feedPostContentText}>{postContent.text}</Text>                                             
-                    </View>
-                </View>
-                <View style={{flex: 1, justifyContent: "flex-end"}}>
-                <View style={{borderTopWidth: 1.5,borderTopColor: "#ccc",flexDirection: "row",alignItems: "center",padding: 10}}>
-                    <MaterialCommunityIcons name="camera" 
-                        style={{fontSize: 24,color: "#666",marginHorizontal: 5}} />
-                    <MaterialCommunityIcons name="tag-faces" 
-                        style={{fontSize: 24,color: "#666",marginHorizontal: 5}} />
-                    <TextInput style={{flex: 1,height: 36,borderRadius: 36,paddingHorizontal: 10,backgroundColor: "#f1f1f1",
-                        marginHorizontal: 10}} autoFocus placeholder="Write a comment..." />
-                    <MaterialCommunityIcons name="send"
-                        style={[{fontSize: 24,color: "#666",marginHorizontal: 5},{color: "#006BFF"}]}
-                        onPress={() => this.Input.close()} />
-                </View>
+                    <View style={{ flex: 1, justifyContent: "flex-end" }}>
+                        <View style={{ borderTopWidth: 1.5, borderTopColor: "#ccc", flexDirection: "row", alignItems: "center", padding: 10 }}>
+                            <MaterialCommunityIcons name="camera"
+                                style={{ fontSize: 24, color: "#666", marginHorizontal: 5 }} />
+                            <MaterialCommunityIcons name="tag-faces"
+                                style={{ fontSize: 24, color: "#666", marginHorizontal: 5 }} />
+                            <TextInput style={{
+                                flex: 1, height: 36, borderRadius: 36, paddingHorizontal: 10, backgroundColor: "#f1f1f1",
+                                marginHorizontal: 10
+                            }} autoFocus placeholder="Write a comment..." />
+                            <MaterialCommunityIcons name="send"
+                                style={[{ fontSize: 24, color: "#666", marginHorizontal: 5 }, { color: "#006BFF" }]}
+                                onPress={() => this.Input.close()} />
+                        </View>
 
-                </View>
+                    </View>
                     {/* <PostInputTransparent img={user.picture} /> */}
                 </RBSheet>
-                </View>
-            <View style={{flexDirection: "row"}}>
-                <Image
+            </View>
+            <View style={{ flexDirection: "row" }}>
+                {/* <Image
                     style={[styleSelected.avatar, styleSelected.avatarLeftSide, {marginTop: 10}]}
                     source={{uri: postContent.user.picture ? postContent.user.picture : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"}}
-                /> 
-                <Text style={styleSelected.feedPostUserName}>{postContent.user.name} <Image style={styleSelected.feedPostRoleIcon} source={feedIcon}/></Text>
-                <TouchableOpacity style={styleSelected.feedPostHeartIconPosition} onPress={() => {
-                    if (!hasFavorite) setFavoriteIcon({name: "heart", color: "#CB1000"})
-                    else setFavoriteIcon({name: "heart-o", color: "#030849"})
+                />  */}
+                <View style={{ height: 40, flex: 1, flexDirection: "row" }}>
+                    <View style={{ flex: .7, }}>
+                        <Image
+                            style={[styleSelected.avatar, styleSelected.avatarLeftSide, {}]}
+                            source={{ uri: postContent.user.picture ? postContent.user.picture : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541" }}
+                        />
+                    </View>
+                    <View style={{ flex: 2, flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
+                        <Text style={styleSelected.feedPostUserName}>{postContent.user.name}</Text>
+                        <Image style={styleSelected.feedPostRoleIcon} resizeMode="contain" source={feedIcon} />
+                    </View>
+                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                        <Text>10-07-2023</Text>
+                    </View>
+                    <View style={{ flex: .6, justifyContent: "center", alignItems: "center" }}>
+                        <TouchableOpacity onPress={() => {
+                            if (!hasFavorite) setFavoriteIcon({ name: "heart", color: "#CB1000" })
+                            else setFavoriteIcon({ name: "heart-o", color: "#030849" })
+                            favoriteButton(!hasFavorite)
+                            setFavorite(!hasFavorite)
+                        }}>
+                            <FontAwesome name={favoriteIcon.name} style={[styleSelected.feedPostHeartIcon, { color: favoriteIcon.color, marginTop: 0 }]} />
+                        </TouchableOpacity>
+                    </View>
+
+                </View>
+                {/* <Text style={styleSelected.feedPostUserName}>{postContent.user.name} <Image style={styleSelected.feedPostRoleIcon} resizeMode="contain" source={feedIcon}/></Text> */}
+                {/* <TouchableOpacity style={styleSelected.feedPostHeartIconPosition} onPress={() => {
+                    if (!hasFavorite) setFavoriteIcon({ name: "heart", color: "#CB1000" })
+                    else setFavoriteIcon({ name: "heart-o", color: "#030849" })
                     favoriteButton(!hasFavorite)
                     setFavorite(!hasFavorite)
                 }}>
-                    <FontAwesome name={favoriteIcon.name} style={[styleSelected.feedPostHeartIcon, {color: favoriteIcon.color}]} />
-                </TouchableOpacity>
+                    <FontAwesome name={favoriteIcon.name} style={[styleSelected.feedPostHeartIcon, { color: favoriteIcon.color }]} />
+                </TouchableOpacity> */}
             </View>
             <View style={styleSelected.feedPostContentView}>
                 <Text style={styleSelected.feedPostContentText}>{postContent.text}</Text>
                 {/* { !previewLoaded && <View style= {{height:147}}> */}
-                    {/* <LottieView style={{ marginRight: 30 }} resizeMode="contain" autoPlay={true} source={require('../../assets/json/loading-heart.json')} /> */}
-                    
-                    {/* </View>} */}
+                {/* <LottieView style={{ marginRight: 30 }} resizeMode="contain" autoPlay={true} source={require('../../assets/json/loading-heart.json')} /> */}
+
+                {/* </View>} */}
                 {/* <RNUrlPreview onLoad={() => setPreviewLoaded(true)} text={postContent.linkInPost} title={false} description={false} descriptionNumberOfLines={0} containerStyle={{}} imageStyle={styleSelected.feedPostContentUrlPreviewImage} descriptionStyle={{fontSize:0}}  /> */}
-                {(postContent.content.type === "img" || postContent.content.type === "image") && 
-                    <Image source={{uri: postContent.content.path ? postContent.content.path : null}} onLoad={() => setPreviewLoaded(true)} style={styleSelected.feedPostContentUrlPreviewImage} />
+                {(postContent.content.type === "img" || postContent.content.type === "image") &&
+                    <Image source={{ uri: postContent.content.path ? postContent.content.path : null }} onLoad={() => setPreviewLoaded(true)} style={styleSelected.feedPostContentUrlPreviewImage} />
                 }
-                {postContent.content.type === "video" && 
-                    <Video resizeMode={ResizeMode.CONTAIN} useNativeControls source={{uri: postContent.content.path ? postContent.content.path : null}} onLoad={() => setPreviewLoaded(true)} style={styleSelected.feedPostContentUrlPreviewImage} />
+                {postContent.content.type === "video" &&
+                    <Video resizeMode={ResizeMode.CONTAIN} useNativeControls source={{ uri: postContent.content.path ? postContent.content.path : null }} onLoad={() => setPreviewLoaded(true)} style={styleSelected.feedPostContentUrlPreviewImage} />
                 }
                 {postContent.link !== "" && // postContent.link &&
-                    <Text onPress={() => {Linking.openURL(postContent.link)}} style={styleSelected.feedPostContentUrl}>{postContent.link}</Text>
-                
+                    <Text onPress={() => { Linking.openURL(postContent.link) }} style={styleSelected.feedPostContentUrl}>{postContent.link}</Text>
+
                 }
                 <View style={styleSelected.feedPostButtonsView}>
 
-                    { hasLike ?
-                        <TouchableOpacity onPress={() => {setLike(false); likeButton(false)}} style={[styleSelected.smallButtonPost, {borderColor: buttonColor}]}>
-                            <MaterialCommunityIcons  name={'thumb-up'}
+                    {hasLike ?
+                        <TouchableOpacity onPress={() => { setLike(false); likeButton(false) }} style={[styleSelected.smallButtonPost, { borderColor: buttonColor }]}>
+                            <MaterialCommunityIcons name={'thumb-up'}
                                 size={15}
-                                color={"#56B288"}/><Text style={[styleSelected.feedPostButtonsText, {color: buttonColor}]}> Like</Text>
+                                color={"#56B288"} /><Text style={[styleSelected.feedPostButtonsText, { color: buttonColor }]}> Like</Text>
                         </TouchableOpacity> :
-                        
-                        <TouchableOpacity onPress={() => {setLike(true); likeButton(true)}} style={[styleSelected.smallButtonPost, {borderColor: buttonColor}]}>
-                            <MaterialCommunityIcons  name={'thumb-up-outline'}
+
+                        <TouchableOpacity onPress={() => { setLike(true); likeButton(true) }} style={[styleSelected.smallButtonPost, { borderColor: buttonColor }]}>
+                            <MaterialCommunityIcons name={'thumb-up-outline'}
                                 size={15}
-                                color={buttonColor}/><Text style={[styleSelected.feedPostButtonsText, {color: buttonColor}]}> Like</Text>
-                        </TouchableOpacity>                    
+                                color={buttonColor} /><Text style={[styleSelected.feedPostButtonsText, { color: buttonColor }]}> Like</Text>
+                        </TouchableOpacity>
                     }
                     <TouchableOpacity onPress={() => {
                         refRBSheet.current.open()
@@ -256,17 +284,17 @@ const FeedPost =(
                         //     }, 250)
                         // }
                         // else setModalVisible(true)
-                        }} style={[styleSelected.smallButtonPost, {borderColor: buttonColor, marginLeft:5}]}>
+                    }} style={[styleSelected.smallButtonPost, { borderColor: buttonColor, marginLeft: 5 }]}>
                         <MaterialCommunityIcons name={'comment-outline'}
-                        size={15}
-                        color={buttonColor}/><Text style={[styleSelected.feedPostButtonsText, {color: buttonColor}]}> Comment</Text>
+                            size={15}
+                            color={buttonColor} /><Text style={[styleSelected.feedPostButtonsText, { color: buttonColor }]}> Comment</Text>
                     </TouchableOpacity>
-                                        
-                    <FeedPostCommentList postContent={postContent} commentAmount={postContent.total_comments} avatarPicture={""} modalVisible={true} userName={"tedte"}  comment={"text"} />
+
+                    <FeedPostCommentList postContent={postContent} commentAmount={postContent.total_comments} avatarPicture={""} modalVisible={true} userName={"tedte"} comment={"text"} />
                 </View>
             </View>
         </View>
-        </>
+    </>
     )
 }
 export default memo(FeedPost)

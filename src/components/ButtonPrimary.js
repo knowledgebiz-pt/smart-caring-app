@@ -8,7 +8,7 @@ import styleDark from '../../style/StyleDark'
  * @param fullWidth: boolean - If true, will use buttonSizeFullWidth style (width: "100%") instead of buttonSize style (width: "80%")
  */
 
-export default function ButtonPrimary({ title, fullWidth=false, event }) {
+export default function ButtonPrimary({ title, fullWidth=false, event, height }) {
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
@@ -19,7 +19,7 @@ export default function ButtonPrimary({ title, fullWidth=false, event }) {
                 if (typeof event == "function")
                     event()
             }}
-            style={[sizeStyleSelected, { backgroundColor: colors.BaseSlot2 }]}>
+            style={[sizeStyleSelected, { backgroundColor: colors.BaseSlot2 }, {height: (height != undefined || height != null) ? height: 50}]}>
             <Text style={styleSelected.buttonPrimaryText}>
                 {title}
             </Text>
