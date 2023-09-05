@@ -17,6 +17,7 @@ import HomePage from './src/views/HomePage';
 import { BottomTab } from './src/components/BottomTab';
 import Toast from 'react-native-toast-message';
 import ChatSender from './src/views/ChatSender';
+import CreateEvent from './src/views/CreateEvent';
 
 const Stack = createNativeStackNavigator();
 
@@ -36,7 +37,7 @@ export default function App() {
           <Stack.Screen name="CreateAccount" component={CreateAccount} />
           <Stack.Screen name="CreateAccountWithGmail" component={CreateAccountWithGmail} />
           <Stack.Screen name="Features" component={Features} />
-          <Stack.Screen name="HomePage" component={HomePage} />
+          <Stack.Screen name="HomePage" component={HomePage}/>
           <Stack.Screen name="BottomTab" component={BottomTab} />
           <Stack.Screen name="ChatSender" component={ChatSender} options={
             {
@@ -44,6 +45,7 @@ export default function App() {
               headerTitle: 'Chat',
             }
           }/>
+          <Stack.Screen name="CreateEvent" component={CreateEvent} />
         </Stack.Navigator>
       </NavigationContainer>
       <Toast />

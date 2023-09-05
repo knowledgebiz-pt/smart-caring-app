@@ -43,7 +43,7 @@ export default function PostInputTransparent(
         img,
         userId,
         newsId,
-        showButtons=true,
+        showButtons = true,
         event
     }) {
 
@@ -69,11 +69,11 @@ export default function PostInputTransparent(
         });
         let base64 = result.assets[0].base64
         if (result.assets[0].type === "video") {
-            base64 = await FileSystem.readAsStringAsync(result.assets[0].uri, { encoding:"base64"})
+            base64 = await FileSystem.readAsStringAsync(result.assets[0].uri, { encoding: "base64" })
         }
 
         if (!result.canceled) {
-            setPostImage({type: result.assets[0].type, file: base64});
+            setPostImage({ type: result.assets[0].type, file: base64 });
         }
     };
 
@@ -90,8 +90,8 @@ export default function PostInputTransparent(
             console.log(filePath)
             // filePath = filePath.replace("file", "content")
             // console.log(filePath)
-          }
-        let fileBase64 = await FileSystem.readAsStringAsync(filePath, {encoding: "base64"})
+        }
+        let fileBase64 = await FileSystem.readAsStringAsync(filePath, { encoding: "base64" })
         console.warn(fileBase64)
         // let base64 = result.assets[0].base64
         // console.log("base64: ",base64)
@@ -113,9 +113,9 @@ export default function PostInputTransparent(
         setImage(img)
     }, [])
 
-    const showToast = (msg, type="success") => {
+    const showToast = (msg, type = "success") => {
         // Types: success, error, info
-        Toast.show({type: type, text1: msg, position: 'bottom'})
+        Toast.show({ type: type, text1: msg, position: 'bottom' })
     }
 
     const createNews = () => {
@@ -125,7 +125,7 @@ export default function PostInputTransparent(
                 text: textValue,
                 user_id: userId,
                 link: linkText,
-                content: {type:"", path: ""}
+                content: { type: "", path: "" }
             }
             if (postImage) {
                 newsObject["content"] = {
@@ -162,13 +162,13 @@ export default function PostInputTransparent(
         }
     }
 
-    const checkLinkValidity = (url) => {    
+    const checkLinkValidity = (url) => {
         setLinkText(url)
         setUrlInputVisible(false)
         if (url === "") {
             showToast("No URL has been set.", "info")
         }
-        else if (!url.includes("http://") && !url.includes("https://")) {            
+        else if (!url.includes("http://") && !url.includes("https://")) {
             showToast("URL missing \"http://\" or \"https://\"", "info")
         }
         else {
@@ -183,74 +183,75 @@ export default function PostInputTransparent(
         }
     }
 
-    return (<>
+    return (
+        <View >
             <DialogInput isDialogVisible={urlInputVisible}
                 title={"URL Link"}
                 message={"Please insert the whole url to the webpage you wish to link to in your post, including either \"https://\" or \"http://\" :"}
-                hintInput ={"https://www.smartcaring.pt"}
-                submitInput={ (inputText) => {checkLinkValidity(inputText)} }
-                closeDialog={ () => {setUrlInputVisible(false)}}>
+                hintInput={"https://www.smartcaring.pt"}
+                submitInput={(inputText) => { checkLinkValidity(inputText) }}
+                closeDialog={() => { setUrlInputVisible(false) }}>
             </DialogInput>
-        <View style={{flexDirection: "row"}}>
-            <Image
-                style={[styleSelected.avatar, styleSelected.avatarLeftSide]}
-                source={{uri: image ? image : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"}}
-            />
-            <TextInput
-                style={[sizeStyleSelected, inputStyles, {marginTop:0}]}
-                fontStyle={textValue.length == 0 ? 'italic' : "normal"}
-                placeholder={placeholder}
-                placeholderTextColor="rgba(101, 101, 101, 0.5)"
-                inputMode={inputMode}
-                secureTextEntry={secureTextEntry}
-                onSubmitEditing={onSubmitEditing}
-                returnKeyType={returnKeyType}
-                ref={inputRef}
-                blurOnSubmit={blurOnSubmit}
-                onChangeText={(val) => {setTextValue(val)}}
-                value={textValue}
-                multiline={true}
-                numberOfLines={6}
-                scrollEnabled={true}
-            />
-            {showButtons && <View style={{flexDirection:"column"}}>
-                <TouchableOpacity onPress={() => pickImage(ImagePicker.MediaTypeOptions.Images)} style={[styleSelected.smallButtonPost, {borderColor: borderColor}]}>
-                    <MaterialCommunityIcons style={{paddingRight:2}} name={'plus'}
-                    size={15}
-                    color={borderColor}/>
-                    <FontAwesome  name={'picture-o'}
-                    size={15}
-                    color={borderColor}/>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => pickImage(ImagePicker.MediaTypeOptions.Videos)} style={[styleSelected.smallButtonPost, {marginTop: 5, borderColor: borderColor}]}>
-                    <MaterialCommunityIcons style={{paddingRight:2}} name={'plus'}
-                    size={15}
-                    color={borderColor}/>
-                    <MaterialCommunityIcons  name={'movie-open-play'}
-                    size={15}
-                    color={borderColor}/>
-                    {/* <FontAwesome  name={'file-text-o'}
+            <View style={{ flexDirection: "row" }}>
+                <Image
+                    style={[styleSelected.avatar, styleSelected.avatarLeftSide]}
+                    source={{ uri: image ? image : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541" }}
+                />
+                <TextInput
+                    style={[sizeStyleSelected, inputStyles, { marginTop: 0 }]}
+                    fontStyle={textValue.length == 0 ? 'italic' : "normal"}
+                    placeholder={placeholder}
+                    placeholderTextColor="rgba(101, 101, 101, 0.5)"
+                    inputMode={inputMode}
+                    secureTextEntry={secureTextEntry}
+                    onSubmitEditing={onSubmitEditing}
+                    returnKeyType={returnKeyType}
+                    ref={inputRef}
+                    blurOnSubmit={blurOnSubmit}
+                    onChangeText={(val) => { setTextValue(val) }}
+                    value={textValue}
+                    multiline={true}
+                    numberOfLines={6}
+                    scrollEnabled={true}
+                />
+                {showButtons && <View style={{ flexDirection: "column" }}>
+                    <TouchableOpacity onPress={() => pickImage(ImagePicker.MediaTypeOptions.Images)} style={[styleSelected.smallButtonPost, { borderColor: borderColor }]}>
+                        <MaterialCommunityIcons style={{ paddingRight: 2 }} name={'plus'}
+                            size={15}
+                            color={borderColor} />
+                        <FontAwesome name={'picture-o'}
+                            size={15}
+                            color={borderColor} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => pickImage(ImagePicker.MediaTypeOptions.Videos)} style={[styleSelected.smallButtonPost, { marginTop: 5, borderColor: borderColor }]}>
+                        <MaterialCommunityIcons style={{ paddingRight: 2 }} name={'plus'}
+                            size={15}
+                            color={borderColor} />
+                        <MaterialCommunityIcons name={'movie-open-play'}
+                            size={15}
+                            color={borderColor} />
+                        {/* <FontAwesome  name={'file-text-o'}
                     size={15}
                     color={borderColor}/> */}
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => { setUrlInputVisible(true) }} style={[styleSelected.smallButtonPost, { marginTop: 5, borderColor: borderColor }]}>
+                        <MaterialCommunityIcons style={{ paddingRight: 2 }} name={'plus'}
+                            size={15}
+                            color={borderColor} />
+                        <MaterialCommunityIcons name={'link-variant'}
+                            size={15}
+                            color={borderColor} />
+                    </TouchableOpacity>
+
+                </View>}
+            </View>
+            <View style={{ width: "10%", marginLeft: 264, marginTop: -35 }}>
+                <TouchableOpacity onPress={!clicked ? () => { createNews(), onSubmitEditing, event } : () => { }} style={{ borderWidth: 0, borderRadius: 10, borderTopLeftRadius: 0, borderTopRightRadius: 0, borderColor: borderColor, flexDirection: "row", height: 30, paddingLeft: 10, paddingRight: 10, paddingTop: 5, paddingBottom: 5, marginTop: 5, }}>
+                    <FontAwesome name={'send-o'}
+                        size={17}
+                        color={colors.BaseSlot2} />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={ () => {setUrlInputVisible(true)}} style={[styleSelected.smallButtonPost, {marginTop: 5, borderColor: borderColor}]}>
-                    <MaterialCommunityIcons style={{paddingRight:2}} name={'plus'}
-                    size={15}
-                    color={borderColor}/>
-                    <MaterialCommunityIcons  name={'link-variant'}
-                    size={15}
-                    color={borderColor}/>
-                </TouchableOpacity>
-                
-            </View>}
+            </View>
         </View>
-        <View style={{width: "10%", marginLeft: 264, marginTop:-35}}>
-            <TouchableOpacity onPress={!clicked ? () => {createNews(), onSubmitEditing, event} : () => {}} style={{borderWidth: 0, borderRadius: 10,borderTopLeftRadius:0, borderTopRightRadius:0, borderColor:borderColor, flexDirection:"row", height: 30, paddingLeft: 10, paddingRight: 10, paddingTop: 5, paddingBottom: 5, marginTop: 5, }}>                    
-                <FontAwesome name={'send-o'}
-                size={17}
-                color={colors.BaseSlot2}/>
-            </TouchableOpacity>
-        </View>
-        </>
     )
 }

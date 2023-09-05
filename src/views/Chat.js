@@ -86,7 +86,7 @@ const listMock = [{
         deleted: false,
         viewed: true,
         sent: true,
-    },{
+    }, {
         id_message: 3,
         type: 'text',
         content: 'Tudo bem também asdasdasdasdasdasdas asdasd asdasd asd a',
@@ -98,28 +98,58 @@ const listMock = [{
     }],
 }]
 
-
 export default function Chat({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(false)
     const [search, setSearch] = useState('')
     const [list, setList] = useState(listMock)
+    const [socketData, setSocketData] = useState(null);
+
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
 
     const [indexSelected, setIndexSelected] = useState(0)
     const [find, setFind] = useState('')
+    var tokensClient = ["da17442d-bbf8-4309-933a-017d1e4d6b85", "9063164c-6ad7-4106-b94e-0a69d539f972"]
+
+    const ws = new WebSocket("ws://192.168.1.82:8000/private-chat", null, {
+        headers: {
+            ['token-client']: JSON.stringify(tokensClient),
+        }
+    });
 
     useEffect(() => {
+
         console.log('OPEN', Chat.name, 'SCREEN')
-        //For test loading
-        setTimeout(() => {
-            setIsLoading(true)
-        }, 1000);
+        setIsLoading(true)
+
         return () => {
             console.log('SCREEN', Chat.name, 'CLOSE')
         }
     }, [])
+
+    useEffect(() => {
+        navigation.addListener('focus', () => {
+            console.log('INIT WebSocket connection opened');
+            ws.onopen = () => {
+                // Connection opened
+                console.log('WebSocket connection opened');
+            };
+
+            ws.onclose = event => {
+                // Connection closed
+                console.log('WebSocket connection closed:', event);
+            };
+
+            ws.onmessage = event => {
+                console.log('WebSocket message received:', event.data);
+            };
+        })
+        navigation.addListener('blur', () => {
+            console.log('WebSocket connection closed');
+            ws.close();
+        })
+    }, [navigation])
 
     useEffect(() => {
         filterChat()
@@ -192,7 +222,17 @@ export default function Chat({ route, navigation }) {
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            onPress={() => setIndexSelected(1)}
+                            onPress={() => {
+                                setIndexSelected(1)
+                                ws.send(JSON.stringify({
+                                    "token-chat": "da17442d-bbf8-4309-933a-017d1e4d6b85",
+                                    "id_user_sender": "123",
+                                    "name_user_sender": "Oscar",
+                                    "picture_user_sender": "",
+                                    "content": "Teste com react native Ragner",
+                                    "type_content": "text"
+                                }));
+                            }}
                             style={{ borderRightWidth: 1, borderRightColor: colors.BaseSlot5, flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: indexSelected == 1 ? colors.BaseSlot6 : "transparent" }}>
                             <Text style={[styleSelected.textRegular16, { color: indexSelected == 1 ? colors.BaseSlot1 : colors.BaseSlot5 }]}>Private</Text>
                         </TouchableOpacity>

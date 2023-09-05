@@ -201,6 +201,7 @@ const style = StyleSheet.create({
     marginRight: 15,
     marginTop:-21,
     maxHeight: 101,
+    minHeight: 101,
   },
   smallButtonPost: {
     borderWidth: 1, 
@@ -480,6 +481,19 @@ const style = StyleSheet.create({
     position:'absolute', 
     marginLeft: 346, 
     marginTop: 725, 
+    backgroundColor: colors.BaseSlot4, 
+    width: 80, 
+    borderBottomLeftRadius:30, 
+    paddingRight:30, 
+    paddingTop:10, 
+    paddingBottom:5, 
+    borderTopLeftRadius:30, 
+    alignItems:"center" 
+  },
+  journalEntryCreationOpenButton: {
+    position:'absolute', 
+    marginLeft: 346, 
+    marginTop: 700, 
     backgroundColor: colors.BaseSlot4, 
     width: 80, 
     borderBottomLeftRadius:30, 

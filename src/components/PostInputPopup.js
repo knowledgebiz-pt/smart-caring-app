@@ -6,7 +6,7 @@ import PostInputTransparent from './PostInputTransparent'
 import { FontAwesome } from "@expo/vector-icons"
 
 
-export default function PostInputPopup({ 
+export default function PostInputPopup({
     blurOnSubmit,
     onSubmitEditing,
     hasBorder,
@@ -14,30 +14,32 @@ export default function PostInputPopup({
     placeholder,
     img,
     userId,
-    event 
+    event
 }) {
     const [modalVisible, setModalVisible] = useState(false)
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
-    var colors = require('../../style/Colors.json') 
+    var colors = require('../../style/Colors.json')
 
     useEffect(() => {
 
-     }, [])
+    }, [])
 
     return (
-        <View style={{paddingTop: 10}}>
-            <TouchableOpacity style={styleSelected.modalOpenButton} onPress={() => {setModalVisible(true)}}><FontAwesome color={colors.BaseSlot1} size={40} name='plus' /></TouchableOpacity>
+        <View style={{ paddingTop: 10 }}>
+            <TouchableOpacity style={styleSelected.modalOpenButton} onPress={() => { setModalVisible(true) }}><FontAwesome color={colors.BaseSlot1} size={40} name='plus' /></TouchableOpacity>
             <View style={styleSelected.modalCenteredView}>
                 <Modal animationType='fade' transparent={true} visible={modalVisible}>
                     <Pressable style={styleSelected.modalCenteredView} onPress={(event) => event.target === event.currentTarget && setModalVisible(false)}>
-                        <View style={styleSelected.modalView}>
-                            <PostInputTransparent event={() => setModalVisible(false)} onSubmitEditing={onSubmitEditing} userId={userId} blurOnSubmit={blurOnSubmit} img={img} hasBorder={hasBorder} borderColor={borderColor} placeholder={placeholder}/>
+                        <View style={{ flex: 1, marginTop: 80 }} onTouchEnd={(event) => event.target === event.currentTarget && setModalVisible(false)}>
+                            <View style={[styleSelected.modalView, { borderTopEndRadius: 20, borderTopLeftRadius: 20 }]}>
+                                <PostInputTransparent event={() => setModalVisible(false)} onSubmitEditing={onSubmitEditing} userId={userId} blurOnSubmit={blurOnSubmit} img={img} hasBorder={hasBorder} borderColor={borderColor} placeholder={placeholder} />
+                            </View>
                         </View>
                     </Pressable>
                 </Modal>
             </View>
         </View>
     )
-    
+
 }

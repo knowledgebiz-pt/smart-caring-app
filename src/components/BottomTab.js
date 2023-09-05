@@ -33,7 +33,7 @@ export function BottomTab() {
 
   return (
     <Tab.Navigator
-      initialRouteName="HomePage"
+      initialRouteName="MySchedule"
       activeColor='white'
       inactiveColor='white'
       barStyle={{backgroundColor: colors.BaseSlot2}}
