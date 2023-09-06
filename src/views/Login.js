@@ -11,6 +11,7 @@ import { OpenAPI, UserService } from "smart-caring-client/client"
 import * as LocalAuthentication from "expo-local-authentication";
 import * as Google from "expo-auth-session/providers/google";
 import Toast from 'react-native-toast-message'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function Login({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(true)
@@ -134,6 +135,7 @@ export default function Login({ route, navigation }) {
                             UserService.getUserDataByIdUser(email, password).then(response => {
                                 setIsLoading(true)
                                 console.warn(response.data)
+                                AsyncStorage.setItem("@token", response.data._id.$oid)
                                 navigation.navigate("BottomTab", { userData: response.data })
                             }).catch((error) => {
                                 console.error(error)

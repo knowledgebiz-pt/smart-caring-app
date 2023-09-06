@@ -5,6 +5,8 @@ import styleDark from '../../style/StyleDark'
 import { MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
 import ModalMenu from './ModalMenu';
 import RBSheet from 'react-native-raw-bottom-sheet';
+import { OpenAPI } from 'smart-caring-client/client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 /***
@@ -44,7 +46,7 @@ export default function HeaderLogoAndProfileImage({img, onPressImage, user}) {
 
     const optionPressed = (option) => {
         if (option.value === "logout") {
-            console.log("Logout")
+            AsyncStorage.clear()
         }
     }
 

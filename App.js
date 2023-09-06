@@ -18,16 +18,20 @@ import { BottomTab } from './src/components/BottomTab';
 import Toast from 'react-native-toast-message';
 import ChatSender from './src/views/ChatSender';
 import CreateEvent from './src/views/CreateEvent';
+import SplashScreen from './src/views/SplashScreen';
 import { OpenAPI } from 'smart-caring-client/client';
 
+
 const Stack = createNativeStackNavigator();
+
+OpenAPI.BASE = "http://192.168.1.82:8000"
 
 export default function App() {
   return (
     //<MyDrawer>
     <>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='BottomTab'>
+        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='SplashScreen'>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="RecoverPassword" component={RecoverPassword} />
@@ -50,6 +54,7 @@ export default function App() {
             headerShown: true,
             headerTitle: 'Create Event',
           }}/>
+<Stack.Screen name="SplashScreen" component={SplashScreen} />
         </Stack.Navigator>
       </NavigationContainer>
       <Toast />
