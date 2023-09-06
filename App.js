@@ -18,6 +18,7 @@ import { BottomTab } from './src/components/BottomTab';
 import Toast from 'react-native-toast-message';
 import ChatSender from './src/views/ChatSender';
 import CreateEvent from './src/views/CreateEvent';
+import { OpenAPI } from 'smart-caring-client/client';
 
 const Stack = createNativeStackNavigator();
 
@@ -45,7 +46,10 @@ export default function App() {
               headerTitle: 'Chat',
             }
           }/>
-          <Stack.Screen name="CreateEvent" component={CreateEvent} />
+          <Stack.Screen name="CreateEvent" component={CreateEvent} options={{
+            headerShown: true,
+            headerTitle: 'Create Event',
+          }}/>
         </Stack.Navigator>
       </NavigationContainer>
       <Toast />

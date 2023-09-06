@@ -11,6 +11,8 @@ import { FlashList } from '@shopify/flash-list'
 import RBSheet from 'react-native-raw-bottom-sheet'
 import * as ExpoCalendar from 'expo-calendar';
 import ButtonPrimary from '../components/ButtonPrimary'
+import uuid from 'react-native-uuid';
+import { set } from 'react-native-reanimated'
 
 export default function MySchedule({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(true)
@@ -20,39 +22,19 @@ export default function MySchedule({ route, navigation }) {
     const [selected, setSelected] = useState(`${new Date().getFullYear()}-${(new Date().getMonth() + 1).toString().padStart(2, "0")}-${new Date().getDate().toString().padStart(2, "0")}`);
     const [initialDate, setInitialDate] = useState(new Date())
     const [idsCalendars, setIdsCalendars] = useState([])
-    const [eventsCalendar, setEventsCalendar] = useState([])
+    const [accounts, setAccounts] = useState([])
+    // const [eventsCalendar, setEventsCalendar] = useState([])
+    const eventsCalendar = useRef([])
     const [markedDates, setMarkedDates] = useState({})
     const [eventsSelecteds, setEventsSelecteds] = useState([])
 
     const [calendarViews, setCalendarViews] = useState([{ label: "Monthly", value: 1 }, { label: "Weekly", value: 2 }])
     const [currentView, setCurrentView] = useState({ label: "Monthly", value: 1 })
 
-    const [mockData, setMockData] = useState([
-        {
-            title: "Doctor appointment",
-            description: "ifodsjghiovxkjvsd saofjvsindjagnew fdsagqwefwe",
-            date: "23/07/2023",
-            startHour: "14h30",
-            endHour: "15h00",
-            recursion: "Occur every Friday",
-            testingColor: "beige"
-        },
-        {
-            title: "Doctor appointment 2",
-            description: "ifodsjghiovxkjvsd saofjvsindjagnew fdsagqwefwe 2",
-            date: "23/07/2023",
-            startHour: "14h40",
-            endHour: "15h10",
-            recursion: "Occur every Friday 2",
-            testingColor: "orange"
-        },
-    ])
-
     const today = new Date()
-    const todayFormatted = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}`
 
     const onDayPress = useCallback(day => {
-        var filterByDay = eventsCalendar.filter(event => event.startDate.split('T')[0] === day.dateString)
+        var filterByDay = eventsCalendar.current.filter(event => event.startDate.split('T')[0] === day.dateString)
         console.log("FILTER BY DAY", filterByDay)
         setEventsSelecteds(filterByDay)
         setSelected(day.dateString)
@@ -89,8 +71,13 @@ export default function MySchedule({ route, navigation }) {
         return new Promise(res => {
             ExpoCalendar.getEventsAsync([value], new Date(2023, 1, 1), new Date(2027, 12, 31)).then((data) => {
                 console.log("GETING EVENTS")
-                setEventsCalendar(eventsCalendar => [...eventsCalendar, ...data])
+                eventsCalendar.current = [...eventsCalendar.current, ...data]
+                // setEventsCalendar(eventsCalendar => [...eventsCalendar, ...data])
                 res(data)
+            }).catch((error) => {
+                console.log("ERROR GETING EVENTS")
+                console.log(error)
+                res([])
             })
         })
     }
@@ -100,35 +87,89 @@ export default function MySchedule({ route, navigation }) {
             .then(x => array.length == 0 ? x : executeSequentially(array));
     }
 
-    async function GetPermissionsCalendar() {
-        const { status } = await ExpoCalendar.requestCalendarPermissionsAsync();
-        console.log("STATUS CALENDAR", status)
-        if (status === 'granted') {
-            const calendars = await ExpoCalendar.getCalendarsAsync(ExpoCalendar.EntityTypes.EVENT);
-            console.log('Here are all your calendars:');
-            console.log(JSON.stringify(calendars, undefined, 4));
-            setIdsCalendars(calendars.map(calendar => calendar.id))
-            executeSequentially(idsCalendars).then((data) => {
-                console.log("FINISH")
-                var markedDate = {}
-                eventsCalendar.forEach(event => {
-                    // Transform this date 2021-10-04T23:00:00.000Z to this 2021-10-04
-                    var dateMarked = new Date(event.startDate).toISOString().split('T')[0]
-                    var timeOfMeet = new Date(event.startDate).toISOString().split('T')[1].split('.')[0]
-                    console.log("DATE MARKED", dateMarked)
-                    console.log("TIME OF MEET", timeOfMeet)
-                    var res = {
-                        marked: true,
-                        selected: true,
-                        selectedColor: "#1CA3FC"
-                    }
-                    markedDate = Object.assign(markedDate, { [dateMarked]: res })
-                    setIsLoading(false)
+    function GetPermissionsCalendar() {
+        ExpoCalendar.requestCalendarPermissionsAsync().then((permission) => {
+            console.log("STATUS CALENDAR", permission)
+            if (permission.status === "granted") {
+                console.log("GRANTED")
+                ExpoCalendar.getCalendarsAsync(ExpoCalendar.EntityTypes.EVENT).then((calendars) => {
+                    console.log('Here are all your calendars:');
+                    console.log(JSON.stringify(calendars, undefined, 4));
+                    setAccounts(calendars)
+                    var idsCalendars = []
+                    // setIdsCalendars(calendars.map(calendar => calendar.id))
+                    calendars.forEach(calendar => {
+                        idsCalendars.push(calendar.id)
+                    })
+                    setIdsCalendars(idsCalendars)
+                    console.log("IDS CALENDARS", idsCalendars.length)
+                    executeSequentially(idsCalendars).then((data) => {
+                        console.log("FINISH")
+                        var markedDate = {}
+                        eventsCalendar.current.forEach(event => {
+                            // Transform this date 2021-10-04T23:00:00.000Z to this 2021-10-04
+                            var dateMarked = new Date(event.startDate).toISOString().split('T')[0]
+                            var timeOfMeet = new Date(event.startDate).toISOString().split('T')[1].split('.')[0]
+                            console.log("DATE MARKED", dateMarked)
+                            console.log("TIME OF MEET", timeOfMeet)
+                            var res = {
+                                marked: true,
+                                selected: true,
+                                selectedColor: "#1CA3FC"
+                            }
+                            markedDate = Object.assign(markedDate, { [dateMarked]: res })
+                        })
+                        setMarkedDates(markedDate)
+                        setIsLoading(false)
+                    }).catch((error) => {
+                        console.log("Error execute sequentially", error)
+                    })
+                }).catch((error) => {
+                    console.log("Error get calendars", error)
                 })
-                setMarkedDates(markedDate)
-            })
-        }
+            } else {
+                console.log("DENIED")
+            }
+        }).catch((error) => {
+            console.log("Error in permission calendar", error)
+        });
     }
+
+    // async function GetPermissionsCalendar() {
+    //     const { status } = await ExpoCalendar.requestCalendarPermissionsAsync();
+    //     console.log("STATUS CALENDAR", status)
+    //     if (status === 'granted') {
+    //         console.log("GRANTED")
+    //         setIsLoading(false)
+    //         const calendars = await ExpoCalendar.getCalendarsAsync(ExpoCalendar.EntityTypes.EVENT);
+    //         console.log('Here are all your calendars:');
+    //         console.log(JSON.stringify(calendars, undefined, 4));
+    //         setAccounts(calendars)
+    //         setIdsCalendars(calendars.map(calendar => calendar.id))
+    //         executeSequentially(idsCalendars).then((data) => {
+    //             console.log("FINISH")
+    //             var markedDate = {}
+    //             eventsCalendar.forEach(event => {
+    //                 // Transform this date 2021-10-04T23:00:00.000Z to this 2021-10-04
+    //                 var dateMarked = new Date(event.startDate).toISOString().split('T')[0]
+    //                 var timeOfMeet = new Date(event.startDate).toISOString().split('T')[1].split('.')[0]
+    //                 console.log("DATE MARKED", dateMarked)
+    //                 console.log("TIME OF MEET", timeOfMeet)
+    //                 var res = {
+    //                     marked: true,
+    //                     selected: true,
+    //                     selectedColor: "#1CA3FC"
+    //                 }
+    //                 markedDate = Object.assign(markedDate, { [dateMarked]: res })
+    //                 setIsLoading(false)
+    //             })
+    //             setMarkedDates(markedDate)
+    //         })
+    //     } else {
+    //         console.log("DENIED")
+    //         setIsLoading(false)
+    //     }
+    // }
 
     Appearance.getColorScheme()
     Appearance.addChangeListener(({ colorScheme }) => {
@@ -164,7 +205,7 @@ export default function MySchedule({ route, navigation }) {
                     <View style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
                         <FontAwesome size={15} name='search' />
                     </View>
-                    <TextInput style={{ marginLeft: 10, height: 30}} placeholder='Search'></TextInput>
+                    <TextInput style={{ marginLeft: 10, height: 30 }} placeholder='Search'></TextInput>
                 </View>
             </View>
 
@@ -287,7 +328,7 @@ export default function MySchedule({ route, navigation }) {
                             <Image style={[{width: 35, height: 20, marginLeft: 10, tintColor:"white"}, ]} source={userType}/>
                         </View> */}
                         {options.map(list => (
-                            <View style={{ flex: 1 }}>
+                            <View key={uuid.v4.toString()} style={{ flex: 1 }}>
                                 <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", backgroundColor: "#D00", marginTop: 15, borderRadius: 10, height: 50 }}
                                     key={list.id}
                                     onPress={() => optionPressed(list)}
@@ -304,6 +345,13 @@ export default function MySchedule({ route, navigation }) {
                         ))}
                     </View>
                 </RBSheet>
+
+                <View style={{ height: 50, width: 50, backgroundColor: "blue", position: "absolute", right: 10, bottom: 10 }}
+                    onTouchEnd={() => {
+                        navigation.navigate("CreateEvent", { accounts: accounts })
+                    }}>
+
+                </View>
 
             </KeyboardAvoidingView>
 

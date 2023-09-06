@@ -1,22 +1,38 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
-import { SafeAreaView, StatusBar, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text } from 'react-native'
+import { SafeAreaView, StatusBar, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text, TextInput } from 'react-native'
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
 import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
 import InputDefault from '../components/InputDefault'
+import DropDownPicker from 'react-native-dropdown-picker'
+import DateTimePicker from '@react-native-community/datetimepicker';
+import ButtonPrimary from '../components/ButtonPrimary'
+import * as Calendar from 'expo-calendar';
+import { and, set } from 'react-native-reanimated'
+import { Toast } from 'react-native-toast-message/lib/src/Toast'
+
 
 export default function CreateEvent({ route, navigation }) {
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     const [nameEvent, setNameEvent] = useState("")
     const [descriptionEvent, setDescriptionEvent] = useState("")
-    const [dateStartEvent, setDateStartEvent] = useState("")
-    const [dateEndEvent, setDateEndEvent] = useState("")
+    const [dateStartEvent, setDateStartEvent] = useState(new Date())
+    const [dateEndEvent, setDateEndEvent] = useState(new Date())
     const [timeStartEvent, setTimeStartEvent] = useState("")
     const [timeEndEvent, setTimeEndEvent] = useState("")
     const [isAllDayEvent, setIsAllDayEvent] = useState(false)
     const [isAlarmEvent, setIsAlarmEvent] = useState(false)
+    const [isOpenDropdown, setIsOpenDropdown] = useState(false)
+    const [filterItems, setFilterItems] = useState([])
+    const [accoutSelected, setAccoutSelected] = useState(null)
+    const [ShowDataPicker, setShowDataPicker] = useState(false)
+    const [showTimePickerStart, setShowTimePickerStart] = useState(false)
+    const [ShowDataPickerEnd, setShowDataPickerEnd] = useState(false)
+    const [showTimePickerEnd, setShowTimePickerEnd] = useState(false)
+
+    var dateStartAndroid = new Date(dateStartEvent)
 
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
@@ -24,6 +40,12 @@ export default function CreateEvent({ route, navigation }) {
 
     useEffect(() => {
         console.log('OPEN', CreateEvent.name, 'SCREEN')
+        console.log(route.params.accounts)
+        route.params.accounts.forEach((element, idx) => {
+            console.log("title", element.title)
+            console.log("id", element.id)
+            setFilterItems(filterItems => [...filterItems, { label: element.title, value: element.id }])
+        });
         //For test loading
         setTimeout(() => {
             setIsLoading(true)
@@ -48,6 +70,7 @@ export default function CreateEvent({ route, navigation }) {
             <Loader />
         );
     }
+
     return (
         <SafeAreaView style={[styleSelected.backgroundPrimary, { flex: 1 }]} onLayout={onLayoutRootView}>
             <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={colorScheme === 'light' ? 'dark-content' : 'light-content'} />
@@ -57,23 +80,346 @@ export default function CreateEvent({ route, navigation }) {
                 behavior={Platform.OS == 'android' ? 'height' : 'padding'}
                 keyboardVerticalOffset={Platform.OS == 'android' ? -150 : -150}
             >
-                <View style={[styleSelected.backgroundPrimary, { flex: 1 }]}>
-                    <InputDefault
-                        input={nameEvent}
-                        setInput={setNameEvent}
-                        placeholder={"Title"}
-                        inputColor={"black"}
-                        lineFocusColor={colors.BaseSlot2}
-                        lineUnfocusColor={colors.BaseSlot4}
-                    />
-                    <InputDefault
-                        input={descriptionEvent}
-                        setInput={setDescriptionEvent}
-                        placeholder={"Description"}
-                        inputColor={"black"}
-                        lineFocusColor={colors.BaseSlot2}
-                        lineUnfocusColor={colors.BaseSlot4}
-                    />
+                <View style={[styleSelected.backgroundPrimary, { flex: 1, marginTop: 20 }]}>
+                    <View style={{ justifyContent: "flex-start", alignItems: "center", display: "flex", alignContent: "center", height: isOpenDropdown ? 280 : 80 }}>
+                        <Text>Select account</Text>
+                        <DropDownPicker
+                            listMode="SCROLLVIEW"
+                            key={"key1"}
+                            style={{ maxHeight: 40, height: 40, borderWidth: .5, borderColor: "#A8A8A8", color: "red", padding: 5, paddingLeft: 15, paddingRight: 15, width: "100%", alignItems: "center", justifyContent: "center", minHeight: 30, alignSelf: "center" }}
+                            containerStyle={{ width: "85%", marginTop: 10, backgroundColor: "white", alignSelf: "center" }}
+                            selectedItemContainerStyle={{ height: 40, alignItems: "center", justifyContent: "center", minHeight: 30, backgroundColor: "red", alignSelf: "center" }}
+                            onPress={() => {
+                                console.log("onPress")
+                                setIsOpenDropdown(!isOpenDropdown)
+                            }}
+                            onSelectItem={(item) => {
+                                console.log("onSelectItem")
+                                console.log(item)
+                                setAccoutSelected(item)
+                                setIsOpenDropdown(false)
+                            }}
+                            placeholder={accoutSelected ? accoutSelected.label : "Select a count"}
+                            items={filterItems}
+                            open={isOpenDropdown}
+                        // ArrowDownIconComponent={() => {
+                        //     return <FontAwesome name="chevron-down" color={"#A8A8A8"} />
+                        // }}
+                        // ArrowUpIconComponent={() => {
+                        //     return <FontAwesome name="chevron-up" color={"#A8A8A8"} />
+                        // }}
+                        />
+                    </View>
+                    <TextInput
+                        multiline={false}
+                        placeholder={'Title'}
+                        placeholderTextColor={colors.BaseSlot3}
+                        onChangeText={(text) => setNameEvent(text)}
+                        value={nameEvent}
+                        style={{
+                            backgroundColor: colors.BaseSlot1,
+                            minHeight: 40,
+                            borderColor: colors.BaseSlot3,
+                            borderWidth: 1,
+                            margin: 5,
+                            borderRadius: 10,
+                            padding: 10,
+                            width: "85%",
+                            alignSelf: "center"
+                        }} />
+
+                    <TextInput
+                        multiline={true}
+                        placeholder={'Description'}
+                        placeholderTextColor={colors.BaseSlot3}
+                        onChangeText={(text) => setDescriptionEvent(text)}
+                        value={descriptionEvent}
+                        style={{
+                            backgroundColor: colors.BaseSlot1,
+                            minHeight: 40,
+                            borderColor: colors.BaseSlot3,
+                            borderWidth: 1,
+                            margin: 5,
+                            borderRadius: 10,
+                            padding: 10,
+                            width: "85%",
+                            alignSelf: "center"
+                        }} />
+                    <View style={{ height: 120, justifyContent: "space-evenly", alignItems: "center" }}>
+                        <Text>Select date and time to start</Text>
+                        {
+                            Platform.OS == "ios" && (
+                                <DateTimePicker
+                                    testID="dateTimePicker"
+                                    style={{ alignSelf: "center" }}
+                                    value={dateStartEvent}
+                                    mode={"datetime"}
+                                    is24Hour={false}
+                                    focusable={false}
+                                    timeZoneOffsetInMinutes={0}
+                                    display="default"
+                                    onChange={(event, selectedDate) => {
+                                        const currentDate = selectedDate || dateStartEvent;
+                                        console.log("currentDateStart", new Date(currentDate))
+                                        setDateStartEvent(currentDate);
+                                    }}
+                                />
+                            )
+                        }
+                        {
+                            Platform.OS == "android" && (
+                                <View
+                                    style={{ width: "100%" }}
+                                    onTouchEnd={() => {
+                                        console.log("onTouchEnd")
+                                        setShowDataPicker(!ShowDataPicker)
+                                    }}>
+                                    <TextInput
+                                        multiline={true}
+                                        placeholder={'Start Date'}
+                                        placeholderTextColor={colors.BaseSlot3}
+                                        onChangeText={(text) => setDescriptionEvent(text)}
+                                        editable={false}
+                                        value={dateStartEvent.toLocaleDateString() + " " + dateStartEvent.toLocaleTimeString()}
+                                        style={{
+                                            backgroundColor: colors.BaseSlot1,
+                                            minHeight: 40,
+                                            borderColor: colors.BaseSlot3,
+                                            borderWidth: 1,
+                                            margin: 5,
+                                            borderRadius: 10,
+                                            padding: 10,
+                                            width: "85%",
+                                            alignSelf: "center"
+                                        }} />
+                                    {
+                                        ShowDataPicker && (
+                                            <DateTimePicker
+                                                testID="dateTimePicker"
+                                                style={{ alignSelf: "center" }}
+                                                value={dateStartEvent}
+                                                mode={"datetime"}
+                                                is24Hour={false}
+                                                timeZoneOffsetInMinutes={0}
+                                                display="default"
+                                                onChange={(event, selectedDate) => {
+                                                    console.log("event", event)
+                                                    console.log("selectedDate", selectedDate)
+                                                    if (event.type == "dismissed")
+                                                        setShowDataPicker(false)
+                                                    else {
+                                                        setShowDataPicker(false)
+                                                        setShowTimePickerStart(true)
+                                                        console.log("dateStartAndroid", dateStartAndroid)
+                                                        const currentDate = selectedDate || dateStartEvent;
+                                                        console.log("currentDateStart", event)
+                                                        setDateStartEvent(currentDate);
+                                                        androidDate = currentDate
+                                                    }
+                                                }}
+                                            />
+                                        )
+                                    }
+
+                                    {
+                                        showTimePickerStart && (
+                                            <DateTimePicker
+                                                testID="dateTimePicker"
+                                                style={{ alignSelf: "center" }}
+                                                value={dateStartEvent}
+                                                mode={"time"}
+                                                is24Hour={false}
+                                                timeZoneOffsetInMinutes={0}
+                                                display="default"
+                                                onChange={(event, selectedDate) => {
+                                                    if (event.type == "dismissed")
+                                                        setShowTimePickerStart(false)
+                                                    else {
+                                                        setShowTimePickerStart(false)
+                                                        console.log("dataToSave", androidDate)
+                                                        console.log("selectedDate", selectedDate)
+                                                        var dateStartToSend = new Date(
+                                                            androidDate.getFullYear(),
+                                                            androidDate.getMonth(),
+                                                            androidDate.getDate(),
+                                                            selectedDate.getHours(),
+                                                            selectedDate.getMinutes(),
+                                                            selectedDate.getSeconds(),
+                                                        )
+                                                        console.log("dateStartToSend", dateStartToSend)
+                                                        setDateStartEvent(dateStartToSend);
+                                                    }
+                                                }}
+                                            />
+                                        )
+                                    }
+                                </View>
+                            )
+                        }
+                    </View>
+
+                    <View style={{ height: 120, justifyContent: "space-evenly", alignItems: "center" }}>
+                        <Text>Select date and time to end</Text>
+                        {
+                            Platform.OS == "ios" && (
+                                <DateTimePicker
+                                    testID="dateTimePicker"
+                                    style={{ alignSelf: "center" }}
+                                    value={dateEndEvent}
+                                    mode={"datetime"}
+                                    is24Hour={false}
+                                    focusable={false}
+                                    timeZoneOffsetInMinutes={0}
+                                    display="default"
+                                    onChange={(event, selectedDate) => {
+                                        const currentDate = selectedDate || dateEndEvent;
+                                        console.log("currentDateStart", new Date(currentDate))
+                                        setDateEndEvent(currentDate);
+                                    }}
+                                />
+                            )
+                        }
+                        {
+                            Platform.OS == "android" && (
+                                <View
+                                    style={{ width: "100%" }}
+                                    onTouchEnd={() => {
+                                        console.log("onTouchEnd")
+                                        setShowDataPickerEnd(!ShowDataPickerEnd)
+                                    }}>
+                                    <TextInput
+                                        multiline={true}
+                                        placeholder={'Start Date'}
+                                        placeholderTextColor={colors.BaseSlot3}
+                                        onChangeText={(text) => setDescriptionEvent(text)}
+                                        editable={false}
+                                        value={dateEndEvent.toLocaleDateString() + " " + dateEndEvent.toLocaleTimeString()}
+                                        style={{
+                                            backgroundColor: colors.BaseSlot1,
+                                            minHeight: 40,
+                                            borderColor: colors.BaseSlot3,
+                                            borderWidth: 1,
+                                            margin: 5,
+                                            borderRadius: 10,
+                                            padding: 10,
+                                            width: "85%",
+                                            alignSelf: "center"
+                                        }} />
+                                    {
+                                        ShowDataPickerEnd && (
+                                            <DateTimePicker
+                                                testID="dateTimePicker"
+                                                style={{ alignSelf: "center" }}
+                                                value={dateEndEvent}
+                                                mode={"datetime"}
+                                                is24Hour={false}
+                                                timeZoneOffsetInMinutes={0}
+                                                display="default"
+                                                onChange={(event, selectedDate) => {
+                                                    console.log("event", event)
+                                                    console.log("selectedDate", selectedDate)
+                                                    if (event.type == "dismissed")
+                                                        setShowDataPickerEnd(false)
+                                                    else {
+                                                        setShowDataPickerEnd(false)
+                                                        setShowTimePickerEnd(true)
+                                                        console.log("dateStartAndroid", dateStartAndroid)
+                                                        const currentDate = selectedDate || dateEndEvent;
+                                                        console.log("currentDateStart", event)
+                                                        setDateEndEvent(currentDate);
+                                                        androidDate = currentDate
+                                                    }
+                                                }}
+                                            />
+                                        )
+                                    }
+
+                                    {
+                                        showTimePickerEnd && (
+                                            <DateTimePicker
+                                                testID="dateTimePicker"
+                                                style={{ alignSelf: "center" }}
+                                                value={dateEndEvent}
+                                                mode={"time"}
+                                                is24Hour={false}
+                                                timeZoneOffsetInMinutes={0}
+                                                display="default"
+                                                onChange={(event, selectedDate) => {
+                                                    if (event.type == "dismissed")
+                                                        setShowTimePickerEnd(false)
+                                                    else {
+                                                        setShowTimePickerEnd(false)
+                                                        console.log("dataToSave", androidDate)
+                                                        console.log("selectedDate", selectedDate)
+                                                        var dateStartToSend = new Date(
+                                                            androidDate.getFullYear(),
+                                                            androidDate.getMonth(),
+                                                            androidDate.getDate(),
+                                                            selectedDate.getHours(),
+                                                            selectedDate.getMinutes(),
+                                                            selectedDate.getSeconds(),
+                                                        )
+                                                        console.log("dateStartToSend", dateStartToSend)
+                                                        setDateEndEvent(dateStartToSend);
+                                                    }
+                                                }}
+                                            />
+                                        )
+                                    }
+                                </View>
+                            )
+                        }
+                    </View>
+
+                    {/* <View style={{ height: 120, justifyContent: "space-evenly", alignItems: "center" }}>
+                        <Text>Select date and time to end</Text>
+                        <DateTimePicker
+                            testID="dateTimePicker"
+                            style={{ alignSelf: "center" }}
+                            value={dateEndEvent}
+                            mode={"datetime"}
+                            is24Hour={false}
+                            timeZoneOffsetInMinutes={0}
+                            onChange={(event, selectedDate) => {
+                                const currentDate = selectedDate || dateStartEvent;
+                                console.log("date", selectedDate)
+                                console.log("currentDateEnd", new Date(currentDate))
+                                setDateEndEvent(currentDate);
+                            }}
+                        />
+                    </View> */}
+                    <View style={{ flex: 1, justifyContent: "flex-end" }}>
+                        <ButtonPrimary title={"Salvar"} event={() => {
+                            console.log("accoutSelected", accoutSelected.value)
+                            console.log({
+                                title: nameEvent,
+                                startDate: new Date(dateStartEvent),
+                                endDate: new Date(dateEndEvent),
+                                location: 'Online',
+                                alarms: [{ relativeOffset: - 900, method: Calendar.AlarmMethod.ALERT }],
+                                notes: descriptionEvent
+                            })
+                            Calendar.createEventAsync(accoutSelected.value, {
+                                title: nameEvent,
+                                startDate: new Date(dateStartEvent).setUTCHours(0, 0, 0, 0),
+                                endDate: new Date(dateEndEvent).setUTCHours(0, 0, 0, 0),
+                                location: 'Online',
+                                alarms: [{ relativeOffset: - 15, method: Calendar.AlarmMethod.ALERT }],
+                                notes: descriptionEvent
+                            }).then((event) => {
+                                console.log('success', event);
+                                navigation.goBack()
+                            }).catch((error) => {
+                                console.log('error', error);
+                                Toast.show({
+                                    type: 'error',
+                                    position: 'bottom',
+                                    text1: 'Error',
+                                    text2: 'Error to create event',
+                                });
+                            });
+                        }} />
+                    </View>
                 </View>
             </KeyboardAvoidingView>
         </SafeAreaView>

@@ -98,6 +98,14 @@ const listMock = [{
     }],
 }]
 
+var tokensClient = ["da17442d-bbf8-4309-933a-017d1e4d6b85", "9063164c-6ad7-4106-b94e-0a69d539f972"]
+
+const ws = new WebSocket("wss://smart-caring.azurewebsites.net/private-chat", null, {
+    headers: {
+        ['token-client']: JSON.stringify(tokensClient),
+    }
+});
+
 export default function Chat({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(false)
     const [search, setSearch] = useState('')
@@ -110,15 +118,23 @@ export default function Chat({ route, navigation }) {
 
     const [indexSelected, setIndexSelected] = useState(0)
     const [find, setFind] = useState('')
-    var tokensClient = ["da17442d-bbf8-4309-933a-017d1e4d6b85", "9063164c-6ad7-4106-b94e-0a69d539f972"]
-
-    const ws = new WebSocket("ws://192.168.1.82:8000/private-chat", null, {
-        headers: {
-            ['token-client']: JSON.stringify(tokensClient),
-        }
-    });
 
     useEffect(() => {
+
+        console.log('INIT WebSocket connection opened');
+        ws.onopen = () => {
+            // Connection opened
+            console.log('WebSocket connection opened');
+        };
+
+        ws.onclose = event => {
+            // Connection closed
+            console.log('WebSocket connection closed:', event);
+        };
+
+        ws.onmessage = event => {
+            console.log('WebSocket message received:', event.data);
+        };
 
         console.log('OPEN', Chat.name, 'SCREEN')
         setIsLoading(true)
@@ -130,24 +146,11 @@ export default function Chat({ route, navigation }) {
 
     useEffect(() => {
         navigation.addListener('focus', () => {
-            console.log('INIT WebSocket connection opened');
-            ws.onopen = () => {
-                // Connection opened
-                console.log('WebSocket connection opened');
-            };
 
-            ws.onclose = event => {
-                // Connection closed
-                console.log('WebSocket connection closed:', event);
-            };
-
-            ws.onmessage = event => {
-                console.log('WebSocket message received:', event.data);
-            };
         })
         navigation.addListener('blur', () => {
-            console.log('WebSocket connection closed');
-            ws.close();
+            // console.log('WebSocket connection closed');
+            // ws.close();
         })
     }, [navigation])
 
