@@ -18,6 +18,8 @@ import { BottomTab } from './src/components/BottomTab';
 import Toast from 'react-native-toast-message';
 import ChatSender from './src/views/ChatSender';
 import CreateEvent from './src/views/CreateEvent';
+import SplashScreen from './src/views/SplashScreen';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -26,7 +28,7 @@ export default function App() {
     //<MyDrawer>
     <>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='BottomTab'>
+        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='SplashScreen'>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="RecoverPassword" component={RecoverPassword} />
@@ -46,6 +48,7 @@ export default function App() {
             }
           }/>
           <Stack.Screen name="CreateEvent" component={CreateEvent} />
+          <Stack.Screen name="SplashScreen" component={SplashScreen} />
         </Stack.Navigator>
       </NavigationContainer>
       <Toast />
