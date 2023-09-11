@@ -6,7 +6,7 @@ import * as NavigationBar from 'expo-navigation-bar'
 import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
 
-export default function ChatSenderComponent({ message, members }) {
+export default function ChatSenderComponent({ message, members, idUser }) {
     const [isLoading, setIsLoading] = useState(true)
     const [imSender, setImSender] = useState(false)
     let colorScheme = useColorScheme()
@@ -16,7 +16,8 @@ export default function ChatSenderComponent({ message, members }) {
     useEffect(() => {
         console.log('OPEN', ChatSenderComponent.name, 'SCREEN')
         console.log("SENDER " + members)
-        if (message.id_user_sender == 1) {
+        console.log("IM SENDER " + idUser)
+        if (message.id_user_sender == idUser) {
             setImSender(true)
         }
 
@@ -54,9 +55,9 @@ export default function ChatSenderComponent({ message, members }) {
                     <View style={{ width: "80%", alignSelf: "flex-start", marginTop: 10, minHeight: 50, justifyContent: "flex-start", flexDirection: "row", alignItems: "center", marginLeft: 10 }}>
                         <Image
                             style={{ width: 50, height: 50, alignSelf: "flex-end", borderRadius: 50, marginRight: 10 }}
-                            source={{ uri: members.findLast(item => item.id_user == message.id_user_sender).picture }} />
+                            source={{ uri: message.picture_user_sender == "" ? "https://cdn.imgbin.com/8/20/20/imgbin-samsung-galaxy-a8-a8-user-login-telephone-avatar-pawn-pvE7Qhr6Zk7kLJpGiWZ9FFRVf.jpg" : message.picture_user_sender }} />
                         <View style={{ backgroundColor: colors.BaseSlot1, alignItems: "center", maxWidth: "60%", borderRadius: 10, padding: 10 }}>
-                            <Text style={{ flexWrap: "wrap", width: "80%", color: colors.BaseSlot4, fontWeight: 800 }}>{members.findLast(item => item.id_user == message.id_user_sender).name}</Text>
+                            <Text style={{ flexWrap: "wrap", width: "80%", color: colors.BaseSlot4, fontWeight: 800 }}>{members.findLast(item => item.id_user == message.id_user_sender)?.name}</Text>
                             <Text style={{ flexWrap: "wrap", width: "80%" }}>{message.content}</Text>
                         </View>
                         <Text>{new Date(message.date).toLocaleTimeString()}</Text>
