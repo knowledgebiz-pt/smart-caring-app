@@ -29,6 +29,15 @@ export default function JournalEntryPopup({
 
     const closeMenu = () => { setMenuVisible(false); console.log("just closed") }
 
+    const optionPressed = (val) => {
+        if (val === "delete") {
+            closeMenu()
+            event(item.id)
+            closeEntry()
+
+        }
+    }
+
     return (
         <View>
             <TouchableOpacity style={[styleSelected.modalOpenButton, {  position: "absolute" }]} onPress={() => { setModalVisible(true) }}><FontAwesome color={colors.BaseSlot1} size={40} name='plus' /></TouchableOpacity>
@@ -117,7 +126,7 @@ export default function JournalEntryPopup({
                             <View style={{ flex: 1 }}>
                                 <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", backgroundColor: "#D00", marginTop: 15, borderRadius: 10, height: 50 }}
                                     key={list.id}
-                                    onPress={() => optionPressed(list)}
+                                    onPress={() => optionPressed(list.value)}
                                 >
                                     <View style={{ flex: .5, height: "100%", justifyContent: "center", alignItems: "center" }}>
                                         {list.iconType === "FontAwesome" && <FontAwesome style={{ fontSize: 26, color: "white" }} name={list.icon} />}

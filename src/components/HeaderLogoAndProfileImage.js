@@ -5,6 +5,9 @@ import styleDark from '../../style/StyleDark'
 import { MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
 import ModalMenu from './ModalMenu';
 import RBSheet from 'react-native-raw-bottom-sheet';
+import { OpenAPI } from 'smart-caring-client/client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation, CommonActions } from '@react-navigation/native'
 
 
 /***
@@ -15,6 +18,8 @@ export default function HeaderLogoAndProfileImage({img, onPressImage, user}) {
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
+
+    const navigation = useNavigation()
 
     const [image, setImage] = useState(null);
     const [userType, setUserType] = useState("")
@@ -44,7 +49,14 @@ export default function HeaderLogoAndProfileImage({img, onPressImage, user}) {
 
     const optionPressed = (option) => {
         if (option.value === "logout") {
-            console.log("Logout")
+            AsyncStorage.clear()
+            refModalMenu.current.close()
+            navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [{ name: 'Login' }],
+                })
+            )
         }
     }
 

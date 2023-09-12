@@ -8,6 +8,7 @@ import Loader from '../components/Loader'
 import InputTransparent from '../components/InputTransparent'
 import ButtonPrimary from '../components/ButtonPrimary'
 import { Keyboard } from 'react-native'
+import { useTranslation } from "react-i18next"
 
 export default function RecoverPasswordCode({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(true)
@@ -18,6 +19,8 @@ export default function RecoverPasswordCode({ route, navigation }) {
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
+
+    const {t, i18n} = useTranslation()
 
     useEffect(() => {
         console.log('OPEN', RecoverPasswordCode.name, 'SCREEN')
@@ -61,8 +64,8 @@ export default function RecoverPasswordCode({ route, navigation }) {
                         style={{ height: 450, width: 353, alignSelf: "center" }} />
                     </View>
                     <View style={{ justifyContent: "space-evenly", alignItems: "center", height: 100 }}>
-                        <Text style={styleSelected.textBold20DarkBlue}>Enter your passcode</Text>
-                        <Text style={[styleSelected.textRegular14Gray, { textAlign: "center", width: "60%" }]}>Enter the code you received in your e-mail or phone number</Text>
+                        <Text style={styleSelected.textBold20DarkBlue}>{t("enter_code")}</Text>
+                        <Text style={[styleSelected.textRegular14Gray, { textAlign: "center", width: "60%" }]}>{t("enter_code_subtext")}</Text>
                     </View>
                     <View style={{
                         backgroundColor: 'rgba(28, 163, 252, 0.1)',
@@ -99,12 +102,12 @@ export default function RecoverPasswordCode({ route, navigation }) {
                                 }} />
                             </View>
                         </View>
-                        <ButtonPrimary title={"Verify Code"} event={() => {
+                        <ButtonPrimary title={t("enter_code_verify")} event={() => {
                             navigation.navigate("EnterNewPassword")
                         }} />
                         <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", marginTop: 20 }}>
-                            <Text style={[styleSelected.textRegular16, { color: colors.BaseSlot3 }]}>Didn’t receive the code? </Text>
-                            <Text style={[styleSelected.textBold16, { color: colors.BaseSlot3 }]}>Resend code</Text>
+                            <Text style={[styleSelected.textRegular16, { color: colors.BaseSlot3 }]}>{t("enter_code_not_received")}</Text>
+                            <Text style={[styleSelected.textBold16, { color: colors.BaseSlot3 }]}>{t("enter_code_resend")}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

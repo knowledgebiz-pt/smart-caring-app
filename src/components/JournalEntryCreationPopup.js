@@ -41,20 +41,11 @@ export default function JournalEntryCreationPopup({
     const [items, setItems] = useState([
         { label: 'Add a new category', value: 'newCat', icon: () => <FontAwesome name='circle' color={"gray"} /> },
 
-        { label: 'Spain', value: 'spain', color:"red", icon: () => <FontAwesome name='circle' color={"red"} /> },
-        { label: 'Madrid', value: 'madrid', color:"blue", parent: 'spain' },
-        { label: 'Barcelona', value: 'barcelona', parent: 'spain' },
-
-        { label: 'Italy', value: 'italy' },
-        { label: 'e', value: 'e', parent: 'italy' },
-        { label: 'a', value: 'a', parent: 'italy' },
-        { label: 'b', value: 'b', parent: 'italy' },
-        { label: 'c', value: 'c', parent: 'italy' },
-        { label: 'd', value: 'd', parent: 'italy' },
-        { label: 'f', value: 'f', parent: 'italy' },
-
-
-        { label: 'Finland', value: 'finland' },
+        { label: 'Category 1', value: 'cat1', color:"red", icon: () => <FontAwesome name='circle' color={"red"} /> },
+        { label: 'Category 2', value: 'cat2', color:"blue", icon: () => <FontAwesome name='circle' color={"blue"} />},
+        { label: 'Category 3', value: 'cat3', color:"green", icon: () => <FontAwesome name='circle' color={"green"} />},
+        { label: 'Category 4', value: 'cat4', color:"yellow", icon: () => <FontAwesome name='circle' color={"yellow"} /> },
+        { label: 'Category 5', value: 'cat5', color:"pink", icon: () => <FontAwesome name='circle' color={"pink"} /> },
 
     ]);
 
@@ -257,7 +248,7 @@ export default function JournalEntryCreationPopup({
                             />
                         </View>
                         <View style={{ flex: .2, alignItems: "center", paddingBottom: 15 }}>
-                            <ButtonPrimary event={() => { setCategory(newCategory); let newItems = [...items]; newItems.push(newCategory); setItems(newItems) }} fullWidth={true} title={"Submit"} />
+                            <ButtonPrimary event={() => { setCategory(newCategory); let newItems = [...items]; newItems.push(newCategory); setItems(newItems); refModalMenu.current.close() }} fullWidth={true} title={"Submit"} />
                         </View>
                     </View>
                 </RBSheet>

@@ -111,21 +111,31 @@ export default function MySchedule({ route, navigation }) {
             executeSequentially(idsCalendars).then((data) => {
                 console.log("FINISH")
                 var markedDate = {}
-                eventsCalendar.forEach(event => {
-                    // Transform this date 2021-10-04T23:00:00.000Z to this 2021-10-04
-                    var dateMarked = new Date(event.startDate).toISOString().split('T')[0]
-                    var timeOfMeet = new Date(event.startDate).toISOString().split('T')[1].split('.')[0]
-                    console.log("DATE MARKED", dateMarked)
-                    console.log("TIME OF MEET", timeOfMeet)
-                    var res = {
-                        marked: true,
-                        selected: true,
-                        selectedColor: "#1CA3FC"
-                    }
-                    markedDate = Object.assign(markedDate, { [dateMarked]: res })
+                if (eventsCalendar && eventsCalendar.length > 0) {
+                    eventsCalendar.forEach(event => {
+                        console.log("?")
+    
+                        // Transform this date 2021-10-04T23:00:00.000Z to this 2021-10-04
+                        var dateMarked = new Date(event.startDate).toISOString().split('T')[0]
+                        var timeOfMeet = new Date(event.startDate).toISOString().split('T')[1].split('.')[0]
+                        console.log("DATE MARKED", dateMarked)
+                        console.log("TIME OF MEET", timeOfMeet)
+                        var res = {
+                            marked: true,
+                            selected: true,
+                            selectedColor: "#1CA3FC"
+                        }
+                        markedDate = Object.assign(markedDate, { [dateMarked]: res })
+                        console.log("???")
+                        setIsLoading(false)
+                    })
+                    setMarkedDates(markedDate)
+
+                }
+                else {
                     setIsLoading(false)
-                })
-                setMarkedDates(markedDate)
+
+                }
             })
         }
     }

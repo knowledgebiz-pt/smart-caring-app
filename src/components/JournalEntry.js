@@ -21,7 +21,7 @@ export default function JournalEntry({
 
     return (
         <>
-            {modalVisible && <JournalEntryPopup item={item} closeEntry={() => setModalVisible(false)} />}
+            {modalVisible && <JournalEntryPopup event={event} item={item} closeEntry={() => setModalVisible(false)} />}
             <View style={{ flex: 1, marginLeft: "5%", marginRight: "5%" }}>
                 {index === 0 && <View style={{ borderTopWidth: .5 }}></View>}
                 <TouchableOpacity onPress={() => {setModalVisible(true)}} style={{ flexDirection: "row", paddingTop: 20, paddingBottom: 20 }}>

@@ -8,6 +8,8 @@ import Loader from '../components/Loader'
 import ButtonPrimary from '../components/ButtonPrimary'
 import InputTransparent from '../components/InputTransparent'
 
+import { useTranslation } from "react-i18next"
+
 export default function Register({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(false)
     let colorScheme = useColorScheme()
@@ -20,6 +22,8 @@ export default function Register({ route, navigation }) {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
+
+    const {t, i18n} = useTranslation()
 
     useEffect(() => {
         console.log('OPEN', Register.name, 'SCREEN')
@@ -64,16 +68,16 @@ export default function Register({ route, navigation }) {
                         style={{ height: 260, width: 350, alignSelf: "center" }} />
                     </View>
                     {/* <View style={{flex:1}}> */}
-                    <Text style={[styleSelected.textBold20DarkBlue, { marginTop: 45, textAlign: "center" }]}>Create an account</Text>
-                    <Text style={[styleSelected.textRegular14Gray, { width: "65%", marginTop: 5, textAlign: "center", alignSelf: "center" }]}>Let's get started!</Text>
+                    <Text style={[styleSelected.textBold20DarkBlue, { marginTop: 45, textAlign: "center" }]}>{t("register_title")}</Text>
+                    <Text style={[styleSelected.textRegular14Gray, { width: "65%", marginTop: 5, textAlign: "center", alignSelf: "center" }]}>{t("register_subtext")}</Text>
 
                     {/* </View> */}
                     <View style={styleSelected.paleBlueContainerTaller}>
-                        <InputTransparent onChangeText={(text) => setEmail(text)} inputMode='email' blurOnSubmit={false} onSubmitEditing={() => ref_input2.current?.focus()} returnKeyType='next' placeholder={"Enter your e-mail"} />
-                        <InputTransparent onChangeText={(text) => setPassword(text)} inputRef={ref_input2} blurOnSubmit={false} secureTextEntry={true} onSubmitEditing={() => ref_input3.current?.focus()} returnKeyType='next' placeholder={"Enter your password"} />
-                        <InputTransparent onChangeText={(text) => setConfirmPassword(text)} inputRef={ref_input3} secureTextEntry={true} placeholder={"Confirm your password"} />
+                        <InputTransparent onChangeText={(text) => setEmail(text)} inputMode='email' blurOnSubmit={false} onSubmitEditing={() => ref_input2.current?.focus()} returnKeyType='next' placeholder={t("register_email")} />
+                        <InputTransparent onChangeText={(text) => setPassword(text)} inputRef={ref_input2} blurOnSubmit={false} secureTextEntry={true} onSubmitEditing={() => ref_input3.current?.focus()} returnKeyType='next' placeholder={t("register_password")} />
+                        <InputTransparent onChangeText={(text) => setConfirmPassword(text)} inputRef={ref_input3} secureTextEntry={true} placeholder={t("register_confirm_password")} />
 
-                        <ButtonPrimary event={() => navigation.navigate('CreateAccount', {email: email, password: password})} title={"Continue"} />
+                        <ButtonPrimary event={() => navigation.navigate('CreateAccount', {email: email, password: password})} title={t("register_continue")} />
                     </View>
                 </ScrollView>
                 {/* </KeyboardAwareScrollView> */}

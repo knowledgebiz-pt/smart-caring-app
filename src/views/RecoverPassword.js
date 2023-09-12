@@ -8,6 +8,8 @@ import Loader from '../components/Loader'
 import { RecoverUserPassword } from '../services/LoginService'
 import InputTransparent from '../components/InputTransparent'
 import ButtonPrimary from '../components/ButtonPrimary'
+import { useTranslation } from "react-i18next"
+
 
 export default function RecoverPassword({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(false)
@@ -15,6 +17,8 @@ export default function RecoverPassword({ route, navigation }) {
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
+
+    const {t, i18n} = useTranslation()
 
     useEffect(() => {
         console.log('OPEN', RecoverPassword.name, 'SCREEN')
@@ -57,8 +61,8 @@ export default function RecoverPassword({ route, navigation }) {
                         style={{ height: 450, width: 353, alignSelf: "center" }} />
                 </View>
                 <View style={{ justifyContent: "space-evenly", alignItems: "center", height: 100 }}>
-                    <Text style={styleSelected.textBold20DarkBlue}>Forgot Password?</Text>
-                    <Text style={[styleSelected.textRegular14Gray, { textAlign: "center", width: "60%" }]}>Enter your e-mail or phone number in order to create a new password</Text>
+                    <Text style={styleSelected.textBold20DarkBlue}>{t("forgot_password")}</Text>
+                    <Text style={[styleSelected.textRegular14Gray, { textAlign: "center", width: "60%" }]}>{t("forgot_password_subtext")}</Text>
                 </View>
                 <View style={{
                     backgroundColor: 'rgba(28, 163, 252, 0.1)',
@@ -69,9 +73,9 @@ export default function RecoverPassword({ route, navigation }) {
                     justifyContent: "center"
                 }}>
                     <View style={{ height: 70, marginTop: 20 }}>
-                        <InputTransparent placeholder={"Enter e-mail or phone number"} />
+                        <InputTransparent placeholder={t("forgot_password_input")} />
                     </View>
-                    <ButtonPrimary title={"Send Code"} event={() => {
+                    <ButtonPrimary title={t("forgot_password_send_code")} event={() => {
                         navigation.navigate("RecoverPasswordCode")
                     }} />
                 </View>

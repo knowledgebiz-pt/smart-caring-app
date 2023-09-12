@@ -26,7 +26,7 @@ export default function App() {
     //<MyDrawer>
     <>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='BottomTab'>
+        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Login'>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="RecoverPassword" component={RecoverPassword} />

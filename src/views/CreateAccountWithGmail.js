@@ -18,6 +18,7 @@ import DatePickerTransparentLabelAbove from '../components/DatePickerTransparent
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import PhoneInputTransparentLabelAbove from '../components/PhoneInputTransparentLabelAbove'
 import Toast from 'react-native-toast-message'
+import { CommonActions } from '@react-navigation/native'
 
 export default function CreateAccountWithGmail({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(false)
@@ -160,7 +161,14 @@ export default function CreateAccountWithGmail({ route, navigation }) {
                                 }
                             }).then((res) => {
                                 console.warn(res.data)
+                                showToast("Account created successfully.", "success")
                                 setIsLoading(false)
+                                navigation.dispatch(
+                                    CommonActions.reset({
+                                      index: 0,
+                                      routes: [{ name: 'Features' }],
+                                    })
+                                )
                             }).catch((e) => {
                                 console.error(e)
                                 setIsLoading(false)
