@@ -7,7 +7,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
 import InputTransparent from '../components/InputTransparent'
 import ButtonPrimary from '../components/ButtonPrimary'
-import { UserService } from "smart-caring-client/client"
+import { OpenAPI, UserService } from "smart-caring-client/client"
 import * as LocalAuthentication from "expo-local-authentication";
 import * as Google from "expo-auth-session/providers/google";
 import Toast from 'react-native-toast-message'

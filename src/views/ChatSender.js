@@ -6,22 +6,38 @@ import * as NavigationBar from 'expo-navigation-bar'
 import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
 import ChatSenderComponent from '../components/ChatSenderComponent'
+import { useSelector } from 'react-redux'
 
 export default function ChatSender({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(true)
-    const [message, setMessage] = useState('')
+    const [message, setMessage] = useState([])
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
-    const messages = route.params.chat.messages
+
+    const chatMessage = useSelector((state) => state.chat)
+
+    console.log("CHAT MESSAGE OSCAR1", chatMessage)
+
+    const messages = route.params.chat.message
+
+
 
     useEffect(() => {
         console.log('OPEN', ChatSender.name, 'SCREEN')
-        console.log(messages)
+        console.log("CHATTTT SENDERRR", route.params.chat)
+        console.log("IDDDDDD", route.params.idUser)
         return () => {
             console.log('SCREEN', ChatSender.name, 'CLOSE')
         }
     }, [])
+
+    useEffect(() => {
+        console.log("CHAT ATUALIZADO", chatMessage)
+        var listAdd = chatMessage.find(item => item.id_chat == route.params.chat.id_chat)
+        setMessage(listAdd.message)
+    }, [chatMessage])
+
     Appearance.getColorScheme()
     Appearance.addChangeListener(({ colorScheme }) => {
         console.log('COLOR THEME WAS ALTER')
@@ -49,15 +65,15 @@ export default function ChatSender({ route, navigation }) {
             >
                 <ScrollView style={{ backgroundColor: colors.BaseSlot5 }}>
                     {
-                        messages.filter(item => item.viewed == true).map((message, index) => {
+                        message.filter(item => item.viewed == true).map((message, index) => {
                             return (
-                                <ChatSenderComponent message={message} members={route.params.chat.chat_members} />
+                                <ChatSenderComponent message={message} members={route.params.chat.chat_members} idUser={route.params.idUser} />
                             )
                         })
                     }
 
                     {
-                        messages.filter(item => item.viewed == false).length > 0 && (
+                        message.filter(item => item.viewed == false).length > 0 && (
                             <View style={{ width: "100%", backgroundColor: colors.BaseSlot6, height: 40, justifyContent: "center", alignItems: "center", marginTop: 10, marginBottom: 10 }}>
                                 <Text style={[styleSelected.textSecondary, { textAlign: "center", marginTop: 10, color: colors.BaseSlot1 }]}>1 messages unread</Text>
                             </View>
@@ -65,9 +81,9 @@ export default function ChatSender({ route, navigation }) {
                     }
 
                     {
-                        messages.filter(item => item.viewed == false).map((message, index) => {
+                        message.filter(item => item.viewed == false).map((message, index) => {
                             return (
-                                <ChatSenderComponent message={message} members={route.params.chat.chat_members} />
+                                <ChatSenderComponent message={message} members={route.params.chat.chat_members} idUser={route.params.idUser} />
                             )
                         })
                     }
@@ -92,7 +108,16 @@ export default function ChatSender({ route, navigation }) {
                     </View>
                     <View style={{ flex: 1, justifyContent: "center", alignItems: "center", paddingTop: 10, paddingBottom: 10 }}>
                         <TouchableOpacity
-                            onPress={() => console.log('send message', message)}
+                            onPress={() => {
+                                route.params.ws.send(JSON.stringify({
+                                    "id-chat": "bb36b47b-2913-4722-bedd-97c06a13af72",
+                                    "id_user_sender": "321",
+                                    "name_user_sender": "Camila",
+                                    "picture_user_sender": "",
+                                    "content": "Teste com react native",
+                                    "type_content": "text"
+                                }));
+                            }}
                             style={{ backgroundColor: colors.BaseSlot2, borderRadius: 50, height: 50, width: 50, justifyContent: "center", alignItems: "center" }}>
                             <Image
                                 resizeMode='cover'

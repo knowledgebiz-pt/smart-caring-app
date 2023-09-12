@@ -6,7 +6,7 @@ import * as NavigationBar from 'expo-navigation-bar'
 import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
 
-export default function ChatComponent({ value, navigation }) {
+export default function ChatComponent({ value, navigation, idUser, ws }) {
     const [isLoading, setIsLoading] = useState(true)
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
@@ -16,11 +16,12 @@ export default function ChatComponent({ value, navigation }) {
 
     useEffect(() => {
         console.log('OPEN', ChatComponent.name, 'SCREEN')
+        console.log("IDDDDDDDDDDDDDDD", idUser)
         var userReceiver = value.chat_members.findLast((item) => {
             return item.id_user != 1
         })
         setUserReceiver(userReceiver)
-        setLastedMessage(value.messages[value.messages.length - 1])
+        setLastedMessage(value.message[value.message.length - 1])
         return () => {
             console.log('SCREEN', ChatComponent.name, 'CLOSE')
         }
@@ -45,18 +46,18 @@ export default function ChatComponent({ value, navigation }) {
         <>
             <TouchableOpacity
                 style={{ height: 80, flexDirection: "row", alignItems: "center", backgroundColor: lastedMessage?.viewed ? "transparent" : colors.BaseSlot4 }}
-                onPress={() => navigation.navigate("ChatSender", {chat: value})}>
+                onPress={() => navigation.navigate("ChatSender", {chat: value, idUser: idUser, ws: ws})}>
                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center", marginLeft: 20, marginRight: 10, borderRadius: 60, overflow: "hidden", height: 65, maxWidth: 65 }}>
                     {
-                        value.chat_members.findLast(item => item.id_user != 1)?.picture != "" && value.chat_members.length <= 2 ? (
+                        value.chat_members.findLast(item => item.id_user != idUser)?.picture != "" && value.chat_members.length <= 2 ? (
                             <Image
                                 style={{ width: 70, height: 70 }}
                                 resizeMode='cover'
-                                source={{ uri: value.chat_members.findLast(item => item.id_user != 1)?.picture }}
+                                source={{ uri: value.chat_members.findLast(item => item.id_user != idUser)?.picture }}
                             />
                         ) : (
                             <View style={{ borderColor: lastedMessage?.viewed ? colors.BaseSlot3 : colors.BaseSlot1, borderWidth: 1, height: "95%", width: "95%", borderRadius: 50, justifyContent: "center", alignItems: "center" }}>
-                                <Text style={{ color: lastedMessage?.viewed ? colors.BaseSlot3 : colors.BaseSlot1 }}>{String(value.name.slice(0, 2)).toLocaleUpperCase()}</Text>
+                                <Text style={{ color: lastedMessage?.viewed ? colors.BaseSlot3 : colors.BaseSlot1 }}>{String(value.chat_name.slice(0, 2)).toLocaleUpperCase()}</Text>
                             </View>
                         )
                     }
@@ -72,7 +73,7 @@ export default function ChatComponent({ value, navigation }) {
                             )
                         }
                         {
-                            value.chat_members.findLast(item => item.id_user != 1)?.user_type == "Patient" && (
+                            value.chat_members.findLast(item => item.id_user != idUser)?.user_type == "Patient" && (
                                 <Image
                                     style={{ width: 25, height: 25, marginLeft: 10 }}
                                     resizeMode='cover'
@@ -81,7 +82,7 @@ export default function ChatComponent({ value, navigation }) {
                             )
                         }
                         {
-                            value.chat_members.findLast(item => item.id_user != 1)?.user_type == "Health Professional" && (
+                            value.chat_members.findLast(item => item.id_user != idUser)?.user_type == "Health Professional" && (
                                 <Image
                                     style={{ width: 25, height: 25, marginLeft: 10 }}
                                     resizeMode='cover'
@@ -90,7 +91,7 @@ export default function ChatComponent({ value, navigation }) {
                             )
                         }
                         {
-                            value.chat_members.findLast(item => item.id_user != 1)?.user_type == "Caregiven" && (
+                            value.chat_members.findLast(item => item.id_user != idUser)?.user_type == "Caregiven" && (
                                 <Image
                                     style={{ width: 25, height: 25, marginLeft: 10 }}
                                     resizeMode='cover'
@@ -114,7 +115,7 @@ export default function ChatComponent({ value, navigation }) {
                 </View>
 
                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center", marginRight: 20 }}>
-                    <Text style={[styleSelected.textRegular16, { color: lastedMessage?.viewed ? colors.BaseSlot5 : colors.BaseSlot1 }]}>{lastedMessage?.date}</Text>
+                    <Text style={[styleSelected.textRegular12, { color: lastedMessage?.viewed ? colors.BaseSlot5 : colors.BaseSlot1, fontSize: 12 }]}>{new Date(lastedMessage?.date).toLocaleString()}</Text>
                 </View>
             </TouchableOpacity >
             <View style={{ height: 1, backgroundColor: lastedMessage?.viewed ? colors.BaseSlot5 : colors.BaseSlot1, width: "90%", alignSelf: "center" }} />

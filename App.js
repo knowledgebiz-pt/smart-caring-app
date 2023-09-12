@@ -18,36 +18,48 @@ import { BottomTab } from './src/components/BottomTab';
 import Toast from 'react-native-toast-message';
 import ChatSender from './src/views/ChatSender';
 import CreateEvent from './src/views/CreateEvent';
+import SplashScreen from './src/views/SplashScreen';
+import { OpenAPI } from 'smart-caring-client/client';
+import store from "./src/redux/store";
+import { Provider, useDispatch, useSelector } from "react-redux";
 
 const Stack = createNativeStackNavigator();
+
+OpenAPI.BASE = "http://192.168.1.82:8000"
 
 export default function App() {
   return (
     //<MyDrawer>
     <>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Login'>
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Register" component={Register} />
-          <Stack.Screen name="RecoverPassword" component={RecoverPassword} />
-          <Stack.Screen name="RecoverPasswordCode" component={RecoverPasswordCode} />
-          <Stack.Screen name="FirstAccess" component={FirstAccess} />
-          <Stack.Screen name="EnterNewPassword" component={EnterNewPassword} />
-          <Stack.Screen name="SuccessNewPassword" component={SuccessNewPassword} />
-          <Stack.Screen name="CreateAccount" component={CreateAccount} />
-          <Stack.Screen name="CreateAccountWithGmail" component={CreateAccountWithGmail} />
-          <Stack.Screen name="Features" component={Features} />
-          <Stack.Screen name="HomePage" component={HomePage}/>
-          <Stack.Screen name="BottomTab" component={BottomTab} />
-          <Stack.Screen name="ChatSender" component={ChatSender} options={
-            {
+      <Provider store={store}>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='SplashScreen'>
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Register" component={Register} />
+            <Stack.Screen name="RecoverPassword" component={RecoverPassword} />
+            <Stack.Screen name="RecoverPasswordCode" component={RecoverPasswordCode} />
+            <Stack.Screen name="FirstAccess" component={FirstAccess} />
+            <Stack.Screen name="EnterNewPassword" component={EnterNewPassword} />
+            <Stack.Screen name="SuccessNewPassword" component={SuccessNewPassword} />
+            <Stack.Screen name="CreateAccount" component={CreateAccount} />
+            <Stack.Screen name="CreateAccountWithGmail" component={CreateAccountWithGmail} />
+            <Stack.Screen name="Features" component={Features} />
+            <Stack.Screen name="HomePage" component={HomePage} />
+            <Stack.Screen name="BottomTab" component={BottomTab} />
+            <Stack.Screen name="ChatSender" component={ChatSender} options={
+              {
+                headerShown: true,
+                headerTitle: 'Chat',
+              }
+            } />
+            <Stack.Screen name="CreateEvent" component={CreateEvent} options={{
               headerShown: true,
-              headerTitle: 'Chat',
-            }
-          }/>
-          <Stack.Screen name="CreateEvent" component={CreateEvent} />
-        </Stack.Navigator>
-      </NavigationContainer>
+              headerTitle: 'Create Event',
+            }} />
+            <Stack.Screen name="SplashScreen" component={SplashScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
       <Toast />
     </>
     // </MyDrawer>
