@@ -26,6 +26,7 @@ export default function SplashScreen({ route, navigation }) {
     const checkContainToken = () => {
         AsyncStorage.getItem("@token").then(res => {
             if (res) {
+                console.warn(res)
                 setTimeout(() => {
                     navigation.dispatch(
                         CommonActions.reset({
@@ -38,12 +39,24 @@ export default function SplashScreen({ route, navigation }) {
             }
             else {
                 setTimeout(() => {
-                    navigation.dispatch(
-                        CommonActions.reset({
-                          index: 0,
-                          routes: [{ name: 'Login' }],
-                        })
-                    )
+                    AsyncStorage.getItem("@hadFirstAccess").then(res => {
+                        if (res) {
+                            navigation.dispatch(
+                                CommonActions.reset({
+                                  index: 0,
+                                  routes: [{ name: 'Login' }],
+                                })
+                            )
+                        }
+                        else {
+                            navigation.dispatch(
+                                CommonActions.reset({
+                                  index: 0,
+                                  routes: [{ name: 'FirstAccess' }],
+                                })
+                            )
+                        }
+                    })
                 }, 1000)
             }
         })

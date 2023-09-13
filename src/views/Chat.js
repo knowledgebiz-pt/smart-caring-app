@@ -11,6 +11,7 @@ import { ChatService, CommentService } from 'smart-caring-client/client'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useSelector, useDispatch } from 'react-redux'
 import { chatFeature, insertMessage } from '../features/chat/chat'
+import { useTranslation } from "react-i18next"
 
 var tokensClient = ["da17442d-bbf8-4309-933a-017d1e4d6b85", "9063164c-6ad7-4106-b94e-0a69d539f972", "bb36b47b-2913-4722-bedd-97c06a13af72"]
 
@@ -35,6 +36,8 @@ export default function Chat({ route, navigation }) {
 
     const [indexSelected, setIndexSelected] = useState(0)
     const [find, setFind] = useState('')
+
+    const {t, i18n} = useTranslation()
 
     useEffect(() => {
 
@@ -131,12 +134,12 @@ export default function Chat({ route, navigation }) {
                 keyboardVerticalOffset={Platform.OS == 'android' ? -150 : -150}
             >
                 <View style={{ height: 70, justifyContent: "center", alignItems: "center" }}>
-                    <Text style={styleSelected.textBold20DarkBlue}>Chat</Text>
+                    <Text style={styleSelected.textBold20DarkBlue}>{t("navbar_chat")}</Text>
                 </View>
                 <View style={{ height: 50, width: "90%", alignSelf: "center" }}>
                     <TextInput
                         multiline={true}
-                        placeholder={'Search'}
+                        placeholder={t("search")}
                         placeholderTextColor={colors.BaseSlot3}
                         onChangeText={(text) => setSearch(text)}
                         value={search}
@@ -156,7 +159,7 @@ export default function Chat({ route, navigation }) {
                         <TouchableOpacity
                             onPress={() => setIndexSelected(0)}
                             style={{ borderRightWidth: 1, borderRightColor: colors.BaseSlot5, flex: 1, justifyContent: "center", alignItems: "center", borderTopLeftRadius: 20, borderBottomLeftRadius: 20, backgroundColor: indexSelected == 0 ? colors.BaseSlot6 : "transparent" }}>
-                            <Text style={[styleSelected.textRegular16, { color: indexSelected == 0 ? colors.BaseSlot1 : colors.BaseSlot5 }]}>All</Text>
+                            <Text style={[styleSelected.textRegular16, { color: indexSelected == 0 ? colors.BaseSlot1 : colors.BaseSlot5 }]}>{t("filter_all")}</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
@@ -172,13 +175,13 @@ export default function Chat({ route, navigation }) {
                                 }));
                             }}
                             style={{ borderRightWidth: 1, borderRightColor: colors.BaseSlot5, flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: indexSelected == 1 ? colors.BaseSlot6 : "transparent" }}>
-                            <Text style={[styleSelected.textRegular16, { color: indexSelected == 1 ? colors.BaseSlot1 : colors.BaseSlot5 }]}>Private</Text>
+                            <Text style={[styleSelected.textRegular16, { color: indexSelected == 1 ? colors.BaseSlot1 : colors.BaseSlot5 }]}>{t("private")}</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             onPress={() => setIndexSelected(2)}
                             style={{ flex: 1, justifyContent: "center", alignItems: "center", borderTopRightRadius: 20, borderBottomRightRadius: 20, backgroundColor: indexSelected == 2 ? colors.BaseSlot6 : "transparent" }}>
-                            <Text style={[styleSelected.textRegular16, { color: indexSelected == 2 ? colors.BaseSlot1 : colors.BaseSlot5 }]}>Group</Text>
+                            <Text style={[styleSelected.textRegular16, { color: indexSelected == 2 ? colors.BaseSlot1 : colors.BaseSlot5 }]}>{t("group")}</Text>
                         </TouchableOpacity>
 
                     </View>

@@ -49,8 +49,9 @@ export default function CarouselCards({}) {
             />
 
           </View>
-          <View style={{flex: .17, marginTop: -150}}>
+          <View style={{flex: .17, marginTop: -50}}>
             <Pagination
+            
               dotsLength={data.length}
               activeDotIndex={index}
               carouselRef={isCarousel}

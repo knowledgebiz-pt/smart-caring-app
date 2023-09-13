@@ -4,6 +4,7 @@ import { View, useColorScheme } from "react-native";
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import SelectTransparent from "./SelectTransparent";
+import { useTranslation } from "react-i18next"
 
 /***
  * @param onSelectSort: function - Callback called when a value is chosen for the sort select
@@ -29,6 +30,8 @@ export default function SortAndFilterSelects(
     const [sortSelectOpen, setSortSelectOpen] = useState(false)
     const [filterSelectOpen, setFilterSelectOpen] = useState(false)
 
+    const {t, i18n} = useTranslation()
+
     //placeholder: 
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
@@ -36,8 +39,8 @@ export default function SortAndFilterSelects(
     
     return (
         <View style={{flexDirection: "row", width: "90%", alignSelf: "center", paddingBottom:5, zIndex: 9999}}>
-            <SelectTransparent key={"select1"} key2={"select1"} items={sortItems} onPress={() => {setSortSelectOpen(!sortSelectOpen); setFilterSelectOpen(false)}} onSelectItem={onSelectSort} selectedValue={sortValue} open={sortSelectOpen} placeholder={"Sort by: "} hasBorder={1} displaySelectedOption={true} labelTextColor={colors.BaseSlot2} borderColor={colors.BaseSlot2} viewWidth="50%" width='95%' align='left' />
-            <SelectTransparent key={"select2"} key2={"select2"} items={filterItems} onPress={() => {setSortSelectOpen(false); setFilterSelectOpen(!filterSelectOpen)}} onSelectItem={onSelectFilter} selectedValue={filterValue} open={filterSelectOpen} placeholder={"Filters"} displaySelectedOption={false} labelTextColor={colors.BaseSlot1} backgroundColor={colors.BaseSlot2} hasBorder={false} viewWidth="50%" width='95%' align='right'  />
+            <SelectTransparent key={"select1"} key2={"select1"} items={sortItems} onPress={() => {setSortSelectOpen(!sortSelectOpen); setFilterSelectOpen(false)}} onSelectItem={onSelectSort} selectedValue={sortValue} open={sortSelectOpen} placeholder={t("sort_by")+": "} hasBorder={1} displaySelectedOption={true} labelTextColor={colors.BaseSlot2} borderColor={colors.BaseSlot2} viewWidth="50%" width='95%' align='left' />
+            <SelectTransparent key={"select2"} key2={"select2"} items={filterItems} onPress={() => {setSortSelectOpen(false); setFilterSelectOpen(!filterSelectOpen)}} onSelectItem={onSelectFilter} selectedValue={filterValue} open={filterSelectOpen} placeholder={t("filters")} displaySelectedOption={false} labelTextColor={colors.BaseSlot1} backgroundColor={colors.BaseSlot2} hasBorder={false} viewWidth="50%" width='95%' align='right'  />
         </View>
     )
 }

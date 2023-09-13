@@ -11,6 +11,8 @@ import * as FileSystem from 'expo-file-system'
 import Toast from 'react-native-toast-message'
 import DialogInput from 'react-native-dialog-input';
 
+import { useTranslation } from "react-i18next"
+
 /***
  * @param placeholder: string - Text that will appear as placeholder
  * @param inputMode: string - Determines type of keyboard to open. Defaults to "text". Valid values: 'decimal', 'email', 'none', 'numeric', 'search', 'tel', 'text', 'url'
@@ -46,6 +48,8 @@ export default function PostInputTransparent(
         showButtons = true,
         event
     }) {
+
+    const {t, i18n} = useTranslation()
 
     const [textValue, setTextValue] = useState("")
     const [image, setImage] = useState(null)
@@ -135,11 +139,11 @@ export default function PostInputTransparent(
             }
             NewsService.createNews(newsObject).then(res => {
                 onSubmitEditing()
-                showToast("You have created a new post!", "success")
+                showToast(t("post_input_toast_created_post"), "success")
                 setClicked(false)
             }).catch(e => {
                 console.error("e: ", e)
-                showToast("Error creating post.", "error")
+                showToast(t("post_input_toast_error_post"), "error")
                 setClicked(false)
             })
         }
@@ -152,11 +156,11 @@ export default function PostInputTransparent(
             }
             CommentService.createComment(commentObject).then(res => {
                 onSubmitEditing()
-                showToast("Comment has been created.", "success")
+                showToast(t("post_input_toast_created_comment"), "success")
                 setClicked(false)
             }).catch(e => {
                 console.error("e: ", e)
-                showToast("Error commenting on post.", "error")
+                showToast(t("post_input_toast_error_comment"), "error")
                 setClicked(false)
             })
         }
@@ -166,18 +170,18 @@ export default function PostInputTransparent(
         setLinkText(url)
         setUrlInputVisible(false)
         if (url === "") {
-            showToast("No URL has been set.", "info")
+            showToast(t("post_input_toast_no_url"), "info")
         }
         else if (!url.includes("http://") && !url.includes("https://")) {
-            showToast("URL missing \"http://\" or \"https://\"", "info")
+            showToast(t("post_input_toast_url_https"), "info")
         }
         else {
             Linking.canOpenURL(url).then(res => {
                 if (res) {
-                    showToast("Valid URL has been set!", "success")
+                    showToast(t("post_input_toast_url_valid"), "success")
                 }
                 else {
-                    showToast("URL has been set, but is invalid.", "info")
+                    showToast(t("post_input_toast_url_invalid"), "info")
                 }
             })
         }
@@ -186,10 +190,12 @@ export default function PostInputTransparent(
     return (
         <View >
             <DialogInput isDialogVisible={urlInputVisible}
-                title={"URL Link"}
-                message={"Please insert the whole url to the webpage you wish to link to in your post, including either \"https://\" or \"http://\" :"}
+                title={t("homepage_post_url_title")}
+                message={t("homepage_post_url_message")}
                 hintInput={"https://www.smartcaring.pt"}
                 submitInput={(inputText) => { checkLinkValidity(inputText) }}
+                submitText={t("submit")}
+                cancelText={t("cancel")}
                 closeDialog={() => { setUrlInputVisible(false) }}>
             </DialogInput>
             <View style={{ flexDirection: "row" }}>

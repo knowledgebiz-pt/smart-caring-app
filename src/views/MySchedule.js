@@ -5,7 +5,7 @@ import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
 import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
-import { Calendar, CalendarList, Agenda, WeekCalendar, CalendarProvider } from 'react-native-calendars';
+import { Calendar, CalendarList, Agenda, WeekCalendar, CalendarProvider, LocaleConfig } from 'react-native-calendars';
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons"
 import { FlashList } from '@shopify/flash-list'
 import RBSheet from 'react-native-raw-bottom-sheet'
@@ -13,8 +13,13 @@ import * as ExpoCalendar from 'expo-calendar';
 import ButtonPrimary from '../components/ButtonPrimary'
 import uuid from 'react-native-uuid';
 import { set } from 'react-native-reanimated'
+import { useTranslation } from "react-i18next"
+
 
 export default function MySchedule({ route, navigation }) {
+
+    const {t, i18n} = useTranslation()
+
     const [isLoading, setIsLoading] = useState(true)
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
@@ -28,10 +33,61 @@ export default function MySchedule({ route, navigation }) {
     const [markedDates, setMarkedDates] = useState({})
     const [eventsSelecteds, setEventsSelecteds] = useState([])
 
-    const [calendarViews, setCalendarViews] = useState([{ label: "Monthly", value: 1 }, { label: "Weekly", value: 2 }])
-    const [currentView, setCurrentView] = useState({ label: "Monthly", value: 1 })
+    const [calendarViews, setCalendarViews] = useState([{ label: t("schedule_monthly"), value: 1 }, { label: t("schedule_weekly"), value: 2 }])
+    const [currentView, setCurrentView] = useState({ label: t("schedule_monthly"), value: 1 })
 
     const today = new Date()
+
+    LocaleConfig.locales["en"] = {
+        monthNames: [
+            t("january"),
+            t("february"),
+            t("march"),
+            t("april"),
+            t("may"),
+            t("june"),
+            t("july"),
+            t("august"),
+            t("september"),
+            t("october"),
+            t("november"),
+            t("december")
+        ],
+        monthNamesShort: [
+            t("january_short"),
+            t("february_short"),
+            t("march_short"),
+            t("april_short"),
+            t("may_short"),
+            t("june_short"),
+            t("july_short"),
+            t("august_short"),
+            t("september_short"),
+            t("october_short"),
+            t("november_short"),
+            t("december_short")
+        ],
+        dayNames: [
+            t("sunday"),
+            t("monday"),
+            t("tuesday"),
+            t("wednesday"),
+            t("thursday"),
+            t("friday"),
+            t("saturday")
+        ],
+        dayNamesShort: [
+            t("sunday_short"),
+            t("monday_short"),
+            t("tuesday_short"),
+            t("wednesday_short"),
+            t("thursday_short"),
+            t("friday_short"),
+            t("saturday_short")
+        ],
+        today: t("today")
+    }
+    LocaleConfig.defaultLocale = 'en';
 
     const onDayPress = useCallback(day => {
         var filterByDay = eventsCalendar.current.filter(event => event.startDate.split('T')[0] === day.dateString)
@@ -41,7 +97,7 @@ export default function MySchedule({ route, navigation }) {
     })
 
     const options = [
-        { id: 1, name: "Delete", value: "delete", icon: "trash", iconType: "FontAwesome" },
+        { id: 1, name: t("delete"), value: "delete", icon: "trash", iconType: "FontAwesome" },
     ]
 
     const optionPressed = (option) => {
@@ -189,15 +245,15 @@ export default function MySchedule({ route, navigation }) {
     }
     const renderArrowFunction = (direction) => {
         if (direction === "left") {
-            return <Text>Previous</Text>
+            return <Text>{t("schedule_previous")}</Text>
         }
-        else return <Text>Next</Text>
+        else return <Text>{t("schedule_next")}</Text>
     }
 
     const Header = ({ }) => (
         <>
             <View style={[styleSelected.backgroundPrimary, { flex: 1, height: 40, justifyContent: "center", alignItems: "center" }]}>
-                <Text style={{ fontWeight: 600, color: "#030849", fontSize: 20 }}>My Schedule</Text>
+                <Text style={{ fontWeight: 600, color: "#030849", fontSize: 20 }}>{t("navbar_schedule")}</Text>
             </View>
 
             <View style={{ flex: 1, height: 50, justifyContent: "center", alignItems: "center" }}>
@@ -205,7 +261,7 @@ export default function MySchedule({ route, navigation }) {
                     <View style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
                         <FontAwesome size={15} name='search' />
                     </View>
-                    <TextInput style={{ marginLeft: 10, height: 30 }} placeholder='Search'></TextInput>
+                    <TextInput style={{ marginLeft: 10, height: 30 }} placeholder={t("search")}></TextInput>
                 </View>
             </View>
 
@@ -213,7 +269,7 @@ export default function MySchedule({ route, navigation }) {
                 <View style={{ width: "5%" }}></View>
                 <View style={{ flex: 1, justifyContent: "center" }}>
                     <TouchableOpacity style={{ borderWidth: 1, padding: 5, paddingLeft: 15, paddingRight: 15, borderRadius: 30, width: "85%", alignItems: "center", justifyContent: "center" }}>
-                        <Text>Export Schedule</Text>
+                        <Text>{t("schedule_export")}</Text>
                     </TouchableOpacity>
                 </View>
 

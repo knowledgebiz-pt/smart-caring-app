@@ -4,6 +4,7 @@ import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import { MaterialCommunityIcons, FontAwesome } from "@expo/vector-icons"
 import RBSheet from 'react-native-raw-bottom-sheet'
+import { useTranslation } from "react-i18next"
 
 
 export default function JournalEntryPopup({
@@ -12,13 +13,16 @@ export default function JournalEntryPopup({
     openEntry,
     closeEntry
 }) {
+
+    const {t, i18n} = useTranslation()
+
     const [menuVisible, setMenuVisible] = useState(true)
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
 
     const options = [
-        {id: 1,name:"Delete", value:"delete", icon: "trash", iconType: "FontAwesome"},
+        {id: 1,name:(t("delete")), value:"delete", icon: "trash", iconType: "FontAwesome"},
     ]
     const refModalMenu = useRef()
 

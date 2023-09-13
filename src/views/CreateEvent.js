@@ -12,9 +12,13 @@ import ButtonPrimary from '../components/ButtonPrimary'
 import * as Calendar from 'expo-calendar';
 import { and, set } from 'react-native-reanimated'
 import { Toast } from 'react-native-toast-message/lib/src/Toast'
+import { useTranslation } from "react-i18next"
 
 
 export default function CreateEvent({ route, navigation }) {
+
+    const {t, i18n} = useTranslation()
+
     const [isLoading, setIsLoading] = useState(true)
     const [nameEvent, setNameEvent] = useState("")
     const [descriptionEvent, setDescriptionEvent] = useState("")
@@ -82,7 +86,7 @@ export default function CreateEvent({ route, navigation }) {
             >
                 <View style={[styleSelected.backgroundPrimary, { flex: 1, marginTop: 20 }]}>
                     <View style={{ justifyContent: "flex-start", alignItems: "center", display: "flex", alignContent: "center", height: isOpenDropdown ? 280 : 80 }}>
-                        <Text>Select account</Text>
+                        <Text>{t("schedule_select_calendar")}</Text>
                         <DropDownPicker
                             listMode="SCROLLVIEW"
                             key={"key1"}
@@ -99,7 +103,7 @@ export default function CreateEvent({ route, navigation }) {
                                 setAccoutSelected(item)
                                 setIsOpenDropdown(false)
                             }}
-                            placeholder={accoutSelected ? accoutSelected.label : "Select a count"}
+                            placeholder={accoutSelected ? accoutSelected.label : t("schedule_select_calendar")}
                             items={filterItems}
                             open={isOpenDropdown}
                         // ArrowDownIconComponent={() => {
@@ -112,7 +116,7 @@ export default function CreateEvent({ route, navigation }) {
                     </View>
                     <TextInput
                         multiline={false}
-                        placeholder={'Title'}
+                        placeholder={t('title')}
                         placeholderTextColor={colors.BaseSlot3}
                         onChangeText={(text) => setNameEvent(text)}
                         value={nameEvent}
@@ -130,7 +134,7 @@ export default function CreateEvent({ route, navigation }) {
 
                     <TextInput
                         multiline={true}
-                        placeholder={'Description'}
+                        placeholder={t('description')}
                         placeholderTextColor={colors.BaseSlot3}
                         onChangeText={(text) => setDescriptionEvent(text)}
                         value={descriptionEvent}
@@ -146,7 +150,7 @@ export default function CreateEvent({ route, navigation }) {
                             alignSelf: "center"
                         }} />
                     <View style={{ height: 120, justifyContent: "space-evenly", alignItems: "center" }}>
-                        <Text>Select date and time to start</Text>
+                        <Text>{t("schedule_event_date_time_start")}</Text>
                         {
                             Platform.OS == "ios" && (
                                 <DateTimePicker
@@ -259,7 +263,7 @@ export default function CreateEvent({ route, navigation }) {
                     </View>
 
                     <View style={{ height: 120, justifyContent: "space-evenly", alignItems: "center" }}>
-                        <Text>Select date and time to end</Text>
+                        <Text>{t("schedule_event_date_time_end")}</Text>
                         {
                             Platform.OS == "ios" && (
                                 <DateTimePicker
@@ -389,7 +393,7 @@ export default function CreateEvent({ route, navigation }) {
                         />
                     </View> */}
                     <View style={{ flex: 1, justifyContent: "flex-end" }}>
-                        <ButtonPrimary title={"Salvar"} event={() => {
+                        <ButtonPrimary title={t("submit")} event={() => {
                             console.log("accoutSelected", accoutSelected.value)
                             console.log({
                                 title: nameEvent,
@@ -414,8 +418,8 @@ export default function CreateEvent({ route, navigation }) {
                                 Toast.show({
                                     type: 'error',
                                     position: 'bottom',
-                                    text1: 'Error',
-                                    text2: 'Error to create event',
+                                    text1: t("schedule_event_error_text1"),
+                                    text2: t("schedule_event_error_text2"),
                                 });
                             });
                         }} />

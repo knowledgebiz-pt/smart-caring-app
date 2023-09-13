@@ -13,6 +13,7 @@ import DropDownPicker from 'react-native-dropdown-picker'
 import { DiaryService } from 'smart-caring-client/client'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Toast } from 'react-native-toast-message/lib/src/Toast'
+import { useTranslation } from "react-i18next"
 
 
 export default function Journal({ route, navigation }) {
@@ -28,6 +29,8 @@ export default function Journal({ route, navigation }) {
         Toast.show({ type: type, text1: msg, position: 'bottom' })
     }
 
+    const {t, i18n} = useTranslation()
+
     const [originalData, setOriginalData] = useState([...journalEntries])
 
     const [searchText, setSearchText] = useState(null)
@@ -37,8 +40,8 @@ export default function Journal({ route, navigation }) {
     const [refresh, setRefresh] = useState(false)
 
     const [sortItems, setSortItems] = useState([
-        { label: 'Recent', value: 'recent' },
-        { label: 'Old', value: 'old' }
+        { label: t('recent'), value: 'recent' },
+        { label: t('old'), value: 'old' }
     ])
 
     const [filterItems, setFilterItems] = useState([
@@ -53,7 +56,7 @@ export default function Journal({ route, navigation }) {
 
     const [sortSelectOpen, setSortSelectOpen] = useState(false)
     const [filterSelectOpen, setFilterSelectOpen] = useState(false)
-    const [sortSelectValue, setSortSelectValue] = useState({ label: "Recent", value: 'recent' })
+    const [sortSelectValue, setSortSelectValue] = useState({ label: t("recent"), value: 'recent' })
     const [filterSelectValue, setFilterSelectValue] = useState(null)
 
     useEffect(() => {
@@ -78,12 +81,12 @@ export default function Journal({ route, navigation }) {
                 setIsLoading(false)
             }).catch(e => {
                 if (e.status === 404) {
-                    showToast("No entries found.", "info")
+                    showToast(t("journal_toast_no_entries"), "info")
                     setIsLoading(false)
                 }
                 else {
                     setIsLoading(false)
-                    showToast("Error getting journal entries.", "error")
+                    showToast(t("journal_toast_entries_get_error"), "error")
                 }
             })
         })
@@ -117,7 +120,7 @@ export default function Journal({ route, navigation }) {
     const createEntry = (val) => {
         console.log(val)
         if (val.description.length < 50) {
-            showToast("Entry content must contain at least 50 characters.", "error")
+            showToast(t("journal_toast_entry_characters"), "error")
         }
         else {
             AsyncStorage.getItem("@token").then(res => {
@@ -133,7 +136,7 @@ export default function Journal({ route, navigation }) {
                 console.log(formattedData.tags.split(";;;"))
                 DiaryService.createDiary(formattedData).then(res => {
                     // let newData = [...journalEntries]; newData.push(val); setJournalEntries(newData) 
-                    showToast("Entry created successfully.", "success")
+                    showToast(t("journal_toast_created_entry"), "success")
                     getJournalEntries()
                 })
     
@@ -164,14 +167,14 @@ export default function Journal({ route, navigation }) {
                 setIsLoading(false)
             }).catch(e => {
                 if (e.status === 404) {
-                    showToast("No entries found.", "info")
+                    showToast(t("journal_toast_no_entries"), "info")
                     setJournalEntries([])
                     setOriginalData([])
                     setIsLoading(false)
                 }
                 else {
                     setIsLoading(false)
-                    showToast("Error getting journal entries.", "error")
+                    showToast(t("journal_toast_entries_get_error"), "error")
                 }
             })
         })
@@ -184,7 +187,7 @@ export default function Journal({ route, navigation }) {
     const deleteEntry = (val) => {
         console.log("val: ", val)
         DiaryService.deleteDiaryByIdNews(val).then(res => {
-            showToast("Entry deleted successfully.", "success")
+            showToast(t("journal_toast_entry_deleted"), "success")
             getJournalEntries()
             
         })
@@ -307,7 +310,7 @@ export default function Journal({ route, navigation }) {
 
                     <View style={{ flex: 1, justifyContent: "center", }}>
                         <DropDownPicker listMode="SCROLLVIEW" key={"key1"} dropDownContainerStyle={{borderWidth: .5,
-                                                borderColor:"#A8A8A8",}} style={{ borderWidth: .5, borderColor: "#A8A8A8", color: "red", padding: 5, paddingLeft: 15, paddingRight: 15, borderRadius: 30,  alignItems: "center", justifyContent: "center", minHeight: 30 }} placeholder={"Sort by: " + sortSelectValue.label} onSelectItem={(val) => { setSortSelectOpen(false); sortPosts(val) }} onPress={() => { setSortSelectOpen(!sortSelectOpen) }} open={sortSelectOpen} items={sortItems}
+                                                borderColor:"#A8A8A8",}} style={{ borderWidth: .5, borderColor: "#A8A8A8", color: "red", padding: 5, paddingLeft: 15, paddingRight: 15, borderRadius: 30,  alignItems: "center", justifyContent: "center", minHeight: 30 }} placeholder={t("sort_by") + ": " + sortSelectValue.label} onSelectItem={(val) => { setSortSelectOpen(false); sortPosts(val) }} onPress={() => { setSortSelectOpen(!sortSelectOpen) }} open={sortSelectOpen} items={sortItems}
                             ArrowDownIconComponent={() => {
                                 return <FontAwesome name="chevron-down" color={"#A8A8A8"} />
                             }}
@@ -366,7 +369,7 @@ export default function Journal({ route, navigation }) {
     const EmptyList = () => (
         <>
             <View style={{ flex: 1, marginLeft: "10%", marginRight: "10%", alignItems:"center" }}>
-                {originalData.length === 0 && <Text style={{fontWeight:600, marginTop:50}}>To begin using the journal, please create a new entry by pressing the green button below on the right</Text>}
+                {originalData.length === 0 && <Text style={{fontWeight:600, marginTop:50}}>{t("journal_begin_message")}</Text>}
             </View>
         </>
     )
@@ -389,7 +392,7 @@ export default function Journal({ route, navigation }) {
 
                 <View style={[styleSelected.backgroundPrimary, { flex: 1, }]}>
                     <View style={[styleSelected.backgroundPrimary, { flex:.065, justifyContent: "center", alignItems: "center",}]}>
-                        <Text style={{ fontWeight: 600, color: "#030849", fontSize: 20 }}>Journal</Text>
+                        <Text style={{ fontWeight: 600, color: "#030849", fontSize: 20 }}>{t("navbar_journal")}</Text>
                     </View>
 
                     <View style={{ flex:.085, justifyContent: "center", alignItems: "center", }}>
@@ -397,7 +400,7 @@ export default function Journal({ route, navigation }) {
                             <View style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
                                 <FontAwesome size={15} color={"#A8A8A8"} name='search' />
                             </View>
-                            <SearchInput value={searchText} placeholder={"Search"} onChangeText={(val) => searchFunction(val)} />
+                            <SearchInput value={searchText} placeholder={t("search")} onChangeText={(val) => searchFunction(val)} />
                         </View>
                     </View>
                     <View style={{flex:.085,zIndex:999999, alignContent:"center", justifyContent:"center"}}>

@@ -20,6 +20,8 @@ import PhoneInputTransparentLabelAbove from '../components/PhoneInputTransparent
 import Toast from 'react-native-toast-message'
 import { CommonActions } from '@react-navigation/native'
 
+import { useTranslation } from "react-i18next"
+
 export default function CreateAccountWithGmail({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(false)
     let colorScheme = useColorScheme()
@@ -38,6 +40,8 @@ export default function CreateAccountWithGmail({ route, navigation }) {
     const [indexSelectedButton, setIndexSelectedButton] = useState(null)
 
     const [image, setImage] = useState(route.params.userInfo.picture);
+
+    const {t, i18n} = useTranslation()
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -103,7 +107,7 @@ export default function CreateAccountWithGmail({ route, navigation }) {
                 {/* <KeyboardAwareScrollView style={{flex:1}}> */}
                 <ScrollView style={[styleSelected.backgroundPrimary, { flex: 1 }]}>
                     {/* <View style={{flex:1}}> */}
-                    <Text style={[styleSelected.textBold20DarkBlue, { marginTop: 45, textAlign: "center" }]}>Create an account</Text>
+                    <Text style={[styleSelected.textBold20DarkBlue, { marginTop: 45, textAlign: "center" }]}>{t("register_title")}</Text>
                     <TouchableOpacity style={{marginTop:20}} onPress={pickImage}>
                         <Image
                             style={[styleSelected.avatar, { alignSelf: "center" }]}
@@ -120,24 +124,24 @@ export default function CreateAccountWithGmail({ route, navigation }) {
                     {/* </View> */}
                     <View style={{ flex: 1, width: "80%", alignSelf: "center", marginTop: 20, justifyContent: "space-evenly" }}>
                         {/* <InputDefault input={name} setInput={setName} lineFocusColor="#A8A8A8" inputColor="black" lineUnfocusColor="#A8A8A8" placeholderFocusColor="#030849" placeholderUnfocusColor="#030849" placeholder={"Name"} /> */}
-                        <InputTransparentLabelAbove value={name} onChangeText={(text) => setName(text)} fontSize={13} inputColor={colors.BaseSlot3} fullWidth={true} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"Name*"} />
+                        <InputTransparentLabelAbove value={name} onChangeText={(text) => setName(text)} fontSize={13} inputColor={colors.BaseSlot3} fullWidth={true} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={t("name")+"*"} />
                         <View style={{marginTop: 7, flexDirection: "row"}}>
-                            <DatePickerTransparentLabelAbove viewWidth={"20%"} event={() => {setShowPicker(true)}} showPicker={showPicker} onDateChange={(date) => {setShowPicker(false);setBirthDate(new Date(date["nativeEvent"]["timestamp"]))}} date={birthDate} placeholder={"Age*"}/>
-                            <TogglerTransparentLabelAbove viewWidth={"80%"} onPress={(value) => {setGender(value)}} hasBorder={false} fullWidth={true} label={"Gender*"} optionOneLabel={"Masculine"} optionOneValue={"M"} optionTwoLabel={"Feminine"} optionTwoValue={"F"}/>
+                            <DatePickerTransparentLabelAbove viewWidth={"20%"} event={() => {setShowPicker(true)}} showPicker={showPicker} onDateChange={(date) => {setShowPicker(false);setBirthDate(new Date(date["nativeEvent"]["timestamp"]))}} date={birthDate} placeholder={t("age")+"*"}/>
+                            <TogglerTransparentLabelAbove viewWidth={"80%"} onPress={(value) => {setGender(value)}} hasBorder={false} fullWidth={true} label={t("gender")+"*"} optionOneLabel={t("male")} optionOneValue={"M"} optionTwoLabel={t("female")} optionTwoValue={"F"}/>
                         </View>
-                        <Text style={[styleSelected.textRegular13DarkBlue, { marginLeft: 30, marginTop: 7, marginBottom: 6 }]}>Which role describes you best?*</Text>
-                        <ButtonOutlineSuccessIcon styleButton={{ backgroundColor: indexSelectedButton === "1" ? colors.BaseSlot4 : "transparent" }} styleText={{ color: indexSelectedButton === "1" ? colors.BaseSlot1 : colors.BaseSlot4 }} styleImage={{ tintColor: indexSelectedButton === "1" ? colors.BaseSlot1 : colors.BaseSlot4 }} onPress={() => { setIndexSelectedButton("1"); setRole("Caregiver") }} fullWidth={true} title={"Caregiver"} />
-                        <ButtonOutlinePrimaryIcon styleButton={{ backgroundColor: indexSelectedButton === "2" ? colors.BaseSlot2 : "transparent" }} styleText={{ color: indexSelectedButton === "2" ? colors.BaseSlot1 : colors.BaseSlot2 }} styleImage={{ tintColor: indexSelectedButton === "2" ? colors.BaseSlot1 : colors.BaseSlot2 }} onPress={() => { setIndexSelectedButton("2"); setRole("Health Professional") }} fullWidth={true} title={"Health Professional"} />
-                        <ButtonOutlineDarkBlueIcon styleButton={{ backgroundColor: indexSelectedButton === "3" ? "#030849" : "transparent" }} styleText={{ color: indexSelectedButton === "3" ? colors.BaseSlot1 : "#030849" }} styleImage={{ tintColor: indexSelectedButton === "3" ? colors.BaseSlot1 : "#030849" }} onPress={() => { setIndexSelectedButton("3"); setRole("Patient") }} fullWidth={true} title={"Patient"} />
+                        <Text style={[styleSelected.textRegular13DarkBlue, { marginLeft: 30, marginTop: 7, marginBottom: 6 }]}>{t("create_account_role")}</Text>
+                        <ButtonOutlineSuccessIcon styleButton={{ backgroundColor: indexSelectedButton === "1" ? colors.BaseSlot4 : "transparent" }} styleText={{ color: indexSelectedButton === "1" ? colors.BaseSlot1 : colors.BaseSlot4 }} styleImage={{ tintColor: indexSelectedButton === "1" ? colors.BaseSlot1 : colors.BaseSlot4 }} onPress={() => { setIndexSelectedButton("1"); setRole("Caregiver") }} fullWidth={true} title={t("caregiver")} />
+                        <ButtonOutlinePrimaryIcon styleButton={{ backgroundColor: indexSelectedButton === "2" ? colors.BaseSlot2 : "transparent" }} styleText={{ color: indexSelectedButton === "2" ? colors.BaseSlot1 : colors.BaseSlot2 }} styleImage={{ tintColor: indexSelectedButton === "2" ? colors.BaseSlot1 : colors.BaseSlot2 }} onPress={() => { setIndexSelectedButton("2"); setRole("Health Professional") }} fullWidth={true} title={t("healthPro")} />
+                        <ButtonOutlineDarkBlueIcon styleButton={{ backgroundColor: indexSelectedButton === "3" ? "#030849" : "transparent" }} styleText={{ color: indexSelectedButton === "3" ? colors.BaseSlot1 : "#030849" }} styleImage={{ tintColor: indexSelectedButton === "3" ? colors.BaseSlot1 : "#030849" }} onPress={() => { setIndexSelectedButton("3"); setRole("Patient") }} fullWidth={true} title={t("patient")} />
                         <View style={{ width: "40%", alignSelf: "flex-end", marginRight: 110 }}>
-                            <TogglerTransparentLabelLeft onPress={(value) => { setVisibility(value) }} hasBorder={false} fullWidth={true} label={"Share my role*"} optionOneLabel={"Yes"} optionOneValue={true} optionTwoLabel={"No"} optionTwoValue={false} />
+                            <TogglerTransparentLabelLeft onPress={(value) => { setVisibility(value) }} hasBorder={false} fullWidth={true} label={t("create_account_share")} optionOneLabel={t("yes")} optionOneValue={true} optionTwoLabel={t("no")} optionTwoValue={false} />
                         </View>
-                        <TogglerTransparentLabelAbove hasBorder={false} fullWidth={true} label={"Language"} optionOneLabel={"Portuguese"} optionOneValue={"1"} optionTwoLabel={"English"} optionTwoValue={"2"} />
-                        <PhoneInputTransparentLabelAbove onChangeText={(text) => {setPhone(text); console.log(phone)}} fullWidth={true} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"Phone number"} />
+                        <TogglerTransparentLabelAbove hasBorder={false} fullWidth={true} label={t("language")} optionOneLabel={t("portuguese")} optionOneValue={"pt"} optionTwoLabel={t("english")} optionTwoValue={"en"} />
+                        <PhoneInputTransparentLabelAbove onChangeText={(text) => {setPhone(text); console.log(phone)}} fullWidth={true} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={t("create_account_phone")} />
                     </View>
                     <View style={{ flex: 1, width: "100%", alignSelf: "center", justifyContent: "space-evenly" }}>
-                        <Text style={[styleSelected.textDisclaimer, { width: "80%", marginTop: 14, alignSelf: "center" }]}>By clicking Let's go!, Sign up with Google, or Sign up with Facebook, you agree to our <Text style={styleSelected.textBold}>Terms and Conditions</Text> and <Text style={styleSelected.textBold}>Privacy Statement</Text>.</Text>
-                        <Text style={[styleSelected.textRegular10Gray, {width:"80%", marginTop: 14, alignSelf: "center"}]}>* Mandatory fields.</Text>
+                        <Text style={[styleSelected.textDisclaimer, { width: "80%", marginTop: 14, alignSelf: "center" }]}>{t("create_account_terms_begin")}<Text style={styleSelected.textBold}>{t("create_account_terms_conditions")}</Text>{t("create_account_terms_and")}<Text style={styleSelected.textBold}>{t("create_account_terms_privacy")}</Text>.</Text>
+                        <Text style={[styleSelected.textRegular10Gray, {width:"80%", marginTop: 14, alignSelf: "center"}]}>{t("create_account_mandatory")}</Text>
                     </View>
                     <View style={{ flex: 1, width: "100%", alignSelf: "center", marginTop: 14, marginBottom: 14, justifyContent: "space-evenly" }}>
                         <ButtonOutlinePrimary event={() => {
@@ -161,7 +165,7 @@ export default function CreateAccountWithGmail({ route, navigation }) {
                                 }
                             }).then((res) => {
                                 console.warn(res.data)
-                                showToast("Account created successfully.", "success")
+                                showToast(t("create_account_toast_success"), "success")
                                 setIsLoading(false)
                                 navigation.dispatch(
                                     CommonActions.reset({
@@ -172,9 +176,9 @@ export default function CreateAccountWithGmail({ route, navigation }) {
                             }).catch((e) => {
                                 console.error(e)
                                 setIsLoading(false)
-                                showToast("Error creating account.", "error")
+                                showToast(t("create_account_toast_error"), "error")
                             })
-                        }} title={"Let's go!"} />
+                        }} title={t("create_account_button")} />
                     </View>
                 </ScrollView>
                 {/* </KeyboardAwareScrollView> */}

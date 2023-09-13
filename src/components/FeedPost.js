@@ -14,6 +14,8 @@ import Toast from 'react-native-toast-message'
 import RBSheet from 'react-native-raw-bottom-sheet'
 import PostInputTransparent from "./PostInputTransparent";
 
+import { useTranslation } from "react-i18next"
+
 /***
  * @param buttonColor: string - Determine the color of the component's buttons and their borders.
  * @param value: string - Value of the TextInput
@@ -44,6 +46,7 @@ const FeedPost = (
     const [commentAmount, setCommentAmount] = useState(0)
 
     const refRBSheet = useRef()
+    const {t, i18n} = useTranslation()
 
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
@@ -95,14 +98,14 @@ const FeedPost = (
             NewsService.addLikeToNewsArticle(postContent._id.$oid, user._id.$oid).then(res => {
             }).catch(e => {
                 console.error("e: ", e)
-                showToast("An error has occurred when trying to like a post.", "error")
+                showToast(t("homepage_error_like"), "error")
             })
         }
         else {
             NewsService.deleteLikeToNewsArticle(postContent._id.$oid, user._id.$oid).then(res => {
             }).catch(e => {
                 console.error("e: ", e)
-                showToast("An error has occurred when trying to remove a like from a post.", "error")
+                showToast(t("homepage_error_unlike"), "error")
             })
         }
     }
@@ -112,14 +115,14 @@ const FeedPost = (
             NewsService.addFavoritesToNewsArticle(postContent._id.$oid, user._id.$oid).then(res => {
             }).catch(e => {
                 console.error("e: ", e)
-                showToast("An error has occurred when trying to favorite a post.", "error")
+                showToast(t("homepage_error_favorite"), "error")
             })
         }
         else {
             NewsService.deleteFavoritesToNewsArticle(postContent._id.$oid, user._id.$oid).then(res => {
             }).catch(e => {
                 console.error("e: ", e)
-                showToast("An error has occurred when trying to unfavorite a post.", "error")
+                showToast(t("homepage_error_unfavorite"), "error")
             })
         }
     }
@@ -133,7 +136,7 @@ const FeedPost = (
         }).catch(e => {
             if (!e.includes("Not Found")) {
                 console.error("e: ", e)
-                showToast("An error has occurred when trying to fetch the comments from a post.", "error")
+                showToast(t("homepage_comment_get_error"), "error")
             }
             setIsLoading(false)
             console.warn(2)
@@ -173,7 +176,7 @@ const FeedPost = (
                         }
                     }}
                 >
-                    <CommentInputPopup placeholder={"Write a comment..."} feedStyle={feedStyle} postContent={postContent} user={user} feedIcon={feedIcon} newsId={postContent._id.$oid} userId={user._id.$oid} onSubmit={() => {postContent.total_comments += 1; refRBSheet.current.close(); setCommentAmount(postContent.total_comments)}} />                    
+                    <CommentInputPopup placeholder={t("homepage_write_comment")} feedStyle={feedStyle} postContent={postContent} user={user} feedIcon={feedIcon} newsId={postContent._id.$oid} userId={user._id.$oid} onSubmit={() => {postContent.total_comments += 1; refRBSheet.current.close(); setCommentAmount(postContent.total_comments)}} />                    
                 </RBSheet>
             </View>
             <View style={{flexDirection: "row", height:40, flex: 1}}>
@@ -255,13 +258,13 @@ const FeedPost = (
                         <TouchableOpacity onPress={() => { setLike(false); likeButton(false) }} style={[styleSelected.smallButtonPost, { borderColor: buttonColor }]}>
                             <MaterialCommunityIcons name={'thumb-up'}
                                 size={15}
-                                color={"#56B288"} /><Text style={[styleSelected.feedPostButtonsText, { color: buttonColor }]}> Like</Text>
+                                color={"#56B288"} /><Text style={[styleSelected.feedPostButtonsText, { color: buttonColor }]}> {t("homepage_like")}</Text>
                         </TouchableOpacity> :
 
                         <TouchableOpacity onPress={() => { setLike(true); likeButton(true) }} style={[styleSelected.smallButtonPost, { borderColor: buttonColor }]}>
                             <MaterialCommunityIcons name={'thumb-up-outline'}
                                 size={15}
-                                color={buttonColor} /><Text style={[styleSelected.feedPostButtonsText, { color: buttonColor }]}> Like</Text>
+                                color={buttonColor} /><Text style={[styleSelected.feedPostButtonsText, { color: buttonColor }]}> {t("homepage_like")}</Text>
                         </TouchableOpacity>
                     }
                     <TouchableOpacity onPress={() => {
@@ -276,10 +279,10 @@ const FeedPost = (
                     }} style={[styleSelected.smallButtonPost, { borderColor: buttonColor, marginLeft: 5 }]}>
                         <MaterialCommunityIcons name={'comment-outline'}
                             size={15}
-                            color={buttonColor} /><Text style={[styleSelected.feedPostButtonsText, { color: buttonColor }]}> Comment</Text>
+                            color={buttonColor} /><Text style={[styleSelected.feedPostButtonsText, { color: buttonColor }]}> {t("homepage_comment")}</Text>
                     </TouchableOpacity>
                                         
-                    <FeedPostCommentList postContent={postContent} commentAmount={commentAmount} avatarPicture={""} modalVisible={true} userName={"tedte"}  comment={"text"} />
+                    <FeedPostCommentList postContent={postContent} commentAmount={commentAmount} avatarPicture={""} modalVisible={true} userName={"teste"}  comment={"text"} />
                 </View>
             </View>
         </View>

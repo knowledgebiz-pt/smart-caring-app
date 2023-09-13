@@ -54,14 +54,6 @@ export default function Features({ route, navigation }) {
                 <View style={[styleSelected.backgroundPrimary, {flex: 1, marginTop: 50}]}>
                     <CarouselCards/>
                 </View>
-                {/* <View style={[styleSelected.backgroundPrimary, { flex: 1 }]}>
-                    <View style={styleSelected.imageContainer}>
-
-                    </View> */}
-                    {/* <View style={{ flex: 1, justifyContent: "space-evenly" }}>
-                        <ButtonPrimary title={"Let's start!"} />
-                    </View> */}
-                {/* </View> */}
             </KeyboardAvoidingView>
         </SafeAreaView>
     )

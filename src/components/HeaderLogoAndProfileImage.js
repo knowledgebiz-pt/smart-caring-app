@@ -8,7 +8,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import { OpenAPI } from 'smart-caring-client/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, CommonActions } from '@react-navigation/native'
-
+import { useTranslation } from "react-i18next"
 
 /***
  * @param img: string - URI of the user's profile image
@@ -21,16 +21,18 @@ export default function HeaderLogoAndProfileImage({img, onPressImage, user}) {
 
     const navigation = useNavigation()
 
+    const {t, i18n} = useTranslation()
+
     const [image, setImage] = useState(null);
     const [userType, setUserType] = useState("")
     const refModalMenu = useRef()
 
     const options = [
-        {id: 1,name:"Profile", value:"profile", icon: "user", iconType: "FontAwesome"},
-        {id: 2,name:"Privacy Policy", value:"privacypolicy", icon: "shield-account", iconType: "MaterialCommunityIcons"},
-        {id: 3,name:"Terms of Use", value:"termsofuse", icon: "file-check", iconType: "MaterialCommunityIcons"},
-        {id: 4,name:"Settings", value:"settings", icon: "cog", iconType: "FontAwesome"},
-        {id: 5,name:"Logout", value:"logout", icon: "logout", iconType: "MaterialCommunityIcons"},
+        {id: 1,name:t("homepage_menu_profile"), value:"profile", icon: "user", iconType: "FontAwesome"},
+        {id: 2,name:t("homepage_menu_privacy_policy"), value:"privacypolicy", icon: "shield-account", iconType: "MaterialCommunityIcons"},
+        {id: 3,name:t("homepage_menu_terms_use"), value:"termsofuse", icon: "file-check", iconType: "MaterialCommunityIcons"},
+        {id: 4,name:t("homepage_menu_settings"), value:"settings", icon: "cog", iconType: "FontAwesome"},
+        {id: 5,name:t("homepage_menu_logout"), value:"logout", icon: "logout", iconType: "MaterialCommunityIcons"},
     ]
 
     useEffect(() => {

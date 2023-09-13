@@ -7,10 +7,13 @@ import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
 import ChatSenderComponent from '../components/ChatSenderComponent'
 import { useSelector } from 'react-redux'
+import { useTranslation } from "react-i18next"
+
 
 export default function ChatSender({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(true)
     const [message, setMessage] = useState([])
+    const [msg, setMsg] = useState("")
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
@@ -20,6 +23,9 @@ export default function ChatSender({ route, navigation }) {
     console.log("CHAT MESSAGE OSCAR1", chatMessage)
 
     const messages = route.params.chat.message
+
+    const {t, i18n} = useTranslation()
+
 
 
 
@@ -75,7 +81,7 @@ export default function ChatSender({ route, navigation }) {
                     {
                         message.filter(item => item.viewed == false).length > 0 && (
                             <View style={{ width: "100%", backgroundColor: colors.BaseSlot6, height: 40, justifyContent: "center", alignItems: "center", marginTop: 10, marginBottom: 10 }}>
-                                <Text style={[styleSelected.textSecondary, { textAlign: "center", marginTop: 10, color: colors.BaseSlot1 }]}>1 messages unread</Text>
+                                <Text style={[styleSelected.textSecondary, { textAlign: "center", marginTop: 10, color: colors.BaseSlot1 }]}>1 {t("chat_messages_unread")}</Text>
                             </View>
                         )
                     }
@@ -92,10 +98,10 @@ export default function ChatSender({ route, navigation }) {
                     <View style={{ flex: 4, justifyContent: "center" }}>
                         <TextInput
                             multiline={true}
-                            placeholder={'What´s on your mind?'}
+                            placeholder={t("homepage_post_placeholder")}
                             placeholderTextColor={colors.BaseSlot3}
-                            onChangeText={(text) => setMessage(text)}
-                            value={message}
+                            onChangeText={(text) => setMsg(text)}
+                            value={msg}
                             style={{
                                 backgroundColor: colors.BaseSlot1,
                                 minHeight: 40,
@@ -118,10 +124,10 @@ export default function ChatSender({ route, navigation }) {
                                     "type_content": "text"
                                 }));
                             }}
-                            style={{ backgroundColor: colors.BaseSlot2, borderRadius: 50, height: 50, width: 50, justifyContent: "center", alignItems: "center" }}>
+                            style={{ backgroundColor: colors.BaseSlot2, borderRadius: 50, height: 50, width: 50, justifyContent:"center", alignItems:"center"}}>
                             <Image
-                                resizeMode='cover'
-                                style={{ height: 40, width: 40, borderRadius: 25 }}
+                                resizeMode='contain'
+                                style={{ height: 40, width: 40, borderRadius: 25, right:2, top:2}}
                                 source={require("../../assets/images/arrow.png")} />
                         </TouchableOpacity>
                     </View>

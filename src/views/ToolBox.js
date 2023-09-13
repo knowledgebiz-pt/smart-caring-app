@@ -6,6 +6,8 @@ import * as NavigationBar from 'expo-navigation-bar'
 import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
 import ButtonPrimary from '../components/ButtonPrimary'
+import { useTranslation } from "react-i18next"
+
 
 export default function ToolBox({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(false)
@@ -21,6 +23,8 @@ export default function ToolBox({ route, navigation }) {
     const [showPopup, setShowPopup] = useState(false)
 
     const searchRef = useRef(null)
+
+    const {t, i18n} = useTranslation()
 
     useEffect(() => {
         console.log('OPEN', ToolBox.name, 'SCREEN')
@@ -58,12 +62,12 @@ export default function ToolBox({ route, navigation }) {
                 keyboardVerticalOffset={Platform.OS == 'android' ? -150 : -150}
             >
                 <View style={{ height: 70, justifyContent: "center", alignItems: "center" }}>
-                    <Text style={styleSelected.textBold20DarkBlue}>Chat</Text>
+                    <Text style={styleSelected.textBold20DarkBlue}>{t("navbar_toolbox")}</Text>
                 </View>
                 <View style={{ height: 50, width: "90%", alignSelf: "center" }}>
                     <TextInput
                         multiline={true}
-                        placeholder={'Search'}
+                        placeholder={t('search')}
                         placeholderTextColor={colors.BaseSlot3}
                         onChangeText={(text) => setSearch(text)}
                         value={search}
@@ -83,19 +87,19 @@ export default function ToolBox({ route, navigation }) {
                         <TouchableOpacity
                             onPress={() => setIndexSelected(0)}
                             style={{ borderRightWidth: 1, borderRightColor: colors.BaseSlot5, flex: 1, justifyContent: "center", alignItems: "center", borderTopLeftRadius: 20, borderBottomLeftRadius: 20, backgroundColor: indexSelected == 0 ? colors.BaseSlot6 : "transparent" }}>
-                            <Text style={[styleSelected.textRegular16, { color: indexSelected == 0 ? colors.BaseSlot1 : colors.BaseSlot5 }]}>All</Text>
+                            <Text style={[styleSelected.textRegular16, { color: indexSelected == 0 ? colors.BaseSlot1 : colors.BaseSlot5 }]}>{t("filter_all")}</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             onPress={() => setIndexSelected(1)}
                             style={{ borderRightWidth: 1, borderRightColor: colors.BaseSlot5, flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: indexSelected == 1 ? colors.BaseSlot6 : "transparent" }}>
-                            <Text style={[styleSelected.textRegular16, { color: indexSelected == 1 ? colors.BaseSlot1 : colors.BaseSlot5 }]}>Private</Text>
+                            <Text style={[styleSelected.textRegular16, { color: indexSelected == 1 ? colors.BaseSlot1 : colors.BaseSlot5 }]}>{t("private")}</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             onPress={() => setIndexSelected(2)}
                             style={{ flex: 1, justifyContent: "center", alignItems: "center", borderTopRightRadius: 20, borderBottomRightRadius: 20, backgroundColor: indexSelected == 2 ? colors.BaseSlot6 : "transparent" }}>
-                            <Text style={[styleSelected.textRegular16, { color: indexSelected == 2 ? colors.BaseSlot1 : colors.BaseSlot5 }]}>Group</Text>
+                            <Text style={[styleSelected.textRegular16, { color: indexSelected == 2 ? colors.BaseSlot1 : colors.BaseSlot5 }]}>{t("group")}</Text>
                         </TouchableOpacity>
 
                     </View>
@@ -119,7 +123,7 @@ export default function ToolBox({ route, navigation }) {
                             }}
                             ref={searchRef}
                             style={{ height: 40, width: 120, justifyContent: "center", alignItems: "center", borderRadius: 10, marginLeft: 20, borderColor: colors.BaseSlot2, borderWidth: 1 }}>
-                            <Text style={{ color: colors.BaseSlot2 }}>Sort by: Recent</Text>
+                            <Text style={{ color: colors.BaseSlot2 }}>{t("sort_by")}: {t("recent")}</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-end" }}>
@@ -138,7 +142,7 @@ export default function ToolBox({ route, navigation }) {
                             }}
                             ref={searchRef}
                             style={{ marginRight: 20, height: 40, width: 80, justifyContent: "center", alignItems: "center", borderRadius: 10, marginLeft: 20, borderColor: colors.BaseSlot2, borderWidth: 1 }}>
-                            <Text style={{ color: colors.BaseSlot2 }}>Filters</Text>
+                            <Text style={{ color: colors.BaseSlot2 }}>{t("filters")}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -156,7 +160,7 @@ export default function ToolBox({ route, navigation }) {
                                 <View style={{ width: "90%" }}>
                                     <ButtonPrimary
                                         height={40}
-                                        title={"Dowload app"}
+                                        title={t("toolbox_download_app")}
                                         fullWidth={true} />
                                 </View>
                             </View>
@@ -170,12 +174,12 @@ export default function ToolBox({ route, navigation }) {
                             </View>
                             <View style={{ flex: 2, justifyContent: "center" }}>
                                 <Text>
-                                    It´s is a complete solution for the care of the elderly and dependent people, which allows you to manage the care of your loved ones in a simple and effective way.
+                                    It is a complete solution for the care of the elderly and dependent people, which allows you to manage the care of your loved ones in a simple and effective way.
                                 </Text>
                             </View>
                             <View style={{ flex: 1, flexDirection: "row" }}>
                                 <View style={{ flex: 2 }}>
-                                    <Text>Languages</Text>
+                                    <Text>{t("languages")}</Text>
                                     <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "flex-start" }}>
                                         <Text style={{ marginRight: 2, color: colors.BaseSlot3 }}>Spanish</Text>
                                         <Text style={{ marginRight: 2, color: colors.BaseSlot3 }}>English</Text>
@@ -186,7 +190,7 @@ export default function ToolBox({ route, navigation }) {
                                     </View>
                                 </View>
                                 <View style={{ flex: 1 }}>
-                                    <Text>Pricing</Text>
+                                    <Text>{t("pricing")}</Text>
                                     <Text style={{ marginRight: 2, color: colors.BaseSlot3 }}>Free</Text>
                                 </View>
                             </View>

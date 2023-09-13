@@ -7,6 +7,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
 import ButtonPrimary from '../components/ButtonPrimary'
 import ButtonTransparent from '../components/ButtonTransparent'
+import { useTranslation } from "react-i18next"
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function FirstAccess({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(false)
@@ -14,12 +16,13 @@ export default function FirstAccess({ route, navigation }) {
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
 
+    const {t, i18n} = useTranslation()
+
     useEffect(() => {
         console.log('OPEN', FirstAccess.name, 'SCREEN')
         //For test loading
-        setTimeout(() => {
-            setIsLoading(true)
-        }, 1000);
+        setIsLoading(true)
+        AsyncStorage.setItem("@hadFirstAccess", "1")
         return () => {
             console.log('SCREEN', FirstAccess.name, 'CLOSE')
         }
@@ -59,8 +62,8 @@ export default function FirstAccess({ route, navigation }) {
                         style={{ height: 600, width: 350, alignSelf: "center" }} />
                     </View>
                     <View style={{ flex: 1, justifyContent: "space-evenly" }}>
-                        <ButtonPrimary title={"Login"} event={() => {navigation.navigate("Login")}}/>
-                        <ButtonTransparent title={"Don’t have an account? "} titleBold={"Sign up"} event={() => {navigation.navigate("Register")}}/>
+                        <ButtonPrimary title={t("login")} event={() => {navigation.navigate("Login")}}/>
+                        <ButtonTransparent title={t("login_no_account")} titleBold={t("login_sign_up")} event={() => {navigation.navigate("Register")}}/>
                     </View>
                 </View>
             </KeyboardAvoidingView>
