@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux'
 export default function ChatSender({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(true)
     const [message, setMessage] = useState([])
+    const [msg, setMsg] = useState('')
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
@@ -94,8 +95,8 @@ export default function ChatSender({ route, navigation }) {
                             multiline={true}
                             placeholder={'What´s on your mind?'}
                             placeholderTextColor={colors.BaseSlot3}
-                            onChangeText={(text) => setMessage(text)}
-                            value={message}
+                            onChangeText={(text) => setMsg(text)}
+                            value={msg}
                             style={{
                                 backgroundColor: colors.BaseSlot1,
                                 minHeight: 40,

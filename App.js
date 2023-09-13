@@ -25,7 +25,7 @@ import { Provider, useDispatch, useSelector } from "react-redux";
 
 const Stack = createNativeStackNavigator();
 
-OpenAPI.BASE = "http://192.168.1.82:8000"
+// OpenAPI.BASE = "http://192.168.1.82:8000"
 
 export default function App() {
   return (
