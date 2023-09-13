@@ -4,6 +4,7 @@ import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import { MaterialCommunityIcons, FontAwesome } from "@expo/vector-icons"
 import RBSheet from 'react-native-raw-bottom-sheet'
+import { useTranslation } from "react-i18next"
 
 
 export default function JournalEntryPopup({
@@ -12,13 +13,16 @@ export default function JournalEntryPopup({
     openEntry,
     closeEntry
 }) {
+
+    const {t, i18n} = useTranslation()
+
     const [menuVisible, setMenuVisible] = useState(true)
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
 
     const options = [
-        {id: 1,name:"Delete", value:"delete", icon: "trash", iconType: "FontAwesome"},
+        {id: 1,name:(t("delete")), value:"delete", icon: "trash", iconType: "FontAwesome"},
     ]
     const refModalMenu = useRef()
 
@@ -28,6 +32,15 @@ export default function JournalEntryPopup({
     const openMenu = () => { setMenuVisible(true); console.log(menuVisible) }
 
     const closeMenu = () => { setMenuVisible(false); console.log("just closed") }
+
+    const optionPressed = (val) => {
+        if (val === "delete") {
+            closeMenu()
+            event(item.id)
+            closeEntry()
+
+        }
+    }
 
     return (
         <View>
@@ -117,7 +130,7 @@ export default function JournalEntryPopup({
                             <View style={{ flex: 1 }}>
                                 <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", backgroundColor: "#D00", marginTop: 15, borderRadius: 10, height: 50 }}
                                     key={list.id}
-                                    onPress={() => optionPressed(list)}
+                                    onPress={() => optionPressed(list.value)}
                                 >
                                     <View style={{ flex: .5, height: "100%", justifyContent: "center", alignItems: "center" }}>
                                         {list.iconType === "FontAwesome" && <FontAwesome style={{ fontSize: 26, color: "white" }} name={list.icon} />}

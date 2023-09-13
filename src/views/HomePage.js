@@ -15,17 +15,25 @@ import CustomLoader from '../components/CustomLoader'
 import ModalMenu from '../components/ModalMenu'
 import { FlashList } from "@shopify/flash-list"
 
+import { useTranslation } from "react-i18next"
+import { useDispatch, useSelector } from 'react-redux'
+import { insertUser } from '../features/user/user'
+
 export default function HomePage({ route, navigation }) {
+    const {t, i18n} = useTranslation()
     const [isLoading, setIsLoading] = useState(true)
     const [isLoadingSort, setIsLoadingSort] = useState(false)
-    const [user, setUser] = useState(null)
-    const [name, setName] = useState("")
+    // const [user, setUser] = useState(null)
+    // const [name, setName] = useState("")
     const [open, setOpen] = useState(false)
     const [sortSelectOpen, setSortSelectOpen] = useState(false)
     const [filterSelectOpen, setFilterSelectOpen] = useState(false)
-    const [sortSelectValue, setSortSelectValue] = useState({ label: "Recent", value: 'recent' })
+    const [sortSelectValue, setSortSelectValue] = useState({ label: t("recent"), value: 'recent' })
     const [filterSelectValue, setFilterSelectValue] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
+
+    const user = useSelector((state) => state.user)
+
 
     const refModalMenu = useRef()
     const refScroll = useRef()
@@ -38,19 +46,21 @@ export default function HomePage({ route, navigation }) {
                                                       through filters */
     const [displayFeedPosts, setDisplayFeedPosts] = useState([]) // feed posts to display and manipulate
 
+    const dispatch = useDispatch()
+
     const [sortItems, setSortItems] = useState([
-        { label: 'Recent', value: 'recent' },
-        { label: 'Old', value: 'old' }
+        { label: t("recent"), value: 'recent' },
+        { label: t("old"), value: 'old' }
     ])
 
     const [filterItems, setFilterItems] = useState([
-        { label: "All", value: "All" },
-        { label: "Favorites", value: "Favorites" },
-        { label: "Liked", value: "Liked" },
-        { label: 'Caregiver', value: 'Caregiver' },
-        { label: 'Patient', value: 'Patient' },
-        { label: 'Health Professional', value: 'Health Professional' },
-        { label: 'Unlabeled', value: 'Unlabeled' },
+        { label: t("filter_all"), value: "All" },
+        { label: t("filter_favorites"), value: "Favorites" },
+        { label: t("filter_liked"), value: "Liked" },
+        { label: t("caregiver"), value: 'Caregiver' },
+        { label: t("patient"), value: 'Patient' },
+        { label: t("healthPro"), value: 'Health Professional' },
+        { label: t("filter_unlabeled"), value: 'Unlabeled' },
     ])
 
     const sortPosts = (val) => { // affects current displayFeedPosts
@@ -120,10 +130,11 @@ export default function HomePage({ route, navigation }) {
     useEffect(() => {
         console.log(route.params.goUp)
         UserService.getUserDataByIdUser("ruben@teste.com", "Teste").then(res => {
-            setUser(res.data)
+            // setUser(res.data)
             OpenAPI.TOKEN = res.token.access_token
+            dispatch(insertUser(res.data))
             // console.log(res.data._id.$oid)
-            setName(res.data.name)
+            // setName(res.data.name)
             NewsService.getNewsAllArticles().then(result => {
                 setFeedPosts([...result.data])
                 let array = [...result.data].sort((a, b) => {
@@ -134,12 +145,12 @@ export default function HomePage({ route, navigation }) {
             }).catch(e => {
                 console.error("e: ", e)
                 setIsLoading(false)
-                showToast("Error getting feed posts.", "error")
+                showToast(t("homepage_toast_error_get_posts"), "error")
             })
         }).catch(e => {
             console.error("e: ", e)
             setIsLoading(false)
-            showToast("Error: failed to login.", "error")
+            showToast(t("homepage_toast_error_login"), "error")
         })
     }, [])
     Appearance.getColorScheme()
@@ -171,7 +182,7 @@ export default function HomePage({ route, navigation }) {
         }).catch(e => {
             console.error("e: ", e)
             setIsLoading(false)
-            showToast("Error getting feed posts.", "error")
+            showToast(t("homepage_toast_error_get_posts"), "error")
         })
     }
 
@@ -180,10 +191,10 @@ export default function HomePage({ route, navigation }) {
             {displayFeedPosts.length > 0 &&
                 <>
                     <View style={{ alignSelf: "center" }}>
-                        <Text style={[styleSelected.textBold10DarkBlue]}>Hello, {name.split(" ")[0]}!</Text>
+                        <Text style={[styleSelected.textBold10DarkBlue]}>{t("homepage_hello")}, {user.name.split(" ")[0]}!</Text>
                     </View>
                     <View style={{ marginTop: 20 }}>
-                        <PostInputTransparent onSubmitEditing={() => { getArticleData() }} userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"} />
+                        <PostInputTransparent onSubmitEditing={() => { getArticleData() }} userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={t("homepage_post_placeholder")} />
                     </View>
                     <View style={{ borderBottomColor: "rgba(28, 163, 252, 0.1)", borderBottomWidth: 1, marginTop: 10, width: "90%", alignSelf: "center" }}></View>
                     <SortAndFilterSelects sortItems={sortItems} filterItems={filterItems} onSelectSort={(val) => { setSortSelectValue(val); setSortSelectOpen(false); sortPosts(val) }} sortValue={sortSelectValue} onSelectFilter={(val) => { setFilterSelectValue(val); setFilterSelectOpen(false); filterPosts(val) }} filterValue={filterSelectValue} />
@@ -192,7 +203,7 @@ export default function HomePage({ route, navigation }) {
         </>
     )
     const Item = ({ postContent, index }) => (
-        <View key={index} style={{ flexDirection: "row", width: "90%", alignSelf: "center", marginTop: 20 }}>
+        <View key={index} style={{ flexDirection: "row", width: "90%", alignSelf: "center", marginTop: 20, }}>
             <FeedPost postContent={postContent} user={user} feedRole={postContent?.user?.user_type} buttonColor={"#030849"} />
         </View>
     )
@@ -201,7 +212,7 @@ export default function HomePage({ route, navigation }) {
             {/* <MyDrawer/> */}
             <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={colorScheme === 'light' ? 'dark-content' : 'light-content'} />
             <View style={{ zIndex: 9999, }}>
-                <PostInputPopup onSubmitEditing={() => { getArticleData() }} userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"} />
+                <PostInputPopup onSubmitEditing={() => { getArticleData() }} userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={t("homepage_post_placeholder")} />
                 {/* <ModalMenu ref={refModalMenu} /> */}
                 {/* <CommentInputPopup modalVisible={modalVisible} closeModal={() => {setModalVisible(false)}}  blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"Leave your comment:"} /> */}
             </View>
@@ -218,10 +229,10 @@ export default function HomePage({ route, navigation }) {
                     {displayFeedPosts.length === 0 &&
                         <>
                             <View style={{ alignSelf: "center" }}>
-                                <Text style={[styleSelected.textBold10DarkBlue]}>Hello, {name.split(" ")[0]}!</Text>
+                                <Text style={[styleSelected.textBold10DarkBlue]}>{t("homepage_hello")}, {user.name.split(" ")[0]}!</Text>
                             </View>
                             <View style={{ marginTop: 20 }}>
-                                <PostInputTransparent onSubmitEditing={() => { getArticleData() }} userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"} />
+                                <PostInputTransparent onSubmitEditing={() => { getArticleData() }} userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={t("homepage_post_placeholder")} />
                             </View>
                             <View style={{ borderBottomColor: "rgba(28, 163, 252, 0.1)", borderBottomWidth: 1, marginTop: 10, width: "90%", alignSelf: "center" }}></View>
                             <SortAndFilterSelects sortItems={sortItems} filterItems={filterItems} onSelectSort={(val) => { if (val.value !== sortSelectValue.value) { console.log(val.value); console.log(sortSelectValue.value); setSortSelectValue(val); setSortSelectOpen(false); sortPosts(val) } }} sortValue={sortSelectValue} onSelectFilter={(val) => { setFilterSelectValue(val); setFilterSelectOpen(false); filterPosts(val) }} filterValue={filterSelectValue} />
@@ -231,10 +242,10 @@ export default function HomePage({ route, navigation }) {
                     {isLoadingSort &&
                         <>
                             <View style={{ alignSelf: "center" }}>
-                                <Text style={[styleSelected.textBold10DarkBlue]}>Hello, {name.split(" ")[0]}!</Text>
+                                <Text style={[styleSelected.textBold10DarkBlue]}>{t("homepage_hello")}, {user.name.split(" ")[0]}!</Text>
                             </View>
                             <View style={{ marginTop: 20 }}>
-                                <PostInputTransparent onSubmitEditing={() => { getArticleData() }} userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"} />
+                                <PostInputTransparent onSubmitEditing={() => { getArticleData() }} userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={t("homepage_post_placeholder")} />
                             </View>
                             <View style={{ borderBottomColor: "rgba(28, 163, 252, 0.1)", borderBottomWidth: 1, marginTop: 10, width: "90%", alignSelf: "center" }}></View>
                             <SortAndFilterSelects sortItems={sortItems} filterItems={filterItems} onSelectSort={(val) => { if (val.value !== sortSelectValue.value) { console.log(val.value); console.log(sortSelectValue.value); setSortSelectValue(val); setSortSelectOpen(false); sortPosts(val) } else { console.log("HERE") } }} sortValue={sortSelectValue} onSelectFilter={(val) => { setFilterSelectValue(val); setFilterSelectOpen(false); filterPosts(val) }} filterValue={filterSelectValue} />

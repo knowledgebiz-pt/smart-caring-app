@@ -13,23 +13,26 @@ import MySchedule from '../views/MySchedule';
 import Journal from '../views/Journal';
 import { useTheme } from 'react-native-paper';
 
+import { useTranslation } from "react-i18next"
 
 const Tab = createMaterialBottomTabNavigator();
 
 
 export function BottomTab() {
-    const theme = useTheme()
-    theme.colors.secondaryContainer = "transparent"
-    let colorScheme = useColorScheme()
-    var styleSelected = colorScheme == 'light' ? style : styleDark
-    var colors = require('../../style/Colors.json')
-    const [homeIcon, setHomeIcon] = useState("home")
-    const [chatIcon, setChatIcon] = useState("message-text-outline")
-    const [toolBoxIcon, setToolBoxIcon] = useState("account-cog-outline")
-    const [scheduleIcon, setScheduleIcon] = useState("calendar-month-outline")
-    const [journalIcon, setJournalIcon] = useState("notebook-outline")
+  const theme = useTheme()
+  theme.colors.secondaryContainer = "transparent"
+  let colorScheme = useColorScheme()
+  var styleSelected = colorScheme == 'light' ? style : styleDark
+  var colors = require('../../style/Colors.json')
+  const [homeIcon, setHomeIcon] = useState("home")
+  const [chatIcon, setChatIcon] = useState("message-text-outline")
+  const [toolBoxIcon, setToolBoxIcon] = useState("account-cog-outline")
+  const [scheduleIcon, setScheduleIcon] = useState("calendar-month-outline")
+  const [journalIcon, setJournalIcon] = useState("notebook-outline")
 
-    const [goUp, setGoUp] = useState(false)
+  const [goUp, setGoUp] = useState(false)
+
+  const {t, i18n} = useTranslation()
 
   return (
     <Tab.Navigator
@@ -43,7 +46,7 @@ export function BottomTab() {
         name="HomePage"
         component={HomePage}
         options={{
-          tabBarLabel: 'Home',
+          tabBarLabel: t('navbar_home'),
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name={homeIcon} color={color} size={26} />
           ),
@@ -67,7 +70,7 @@ export function BottomTab() {
         name="Chat"
         component={Chat}
         options={{
-          tabBarLabel: 'Chat',
+          tabBarLabel: t('navbar_chat'),
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name={chatIcon} color={color} size={26} />
           ),
@@ -86,7 +89,7 @@ export function BottomTab() {
         name="ToolBox"
         component={ToolBox}
         options={{
-          tabBarLabel: 'ToolBox',
+          tabBarLabel: t('navbar_toolbox'),
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name={toolBoxIcon} color={color} size={26} />
           ),
@@ -105,7 +108,7 @@ export function BottomTab() {
         name="MySchedule"
         component={MySchedule}
         options={{
-          tabBarLabel: 'My Schedule',
+          tabBarLabel: t('navbar_schedule'),
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name={scheduleIcon} color={color} size={26} />
           ),
@@ -124,7 +127,7 @@ export function BottomTab() {
         name="Journal"
         component={Journal}
         options={{
-          tabBarLabel: 'Journal',
+          tabBarLabel: t('navbar_journal'),
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name={journalIcon} color={color} size={26} />
           ),

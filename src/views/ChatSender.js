@@ -7,27 +7,38 @@ import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
 import ChatSenderComponent from '../components/ChatSenderComponent'
 import { useSelector } from 'react-redux'
+import { useTranslation } from "react-i18next"
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 
 export default function ChatSender({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(true)
     const [message, setMessage] = useState([])
-    const [msg, setMsg] = useState('')
+    const [msg, setMsg] = useState("")
+    const [idUser, setIdUser] = useState("")
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
 
+    //redux
+    const user = useSelector((state) => state.user)
     const chatMessage = useSelector((state) => state.chat)
 
     console.log("CHAT MESSAGE OSCAR1", chatMessage)
 
-    const messages = route.params.chat.message
+    console.log("PARAMS CHAT SENDER")
 
+    console.log(JSON.stringify(route.params.chat, null, 4))
 
+    const { t, i18n } = useTranslation()
 
     useEffect(() => {
         console.log('OPEN', ChatSender.name, 'SCREEN')
         console.log("CHATTTT SENDERRR", route.params.chat)
         console.log("IDDDDDD", route.params.idUser)
+        AsyncStorage.getItem("@token").then((token) => {
+            setIdUser(token)
+        })
         return () => {
             console.log('SCREEN', ChatSender.name, 'CLOSE')
         }
@@ -76,7 +87,7 @@ export default function ChatSender({ route, navigation }) {
                     {
                         message.filter(item => item.viewed == false).length > 0 && (
                             <View style={{ width: "100%", backgroundColor: colors.BaseSlot6, height: 40, justifyContent: "center", alignItems: "center", marginTop: 10, marginBottom: 10 }}>
-                                <Text style={[styleSelected.textSecondary, { textAlign: "center", marginTop: 10, color: colors.BaseSlot1 }]}>1 messages unread</Text>
+                                <Text style={[styleSelected.textSecondary, { textAlign: "center", marginTop: 10, color: colors.BaseSlot1 }]}>1 {t("chat_messages_unread")}</Text>
                             </View>
                         )
                     }
@@ -93,7 +104,7 @@ export default function ChatSender({ route, navigation }) {
                     <View style={{ flex: 4, justifyContent: "center" }}>
                         <TextInput
                             multiline={true}
-                            placeholder={'What´s on your mind?'}
+                            placeholder={t("homepage_post_placeholder")}
                             placeholderTextColor={colors.BaseSlot3}
                             onChangeText={(text) => setMsg(text)}
                             value={msg}
@@ -111,18 +122,19 @@ export default function ChatSender({ route, navigation }) {
                         <TouchableOpacity
                             onPress={() => {
                                 route.params.ws.send(JSON.stringify({
-                                    "id-chat": "bb36b47b-2913-4722-bedd-97c06a13af72",
-                                    "id_user_sender": "321",
-                                    "name_user_sender": "Camila",
-                                    "picture_user_sender": "",
-                                    "content": "Teste com react native",
+                                    "id-chat": route.params.chat.id_chat,
+                                    "id_user_sender": user._id.$oid,
+                                    "name_user_sender": user.name,
+                                    "picture_user_sender": user.picture,
+                                    "content": msg,
                                     "type_content": "text"
                                 }));
+                                setMsg("")
                             }}
                             style={{ backgroundColor: colors.BaseSlot2, borderRadius: 50, height: 50, width: 50, justifyContent: "center", alignItems: "center" }}>
                             <Image
-                                resizeMode='cover'
-                                style={{ height: 40, width: 40, borderRadius: 25 }}
+                                resizeMode='contain'
+                                style={{ height: 40, width: 40, borderRadius: 25, right: 2, top: 2 }}
                                 source={require("../../assets/images/arrow.png")} />
                         </TouchableOpacity>
                     </View>

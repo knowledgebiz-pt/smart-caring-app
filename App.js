@@ -22,12 +22,15 @@ import SplashScreen from './src/views/SplashScreen';
 import { OpenAPI } from 'smart-caring-client/client';
 import store from "./src/redux/store";
 import { Provider, useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next"
 
 const Stack = createNativeStackNavigator();
 
 // OpenAPI.BASE = "http://192.168.1.82:8000"
 
 export default function App() {
+  const { t, i18n } = useTranslation()
+
   return (
     //<MyDrawer>
     <>
@@ -54,7 +57,7 @@ export default function App() {
             } />
             <Stack.Screen name="CreateEvent" component={CreateEvent} options={{
               headerShown: true,
-              headerTitle: 'Create Event',
+              headerTitle: t("schedule_create_event"),
             }} />
             <Stack.Screen name="SplashScreen" component={SplashScreen} />
           </Stack.Navigator>

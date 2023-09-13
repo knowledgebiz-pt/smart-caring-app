@@ -8,6 +8,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome } from "@expo/vector-icons"
 import { NewsService, CommentService } from 'smart-caring-client/client'
 import Toast from 'react-native-toast-message'
+import { useTranslation } from "react-i18next"
 
 
 export default function CommentInputPopup({
@@ -33,6 +34,7 @@ export default function CommentInputPopup({
     var colors = require('../../style/Colors.json')
 
     const [textValue, setTextValue] = useState("")
+    const {t, i18n} = useTranslation()
 
     useEffect(() => {
 
@@ -47,11 +49,11 @@ export default function CommentInputPopup({
         }
         CommentService.createComment(commentObject).then(res => {
             onSubmit()
-            showToast("Comment has been created.", "success")
+            showToast(t("homepage_comment_created"), "success")
             // setClicked(false)
         }).catch(e => {
             console.error("e: ", e)
-            showToast("Error commenting on post.", "error")
+            showToast(t("homepage_comment_error"), "error")
             // setClicked(false)
         })
     }

@@ -8,6 +8,7 @@ import Loader from '../components/Loader'
 import ButtonPrimary from '../components/ButtonPrimary'
 import InputTransparent from '../components/InputTransparent'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { useTranslation } from "react-i18next"
 
 export default function EnterNewPassword({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(false)
@@ -19,6 +20,8 @@ export default function EnterNewPassword({ route, navigation }) {
 
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
+
+    const {t, i18n} = useTranslation()
 
 
     useEffect(() => {
@@ -64,14 +67,14 @@ export default function EnterNewPassword({ route, navigation }) {
                         style={{ height: 440, width: 353, alignSelf: "center" }} />
                     </View>
                     {/* <View style={{flex:1}}> */}
-                        <Text style={[styleSelected.textBold20DarkBlue, {marginTop: 45, textAlign: "center"}]}>Create new password</Text>
-                        <Text style={[styleSelected.textRegular14Gray, {width:"65%", marginTop: 5, textAlign: "center", alignSelf: "center"}]}>Your new password should be unique so you don't forget it :)</Text>
+                        <Text style={[styleSelected.textBold20DarkBlue, {marginTop: 45, textAlign: "center"}]}>{t("new_password")}</Text>
+                        <Text style={[styleSelected.textRegular14Gray, {width:"65%", marginTop: 5, textAlign: "center", alignSelf: "center"}]}>{t("new_password_subtext")}</Text>
 
                     {/* </View> */}
                     <View style={styleSelected.paleBlueContainer}>
-                        <InputTransparent onChangeText={(text) => {setPassword(text)}} blurOnSubmit={false} isPassword={true} onSubmitEditing={() => ref_input2.current?.focus()} returnKeyType='next' placeholder={"Enter new password"} />
-                        <InputTransparent onChangeText={(text) => {setConfirmPassword(text)}} inputRef={ref_input2} isPassword={true} placeholder={"Confirm new password"} />
-                        <ButtonPrimary title={"Reset Password"} event={() => {navigation.navigate("SuccessNewPassword")}}/>
+                        <InputTransparent onChangeText={(text) => {setPassword(text)}} blurOnSubmit={false} isPassword={true} onSubmitEditing={() => ref_input2.current?.focus()} returnKeyType='next' placeholder={t("new_password_enter")} />
+                        <InputTransparent onChangeText={(text) => {setConfirmPassword(text)}} inputRef={ref_input2} isPassword={true} placeholder={t("new_password_confirm")} />
+                        <ButtonPrimary title={t("new_password_reset")} event={() => {navigation.navigate("SuccessNewPassword")}}/>
                     </View>
                 </ScrollView>
                 {/* </KeyboardAwareScrollView> */}

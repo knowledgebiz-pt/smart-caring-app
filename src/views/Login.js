@@ -12,6 +12,9 @@ import * as LocalAuthentication from "expo-local-authentication";
 import * as Google from "expo-auth-session/providers/google";
 import Toast from 'react-native-toast-message'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { CommonActions } from '@react-navigation/native'
+
+import { useTranslation } from "react-i18next"
 
 export default function Login({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(true)
@@ -28,6 +31,8 @@ export default function Login({ route, navigation }) {
         expoClientId:
             "870460584280-rscdtdn9l306hahc1o6fggajiqje5s1t.apps.googleusercontent.com",
     });
+
+    const {t, i18n} = useTranslation()
 
     useEffect(() => {
         console.log("INFO LOGIN");
@@ -86,7 +91,7 @@ export default function Login({ route, navigation }) {
     }
     const showToast = (msg, type="success") => {
         // Types: success, error, info
-        Toast.show({type: type, text1: msg, position: 'bottom'})
+        Toast.show({type: type, text1: msg, position: 'bottom', props: {text1NumberOfLines: 2}})
     }
 
     return (
@@ -101,8 +106,9 @@ export default function Login({ route, navigation }) {
                 <View style={[styleSelected.backgroundPrimary, { flex: 1 }]}>
                     <Image source={require("../../assets/images/logo.png")} style={{ width: 200, height: 200, alignSelf: "center" }} resizeMode='contain' />
                     <View style={{ height: 80, justifyContent: "space-evenly", alignItems: "center" }}>
-                        <Text style={styleSelected.textBold20DarkBlue}>Welcome back</Text>
-                        <Text style={styleSelected.textRegular14Gray}>Let’s log in and continue helping others!</Text>
+                        {/* <Text style={styleSelected.textBold20DarkBlue}>Welcome back</Text> */}
+                        <Text style={styleSelected.textBold20DarkBlue}>{t("login_welcome")}</Text>
+                        <Text style={styleSelected.textRegular14Gray}>{t("login_subtext")}</Text>
                     </View>
                     <View style={{
                         backgroundColor: 'rgba(28, 163, 252, 0.1)',
@@ -114,38 +120,53 @@ export default function Login({ route, navigation }) {
                     }}>
                         <View style={{ height: 70, marginTop: 20 }}>
                             <InputTransparent
-                                placeholder={"Enter e-mail"}
+                                placeholder={t("login_enter_email")}
                                 onChangeText={(value) => {
                                     setEmail(value)
                                 }} />
                         </View>
                         <View style={{ height: 70 }}>
                             <InputTransparent
-                                placeholder={"Password"}
+                                placeholder={t("login_password")}
                                 secureTextEntry={true}
                                 onChangeText={(value) => {
                                     setPassword(value)
                                 }} />
                         </View>
                         <TouchableOpacity style={{ height: 30 }} onPress={() => { navigation.navigate("RecoverPassword") }}>
-                            <Text style={[{ alignSelf: "flex-end", textDecorationLine: "underline", color: colors.BaseSlot3, fontWeight: 500, marginRight: 50 }, styleSelected.text12Regular]}>Forgot Password</Text>
+                            <Text style={[{ alignSelf: "flex-end", textDecorationLine: "underline", color: colors.BaseSlot3, fontWeight: 500, marginRight: 50 }, styleSelected.text12Regular]}>{t("login_forgot_password")}</Text>
                         </TouchableOpacity>
-                        <ButtonPrimary title={"Login"} event={() => {
-                            setIsLoading(false)
-                            UserService.getUserDataByIdUser(email, password).then(response => {
-                                setIsLoading(true)
-                                console.warn(response.data)
-                                AsyncStorage.setItem("@token", response.data._id.$oid)
-                                navigation.navigate("BottomTab", { userData: response.data })
-                            }).catch((error) => {
-                                console.error(error)
-                                setIsLoading(true)
-                                showToast("Error: failed to login.", "error")
-                            })
+                        <ButtonPrimary title={t("login")} event={() => {
+                            console.log("email: ", email)
+                            console.log("password: ", password)
+                            if (email.length && password.length) {
+                                setIsLoading(false)
+                                UserService.getUserDataByIdUser(email.toLowerCase(), password).then(response => {
+                                    setIsLoading(true)
+                                    console.warn(response.data)
+                                    AsyncStorage.setItem("@token", response.data._id.$oid)
+                                    navigation.dispatch(
+                                        CommonActions.reset({
+                                          index: 0,
+                                          routes: [{ name: 'BottomTab', params: { userData: response.data } }],
+                                        })
+                                    )
+                                    // navigation.navigate("BottomTab", { userData: response.data })
+                                }).catch((error) => {
+                                    console.error(error)
+                                    setIsLoading(true)
+                                    setPassword("")
+                                    setEmail("")
+                                    showToast(t("login_toast_fail"), "error")
+                                })
+                            }
+                            else {
+                                showToast(t("login_toast_missing_fields"), "error")
+                            }
                         }} />
                         <View style={{ flexDirection: "row", height: 50, justifyContent: "center", alignItems: "center" }}>
                             <View style={{ height: 1, backgroundColor: colors.BaseSlot5, flex: 1 }} />
-                            <Text style={[{ marginLeft: 15, marginRight: 15 }, styleSelected.text12Regular]}>or</Text>
+                            <Text style={[{ marginLeft: 15, marginRight: 15 }, styleSelected.text12Regular]}>{t("login_or")}</Text>
                             <View style={{ height: 1, backgroundColor: colors.BaseSlot5, flex: 1 }} />
                         </View>
                         <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
@@ -162,8 +183,8 @@ export default function Login({ route, navigation }) {
                             </TouchableOpacity>
                         </View>
                         <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", marginTop: 20 }} onPress={() => { navigation.navigate("Register") }}>
-                            <Text style={[styleSelected.textRegular16, { color: colors.BaseSlot3 }]}>Don’t have an account? </Text>
-                            <Text style={[styleSelected.textBold16, { color: colors.BaseSlot3 }]}>Sign up</Text>
+                            <Text style={[styleSelected.textRegular16, { color: colors.BaseSlot3 }]}>{t("login_no_account")}</Text>
+                            <Text style={[styleSelected.textBold16, { color: colors.BaseSlot3 }]}>{t("login_sign_up")}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

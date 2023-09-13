@@ -10,6 +10,8 @@ import { FlatList } from "react-native-gesture-handler";
 import FeedPostComment from "./FeedPostComment";
 import { CommentService } from "smart-caring-client/client";
 import Loader from "./Loader";
+import Toast from 'react-native-toast-message'
+import { useTranslation } from "react-i18next"
 
 /***
  * @param buttonColor: string - Determine the color of the component's buttons and their borders.
@@ -35,6 +37,7 @@ export default function FeedPostCommentList(
     const [comments, setComments] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [selectedComment, setSelectedComment] = useState(null)
+    const {t, i18n} = useTranslation()
 
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
@@ -47,6 +50,11 @@ export default function FeedPostCommentList(
         setImage(img)
     }, [])
 
+    const showToast = (msg, type = "success") => {
+        // Types: success, error, info
+        Toast.show({ type: type, text1: msg, position: 'bottom' })
+    }
+
     const retrieveComments = () => {
         setSelectedComment(null)
         setModalVisible(true)
@@ -57,7 +65,7 @@ export default function FeedPostCommentList(
         }).catch(e => {
             if (!e.includes("Not Found")) {
                 console.error("e: ", e)
-                showToast("An error has occurred when trying to fetch the comments from a post.", "error")
+                showToast(t("homepage_comment_get_error"), "error")
             }
             setIsLoading(false)
         })
@@ -87,7 +95,7 @@ export default function FeedPostCommentList(
             <TouchableOpacity style={styleSelected.feedPostContentSeeCommentsTouchableOpacity} onPress={() => {
                 if (postContent.total_comments && postContent.total_comments > 0) retrieveComments(); 
                 }}>
-                    <Text style={styleSelected.feedPostContentSeeComments} >{ postContent.total_comments && postContent.total_comments > 0 ?  "See "+ postContent.total_comments + (postContent.total_comments === 1 ? " comment" : " comments") : "No comments"}</Text>
+                    <Text style={styleSelected.feedPostContentSeeComments} >{ postContent.total_comments && postContent.total_comments > 0 ?  t("homepage_comment_see") + postContent.total_comments + (postContent.total_comments === 1 ? " " + t("homepage_comment_lowercase") : " " + t("homepage_comments")) : t("homepage_no_comments")}</Text>
                 </TouchableOpacity>
                 <Modal animationType='slide' transparent={true} visible={modalVisible}>
                     <Pressable style={styleSelected.modalCenteredView} onPress={(event) => event.target === event.currentTarget && setModalVisible(false)}>

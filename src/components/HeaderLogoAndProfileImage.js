@@ -7,7 +7,9 @@ import ModalMenu from './ModalMenu';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { OpenAPI } from 'smart-caring-client/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { useNavigation, CommonActions } from '@react-navigation/native'
+import { useTranslation } from "react-i18next"
+import { useSelector } from 'react-redux';
 
 /***
  * @param img: string - URI of the user's profile image
@@ -18,28 +20,34 @@ export default function HeaderLogoAndProfileImage({img, onPressImage, user}) {
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
 
+    const navigation = useNavigation()
+
+    const {t, i18n} = useTranslation()
+
     const [image, setImage] = useState(null);
     const [userType, setUserType] = useState("")
     const refModalMenu = useRef()
 
+    const userInfo = useSelector((state) => state.user)
+
     const options = [
-        {id: 1,name:"Profile", value:"profile", icon: "user", iconType: "FontAwesome"},
-        {id: 2,name:"Privacy Policy", value:"privacypolicy", icon: "shield-account", iconType: "MaterialCommunityIcons"},
-        {id: 3,name:"Terms of Use", value:"termsofuse", icon: "file-check", iconType: "MaterialCommunityIcons"},
-        {id: 4,name:"Settings", value:"settings", icon: "cog", iconType: "FontAwesome"},
-        {id: 5,name:"Logout", value:"logout", icon: "logout", iconType: "MaterialCommunityIcons"},
+        {id: 1,name:t("homepage_menu_profile"), value:"profile", icon: "user", iconType: "FontAwesome"},
+        {id: 2,name:t("homepage_menu_privacy_policy"), value:"privacypolicy", icon: "shield-account", iconType: "MaterialCommunityIcons"},
+        {id: 3,name:t("homepage_menu_terms_use"), value:"termsofuse", icon: "file-check", iconType: "MaterialCommunityIcons"},
+        {id: 4,name:t("homepage_menu_settings"), value:"settings", icon: "cog", iconType: "FontAwesome"},
+        {id: 5,name:t("homepage_menu_logout"), value:"logout", icon: "logout", iconType: "MaterialCommunityIcons"},
     ]
 
     useEffect(() => {
         setImage(img)
-        console.log(user)
-        if (user.user_type.toLowerCase() === "health professional") {
+        console.log("USER INFO", userInfo)
+        if (userInfo.user_type.toLowerCase() === "health professional") {
             setUserType(require("../../assets/images/Caregiver.png"))
         }
-        else if (user.user_type.toLowerCase() === "caregiver") {
+        else if (userInfo.user_type.toLowerCase() === "caregiver") {
             setUserType(require("../../assets/images/Caregiver.png"))
         }
-        else if (user.user_type.toLowerCase() === "patient") {
+        else if (userInfo.user_type.toLowerCase() === "patient") {
             setUserType(require("../../assets/images/Patient.png"))
         }
     }, [])
@@ -47,6 +55,13 @@ export default function HeaderLogoAndProfileImage({img, onPressImage, user}) {
     const optionPressed = (option) => {
         if (option.value === "logout") {
             AsyncStorage.clear()
+            refModalMenu.current.close()
+            navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [{ name: 'Login' }],
+                })
+            )
         }
     }
 
@@ -59,7 +74,7 @@ export default function HeaderLogoAndProfileImage({img, onPressImage, user}) {
                 <TouchableOpacity onPress={() => {refModalMenu.current.open()}} style={[styleSelected.avatarRightSide]}>
                     <Image
                         style={[styleSelected.avatar, styleSelected.avatarRightSide]}
-                        source={{uri: image ? image : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"}}
+                        source={{uri: userInfo.picture ? userInfo.picture : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"}}
                     />
                     {/* Icon style is very specific for this case and will likely not work in different situations. */}
                     <View style={styleSelected.menuCircleAvatarRightSide}>
@@ -98,11 +113,11 @@ export default function HeaderLogoAndProfileImage({img, onPressImage, user}) {
                             <View style={{flex: .19, height:"100%", justifyContent:"center", alignItems:"center"}}>
                                 <Image
                                     style={[styleSelected.avatar, { height: 50, width: 50}]}
-                                    source={{uri: image ? image : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"}}
+                                    source={{uri: userInfo.picture ? userInfo.picture : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"}}
                                 />
                             </View>
                             <View style={{flex: 1, flexDirection:"column", justifyContent:"center", alignItems:"flex-start"}}>
-                                <Text style={{color:"white", fontSize:14}}>{user.name}</Text>
+                                <Text style={{color:"white", fontSize:14}}>{userInfo.name}</Text>
                                 <Image style={[{width: 35, height: 35,tintColor:"white"}, ]} resizeMode='contain' source={userType}/>
                             </View>
 

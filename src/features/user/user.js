@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-export const addUser = createSlice({
+export const userFeature = createSlice({
     name: 'user',
     initialState: {
         _id: "",
@@ -9,6 +9,7 @@ export const addUser = createSlice({
         password: "",
         gmail_access_token: "",
         exponent_push_token: "",
+        user_type: "",
         picture: "",
         cpf: "",
         phone: "",
@@ -19,14 +20,15 @@ export const addUser = createSlice({
     },
     reducers: {
         insertUser: (state, action) => {
-            console.log("PERSISTED", addUser.name, insertUser.type, ":", state)
-            console.log("REDUX", addUser.name, insertUser.type, ":", action.payload)
+            console.log("PERSISTED", userFeature.name, insertUser.type, ":", state)
+            console.log("REDUX", userFeature.name, insertUser.type, ":", action.payload)
             state._id = action.payload?._id
             state.name = action.payload?.name
             state.email = action.payload?.email
             state.password = action.payload?.password
             state.gmailAccessToken = action.payload?.gmail_access_token
             state.exponentPushToken = action.payload?.exponent_push_token
+            state.user_type = action.payload?.user_type
             state.picture = action.payload?.picture
             state.cpf = action.payload?.cpf
             state.phone = action.payload?.phone
@@ -37,20 +39,20 @@ export const addUser = createSlice({
         },
 
         updateEmailAndPhone: (state, action) => {
-            console.log("PERSISTED", addUser.name, updateEmailAndPhone.type, ":", state)
-            console.log("REDUX", addUser.name, updateEmailAndPhone.type, ":", action.payload)
+            console.log("PERSISTED", userFeature.name, updateEmailAndPhone.type, ":", state)
+            console.log("REDUX", userFeature.name, updateEmailAndPhone.type, ":", action.payload)
             state.email = action.payload?.email
             state.phone = action.payload?.phone
         },
 
         updatePassword: (state, action) => {
-            console.log("PERSISTED", addUser.name, updatePassword.type, ":", state)
-            console.log("REDUX", addUser.name, updatePassword.type, ":", action.payload)
+            console.log("PERSISTED", userFeature.name, updatePassword.type, ":", state)
+            console.log("REDUX", userFeature.name, updatePassword.type, ":", action.payload)
             state.password = action.payload?.password
         }
     },
 })
 
-export const { insertUser, updateEmailAndPhone, updatePassword } = addUser.actions
+export const { insertUser, updateEmailAndPhone, updatePassword } = userFeature.actions
 
-export default addUser.reducer
+export default userFeature.reducer

@@ -7,12 +7,15 @@ import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
 import ButtonPrimary from '../components/ButtonPrimary'
 import ButtonTransparent from '../components/ButtonTransparent'
+import { useTranslation } from "react-i18next"
 
 export default function SuccessNewPassword({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(false)
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
+
+    const {t, i18n} = useTranslation()
 
     useEffect(() => {
         console.log('OPEN', SuccessNewPassword.name, 'SCREEN')
@@ -55,7 +58,7 @@ export default function SuccessNewPassword({ route, navigation }) {
                         style={{ height: 600, width: 350, alignSelf: "center" }} />
                     
                     <View style={{ flex: 1, justifyContent: "space-evenly" }}>
-                        <ButtonPrimary title={"Let's start!"} event={() => {navigation.navigate("Login")}}/>
+                        <ButtonPrimary title={t("success_new_password_button")} event={() => {navigation.navigate("Login")}}/>
                     </View>
                 </View>
             </KeyboardAvoidingView>

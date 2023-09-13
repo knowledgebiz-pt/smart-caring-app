@@ -5,7 +5,8 @@ import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
 import Loader from '../components/Loader'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { OpenAPI } from 'smart-caring-client/client'
+import { OpenAPI, } from 'smart-caring-client/client'
+import { CommonActions } from '@react-navigation/native'
 
 export default function SplashScreen({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(true)
@@ -25,14 +26,37 @@ export default function SplashScreen({ route, navigation }) {
     const checkContainToken = () => {
         AsyncStorage.getItem("@token").then(res => {
             if (res) {
+                console.warn(res)
                 setTimeout(() => {
-                    navigation.navigate("BottomTab")
+                    navigation.dispatch(
+                        CommonActions.reset({
+                          index: 0,
+                          routes: [{ name: 'BottomTab' }],
+                        })
+                    )
                 }, 1000)
 
             }
             else {
                 setTimeout(() => {
-                    navigation.navigate("Login")
+                    AsyncStorage.getItem("@hadFirstAccess").then(res => {
+                        if (res) {
+                            navigation.dispatch(
+                                CommonActions.reset({
+                                  index: 0,
+                                  routes: [{ name: 'Login' }],
+                                })
+                            )
+                        }
+                        else {
+                            navigation.dispatch(
+                                CommonActions.reset({
+                                  index: 0,
+                                  routes: [{ name: 'FirstAccess' }],
+                                })
+                            )
+                        }
+                    })
                 }, 1000)
             }
         })
