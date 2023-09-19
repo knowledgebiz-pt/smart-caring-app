@@ -18,9 +18,10 @@ import { FlashList } from "@shopify/flash-list"
 import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from 'react-redux'
 import { insertUser } from '../features/user/user'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function HomePage({ route, navigation }) {
-    const {t, i18n} = useTranslation()
+    const { t, i18n } = useTranslation()
     const [isLoading, setIsLoading] = useState(true)
     const [isLoadingSort, setIsLoadingSort] = useState(false)
     // const [user, setUser] = useState(null)
@@ -135,28 +136,32 @@ export default function HomePage({ route, navigation }) {
 
     useEffect(() => {
         console.log(route.params.goUp)
-        UserService.getUserDataByIdUser("oscar.silva@knowledgebiz.pt", "1234").then(res => {
-            // setUser(res.data)
-            OpenAPI.TOKEN = res.token.access_token
-            dispatch(insertUser(res.data))
-            // console.log(res.data._id.$oid)
-            // setName(res.data.name)
-            NewsService.getNewsAllArticles().then(result => {
-                setFeedPosts([...result.data])
-                let array = [...result.data].sort((a, b) => {
-                    return new Date(b.date) - new Date(a.date)
+        AsyncStorage.getItem("@token").then((token) => {
+            UserService.getUserDataByIdUserCorrectly(token).then(res => {
+                OpenAPI.TOKEN = res.token.access_token
+                dispatch(insertUser(res.data))
+                NewsService.getNewsAllArticles().then(result => {
+                    setFeedPosts([...result.data])
+                    let array = [...result.data].sort((a, b) => {
+                        return new Date(b.date) - new Date(a.date)
+                    })
+                    setDisplayFeedPosts(array)
+                    setIsLoading(false)
+                }).catch(e => {
+                    console.error("e: ", e)
+                    setIsLoading(false)
+                    showToast(t("homepage_toast_error_get_posts"), "error")
                 })
-                setDisplayFeedPosts(array)
-                setIsLoading(false)
-            }).catch(e => {
+            }).catch((e) => {
                 console.error("e: ", e)
                 setIsLoading(false)
-                showToast(t("homepage_toast_error_get_posts"), "error")
+                showToast(t("homepage_toast_error_login"), "error")
             })
-        }).catch(e => {
-            console.error("e: ", e)
-            setIsLoading(false)
-            showToast(t("homepage_toast_error_login"), "error")
+        }).catch((e) => {
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+            })
         })
     }, [])
     Appearance.getColorScheme()
@@ -215,7 +220,7 @@ export default function HomePage({ route, navigation }) {
     )
 
     const handleLikeFavorite = ([id, shouldAdd, arrayName]) => {
-        console.log("handleLike ID:",id)
+        console.log("handleLike ID:", id)
         console.log("Add or retract:", shouldAdd ? "Add" : "Retract")
         console.log(displayFeedPosts.findIndex((post) => post._id.$oid === id))
         let index = displayFeedPosts.findIndex((post) => post._id.$oid === id)
