@@ -85,7 +85,7 @@ export default function ChatSender({ route, navigation }) {
                 <ScrollView
                     snapToEnd={true}
                     ref={refScrollView}
-                    style={{ backgroundColor: colors.BaseSlot5 }}>
+                    style={{ backgroundColor: "#E5E5E5" }}>
                     {
                         message.filter(item => item.viewed == true).map((message, index) => {
                             return (

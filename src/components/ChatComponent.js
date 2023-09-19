@@ -53,17 +53,17 @@ export default function ChatComponent({ value, navigation, idUser, ws, update })
                             <Image
                                 style={{ width: 70, height: 70 }}
                                 resizeMode='cover'
-                                source={{ uri: value.chat_members.findLast(item => item.id_user != idUser)?.picture }}
+                                source={{ uri: value.chat_members.findLast(item => item.id_user != idUser)?.picture ? value.chat_members.findLast(item => item.id_user != idUser)?.picture : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541" }}
                             />
                         ) : (
-                            <View style={{ borderColor: lastedMessage?.viewed ? colors.BaseSlot3 : colors.BaseSlot1, borderWidth: 1, height: "95%", width: "95%", borderRadius: 50, justifyContent: "center", alignItems: "center" }}>
+                            <View style={{ borderColor: lastedMessage?.viewed ? colors.BaseSlot3 : colors.BaseSlot1, borderWidth: 1, height: "100%", width: "95%", borderRadius: 50, justifyContent: "center", alignItems: "center" }}>
                                 <Text style={{ color: lastedMessage?.viewed ? colors.BaseSlot3 : colors.BaseSlot1 }}>{String(value.chat_name.slice(0, 2)).toLocaleUpperCase()}</Text>
                             </View>
                         )
                     }
                 </View>
 
-                <View style={{ flex: 3, height: "70%" }}>
+                <View style={{ flex: 2, height: "100%" }}>
                     <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
                         {
                             value.chat_members.length > 2 ? (
@@ -115,7 +115,7 @@ export default function ChatComponent({ value, navigation, idUser, ws, update })
                 </View>
 
                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center", marginRight: 20 }}>
-                    <Text style={[styleSelected.textRegular12, { color: lastedMessage?.viewed ? colors.BaseSlot5 : colors.BaseSlot1, fontSize: 12 }]}>{new Date(lastedMessage?.date).toLocaleString()}</Text>
+                    <Text style={[styleSelected.textRegular12, { color: lastedMessage?.viewed ? colors.BaseSlot5 : colors.BaseSlot1, fontSize: 12 }]}>{new Date(lastedMessage?.date).toLocaleString().substring(0,17)}</Text>
                 </View>
             </TouchableOpacity >
             <View style={{ height: 1, backgroundColor: lastedMessage?.viewed ? colors.BaseSlot5 : colors.BaseSlot1, width: "90%", alignSelf: "center" }} />

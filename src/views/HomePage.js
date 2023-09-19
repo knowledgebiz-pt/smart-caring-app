@@ -64,22 +64,28 @@ export default function HomePage({ route, navigation }) {
     ])
 
     const sortPosts = (val) => { // affects current displayFeedPosts
-        setIsLoadingSort(true)
-        if (val.value === "recent") {
-            let array = [...displayFeedPosts].sort((a, b) => {
-                return new Date(b.date) - new Date(a.date)
-            })
-            setDisplayFeedPosts(array)
-            setIsLoadingSort(false)
-        }
-        else if (val.value === "old") {
+        if (sortSelectValue.value !== val.value) {
+            setIsLoadingSort(true)
+            setSortSelectValue(val)
             displayFeedPosts.reverse()
             setTimeout(() => {
                 setIsLoadingSort(false)
-
             }, 2000)
-
         }
+        // if (val.value === "recent") {
+        //     let array = [...displayFeedPosts].sort((a, b) => {
+        //         return new Date(b.date) - new Date(a.date)
+        //     })
+        //     setDisplayFeedPosts(array)
+        //     setIsLoadingSort(false)
+        // }
+        // else if (val.value === "old") {
+        //     displayFeedPosts.reverse()
+        //     setTimeout(() => {
+        //         setIsLoadingSort(false)
+
+        //     }, 2000)
+        // }
     }
 
     const filterPosts = (val) => { // Will get data from original feedPosts array, but won't modify directly
@@ -197,16 +203,35 @@ export default function HomePage({ route, navigation }) {
                         <PostInputTransparent onSubmitEditing={() => { getArticleData() }} userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={t("homepage_post_placeholder")} />
                     </View>
                     <View style={{ borderBottomColor: "rgba(28, 163, 252, 0.1)", borderBottomWidth: 1, marginTop: 10, width: "90%", alignSelf: "center" }}></View>
-                    <SortAndFilterSelects sortItems={sortItems} filterItems={filterItems} onSelectSort={(val) => { setSortSelectValue(val); setSortSelectOpen(false); sortPosts(val) }} sortValue={sortSelectValue} onSelectFilter={(val) => { setFilterSelectValue(val); setFilterSelectOpen(false); filterPosts(val) }} filterValue={filterSelectValue} />
+                    <SortAndFilterSelects sortItems={sortItems} filterItems={filterItems} onSelectSort={(val) => { setSortSelectOpen(false); sortPosts(val) }} sortValue={sortSelectValue} onSelectFilter={(val) => { setFilterSelectValue(val); setFilterSelectOpen(false); filterPosts(val) }} filterValue={filterSelectValue} />
                     <View style={{ maxHeight: "100%" }} />
                 </>}
         </>
     )
     const Item = ({ postContent, index }) => (
         <View key={index} style={{ flexDirection: "row", width: "90%", alignSelf: "center", marginTop: 20, }}>
-            <FeedPost postContent={postContent} user={user} feedRole={postContent?.user?.user_type} buttonColor={"#030849"} />
+            <FeedPost onHandleLikeFavorite={(data) => handleLikeFavorite(data)} postContent={postContent} user={user} feedRole={postContent?.user?.user_type} buttonColor={"#030849"} />
         </View>
     )
+
+    const handleLikeFavorite = ([id, shouldAdd, arrayName]) => {
+        console.log("handleLike ID:",id)
+        console.log("Add or retract:", shouldAdd ? "Add" : "Retract")
+        console.log(displayFeedPosts.findIndex((post) => post._id.$oid === id))
+        let index = displayFeedPosts.findIndex((post) => post._id.$oid === id)
+        if (shouldAdd) {
+            if (!displayFeedPosts[index][arrayName].includes(user._id.$oid)) {
+                displayFeedPosts[index][arrayName].push(user._id.$oid)
+            }
+        }
+        else {
+            let likeIndex = displayFeedPosts[index][arrayName].findIndex(like => like === user._id.$oid)
+            if (likeIndex > -1) {
+                displayFeedPosts[index][arrayName].splice(likeIndex, 1)
+            }
+        }
+    }
+
     return (
         <View style={[styleSelected.backgroundPrimary, { flex: 1 }]} onLayout={onLayoutRootView}>
             {/* <MyDrawer/> */}
@@ -235,7 +260,7 @@ export default function HomePage({ route, navigation }) {
                                 <PostInputTransparent onSubmitEditing={() => { getArticleData() }} userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={t("homepage_post_placeholder")} />
                             </View>
                             <View style={{ borderBottomColor: "rgba(28, 163, 252, 0.1)", borderBottomWidth: 1, marginTop: 10, width: "90%", alignSelf: "center" }}></View>
-                            <SortAndFilterSelects sortItems={sortItems} filterItems={filterItems} onSelectSort={(val) => { if (val.value !== sortSelectValue.value) { console.log(val.value); console.log(sortSelectValue.value); setSortSelectValue(val); setSortSelectOpen(false); sortPosts(val) } }} sortValue={sortSelectValue} onSelectFilter={(val) => { setFilterSelectValue(val); setFilterSelectOpen(false); filterPosts(val) }} filterValue={filterSelectValue} />
+                            <SortAndFilterSelects sortItems={sortItems} filterItems={filterItems} onSelectSort={(val) => { if (val.value !== sortSelectValue.value) { console.log(val.value); console.log(sortSelectValue.value); setSortSelectOpen(false); sortPosts(val) } }} sortValue={sortSelectValue} onSelectFilter={(val) => { setFilterSelectValue(val); setFilterSelectOpen(false); filterPosts(val) }} filterValue={filterSelectValue} />
                         </>
                     }
 
@@ -248,7 +273,7 @@ export default function HomePage({ route, navigation }) {
                                 <PostInputTransparent onSubmitEditing={() => { getArticleData() }} userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={t("homepage_post_placeholder")} />
                             </View>
                             <View style={{ borderBottomColor: "rgba(28, 163, 252, 0.1)", borderBottomWidth: 1, marginTop: 10, width: "90%", alignSelf: "center" }}></View>
-                            <SortAndFilterSelects sortItems={sortItems} filterItems={filterItems} onSelectSort={(val) => { if (val.value !== sortSelectValue.value) { console.log(val.value); console.log(sortSelectValue.value); setSortSelectValue(val); setSortSelectOpen(false); sortPosts(val) } else { console.log("HERE") } }} sortValue={sortSelectValue} onSelectFilter={(val) => { setFilterSelectValue(val); setFilterSelectOpen(false); filterPosts(val) }} filterValue={filterSelectValue} />
+                            <SortAndFilterSelects sortItems={sortItems} filterItems={filterItems} onSelectSort={(val) => { if (val.value !== sortSelectValue.value) { console.log(val.value); console.log(sortSelectValue.value); setSortSelectOpen(false); sortPosts(val) } else { console.log("HERE") } }} sortValue={sortSelectValue} onSelectFilter={(val) => { setFilterSelectValue(val); setFilterSelectOpen(false); filterPosts(val) }} filterValue={filterSelectValue} />
                             <View style={{ paddingTop: -800 }}>
                                 <CustomLoader height={200} customStyle={{ height: "75%" }} />
                             </View>

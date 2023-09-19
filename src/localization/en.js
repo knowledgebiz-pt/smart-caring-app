@@ -30,6 +30,8 @@ export default {
         content: "Content",
         color: "Color",
         description: "Description",
+        apps: "Apps",
+        websites: "Websites",
         // LOGIN SCREEN
         login_welcome: "Welcome back",
         login_subtext: "Let's log in and continue helping others!",
@@ -151,8 +153,14 @@ export default {
         chat_messages_unread: "messages unread",
 
         // TOOLBOX SCREEN
-        toolbox_download_app: "Download app",
+        toolbox_download_app: "Download App",
+        toolbox_visit_website: "Visit Website",
         toolbox_pricing: "Pricing",
+        toolbox_free: "Free of charge",
+        toolbox_most_stars: "Most Stars",
+        toolbox_least_stars: "Least Stars",
+        toolbox_most_languages: "Most Languages",
+        toolbox_least_languages: "Least Languages",
 
         // JOURNAL SCREEN
         journal_toast_no_entries: "No entries found.",

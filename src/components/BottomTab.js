@@ -1,6 +1,6 @@
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { useState, useRef } from 'react';
-import { useColorScheme } from 'react-native';
+import { useColorScheme, Image } from 'react-native';
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -24,11 +24,11 @@ export function BottomTab() {
   let colorScheme = useColorScheme()
   var styleSelected = colorScheme == 'light' ? style : styleDark
   var colors = require('../../style/Colors.json')
-  const [homeIcon, setHomeIcon] = useState("home")
-  const [chatIcon, setChatIcon] = useState("message-text-outline")
-  const [toolBoxIcon, setToolBoxIcon] = useState("account-cog-outline")
-  const [scheduleIcon, setScheduleIcon] = useState("calendar-month-outline")
-  const [journalIcon, setJournalIcon] = useState("notebook-outline")
+  const [homeIcon, setHomeIcon] = useState(require("../../assets/images/home_neg.png"))
+  const [chatIcon, setChatIcon] = useState(require("../../assets/images/chat.png"))
+  const [toolBoxIcon, setToolBoxIcon] = useState(require("../../assets/images/toolbox.png"))
+  const [scheduleIcon, setScheduleIcon] = useState(require("../../assets/images/schedule.png"))
+  const [journalIcon, setJournalIcon] = useState(require("../../assets/images/journal.png"))
 
   const [goUp, setGoUp] = useState(false)
 
@@ -48,16 +48,19 @@ export function BottomTab() {
         options={{
           tabBarLabel: t('navbar_home'),
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name={homeIcon} color={color} size={26} />
+            <Image
+              resizeMode='contain'
+              style={{ height: 40, width: 40, justifyContent:"center", alignItems:"center", top:-4, tintColor: "white" }}
+              source={homeIcon} />
           ),
         }}
         listeners={{
             tabPress: e => {
-                setHomeIcon("home")
-                setChatIcon("message-text-outline")
-                setToolBoxIcon("account-cog-outline")
-                setScheduleIcon("calendar-month-outline")
-                setJournalIcon("notebook-outline")
+                setHomeIcon(require("../../assets/images/home_neg.png"))
+                setChatIcon(require("../../assets/images/chat.png"))
+                setToolBoxIcon(require("../../assets/images/toolbox.png"))
+                setScheduleIcon(require("../../assets/images/schedule.png"))
+                setJournalIcon(require("../../assets/images/journal.png"))
                 setGoUp(true)
                 setTimeout(() => {
                   setGoUp(false)
@@ -72,16 +75,19 @@ export function BottomTab() {
         options={{
           tabBarLabel: t('navbar_chat'),
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name={chatIcon} color={color} size={26} />
+            <Image
+              resizeMode='contain'
+              style={{ height: 40, width: 40, justifyContent:"center", alignItems:"center", top:-4, tintColor: "white" }}
+              source={chatIcon} />
           ),
         }}
         listeners={{
             tabPress: e => {
-                setHomeIcon("home-outline")
-                setChatIcon("message-text")
-                setToolBoxIcon("account-cog-outline")
-                setScheduleIcon("calendar-month-outline")
-                setJournalIcon("notebook-outline")
+              setHomeIcon(require("../../assets/images/home.png"))
+              setChatIcon(require("../../assets/images/chat_neg.png"))
+              setToolBoxIcon(require("../../assets/images/toolbox.png"))
+              setScheduleIcon(require("../../assets/images/schedule.png"))
+              setJournalIcon(require("../../assets/images/journal.png"))
             }
         }}
       />
@@ -91,16 +97,19 @@ export function BottomTab() {
         options={{
           tabBarLabel: t('navbar_toolbox'),
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name={toolBoxIcon} color={color} size={26} />
+            <Image
+              resizeMode='contain'
+              style={{ height: 40, width: 40, justifyContent:"center", alignItems:"center", top:-4, tintColor: "white" }}
+              source={toolBoxIcon} />
           ),
         }}
         listeners={{
             tabPress: e => {
-                setHomeIcon("home-outline")
-                setChatIcon("message-text-outline")
-                setToolBoxIcon("account-cog")
-                setScheduleIcon("calendar-month-outline")
-                setJournalIcon("notebook-outline")
+              setHomeIcon(require("../../assets/images/home.png"))
+              setChatIcon(require("../../assets/images/chat.png"))
+              setToolBoxIcon(require("../../assets/images/toolbox_neg.png"))
+              setScheduleIcon(require("../../assets/images/schedule.png"))
+              setJournalIcon(require("../../assets/images/journal.png"))
             }
         }}
       />
@@ -110,16 +119,19 @@ export function BottomTab() {
         options={{
           tabBarLabel: t('navbar_schedule'),
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name={scheduleIcon} color={color} size={26} />
+            <Image
+              resizeMode='contain'
+              style={{ height: 40, width: 40, justifyContent:"center", alignItems:"center", top:-4, tintColor: "white" }}
+              source={scheduleIcon} />
           ),
         }}
         listeners={{
             tabPress: e => {
-                setHomeIcon("home-outline")
-                setChatIcon("message-text-outline")
-                setToolBoxIcon("account-cog-outline")
-                setScheduleIcon("calendar-month")
-                setJournalIcon("notebook-outline")
+              setHomeIcon(require("../../assets/images/home.png"))
+              setChatIcon(require("../../assets/images/chat.png"))
+              setToolBoxIcon(require("../../assets/images/toolbox.png"))
+              setScheduleIcon(require("../../assets/images/schedule_neg.png"))
+              setJournalIcon(require("../../assets/images/journal.png"))
             }
         }}
       />
@@ -129,16 +141,19 @@ export function BottomTab() {
         options={{
           tabBarLabel: t('navbar_journal'),
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name={journalIcon} color={color} size={26} />
+            <Image
+              resizeMode='contain'
+              style={{ height: 40, width: 40, justifyContent:"center", alignItems:"center", top:-4, tintColor: "white" }}
+              source={journalIcon} />
           ),
         }}
         listeners={{
             tabPress: e => {
-                setHomeIcon("home-outline")
-                setChatIcon("message-text-outline")
-                setToolBoxIcon("account-cog-outline")
-                setScheduleIcon("calendar-month-outline")
-                setJournalIcon("notebook")
+              setHomeIcon(require("../../assets/images/home.png"))
+              setChatIcon(require("../../assets/images/chat.png"))
+              setToolBoxIcon(require("../../assets/images/toolbox.png"))
+              setScheduleIcon(require("../../assets/images/schedule.png"))
+              setJournalIcon(require("../../assets/images/journal_neg.png"))
             }
         }}
       />

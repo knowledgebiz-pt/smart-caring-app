@@ -45,22 +45,23 @@ export default function ChatSenderComponent({ message, members, idUser }) {
         <>
             {
                 imSender ? (
-                    <View style={{ width: "80%", alignSelf: "flex-end", marginTop: 10, minHeight: 50, justifyContent: "flex-end", alignItems: "flex-end", marginRight: 10, flexDirection: "row" }}>
-                        <Text>{new Date(message.date).toLocaleTimeString()}</Text>
+                    <View style={{ width: "80%", alignSelf: "flex-end", marginTop: 10, minHeight: 50, justifyContent: "flex-end", alignItems: "flex-end", marginRight: 10, flexDirection: "row", marginBottom:5 }}>
                         <View style={{ backgroundColor: colors.BaseSlot2, alignItems: "center", borderRadius: 10, minHeight: 50, justifyContent: "center" }}>
-                            <Text style={{ color: colors.BaseSlot1, flexWrap: "wrap", width: "80%", textAlign: "right", padding: 10 }}>{message.content}</Text>
+                            <Text style={{ color: colors.BaseSlot1, flexWrap: "wrap", width: "100%", textAlign: "right", padding: 10, maxWidth:"100%" }}>{message.content}</Text>
+                        <Text style={{alignItems:"flex-start", width:"100%", paddingLeft:5, paddingRight:5, paddingBottom:5, fontSize:11, color:"#ddd", fontWeight:600}}>{new Date(message.date).toLocaleTimeString().substring(0,5)}</Text>
+
                         </View>
                     </View>
                 ) : (
-                    <View style={{ width: "80%", alignSelf: "flex-start", marginTop: 10, minHeight: 50, justifyContent: "flex-start", flexDirection: "row", alignItems: "center", marginLeft: 10 }}>
+                    <View style={{ width: "80%", alignSelf: "flex-start", marginTop: 10, minHeight: 50, justifyContent: "flex-start", flexDirection: "row", alignItems: "center", marginLeft: 10, marginBottom:5 }}>
                         <Image
                             style={{ width: 50, height: 50, alignSelf: "flex-end", borderRadius: 50, marginRight: 10 }}
                             source={{ uri: message.picture_user_sender == "" ? "https://cdn.imgbin.com/8/20/20/imgbin-samsung-galaxy-a8-a8-user-login-telephone-avatar-pawn-pvE7Qhr6Zk7kLJpGiWZ9FFRVf.jpg" : message.picture_user_sender }} />
-                        <View style={{ backgroundColor: colors.BaseSlot1, alignItems: "center", maxWidth: "60%", borderRadius: 10, padding: 10 }}>
-                            <Text style={{ flexWrap: "wrap", width: "80%", color: colors.BaseSlot4, fontWeight: 800 }}>{members.findLast(item => item.id_user == message.id_user_sender)?.name}</Text>
-                            <Text style={{ flexWrap: "wrap", width: "80%" }}>{message.content}</Text>
+                        <View style={{ backgroundColor: colors.BaseSlot1, alignItems: "center", maxWidth: "80%", borderRadius: 10, padding: 10, paddingRight:0, paddingBottom:0 }}>
+                            <Text style={{ flexWrap: "wrap", width: "100%", color: colors.BaseSlot4, fontWeight: 800, paddingRight:10 }}>{members.findLast(item => item.id_user == message.id_user_sender)?.name}</Text>
+                            <Text style={{ flexWrap: "wrap", width: "100%", maxWidth:"100%", paddingRight:10 }}>{message.content}</Text>
+                            <Text style={{textAlign:"right", width:"100%", right:0, paddingRight:5, paddingLeft:15, paddingTop:5, paddingBottom:5, fontSize:11, color:"#333", fontWeight:600}}>{new Date(message.date).toLocaleTimeString().substring(0,5)}</Text>
                         </View>
-                        <Text>{new Date(message.date).toLocaleTimeString()}</Text>
                     </View>
                 )
             }
