@@ -256,25 +256,25 @@ export default function MySchedule({ route, navigation }) {
                 <Text style={{ fontWeight: 600, color: "#030849", fontSize: 20 }}>{t("navbar_schedule")}</Text>
             </View>
 
-            <View style={{ flex: 1, height: 50, justifyContent: "center", alignItems: "center" }}>
+            {/* <View style={{ flex: 1, height: 50, justifyContent: "center", alignItems: "center" }}>
                 <View style={{ borderWidth: 1, width: "90%", flexDirection: "row", borderRadius: 30, padding: 3 }}>
                     <View style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
                         <FontAwesome size={15} name='search' />
                     </View>
                     <TextInput style={{ marginLeft: 10, height: 30 }} placeholder={t("search")}></TextInput>
                 </View>
-            </View>
+            </View> */}
 
             <View style={{ flex: 1, flexDirection: "row", height: 50, }}>
                 <View style={{ width: "5%" }}></View>
                 <View style={{ flex: 1, justifyContent: "center" }}>
-                    <TouchableOpacity style={{ borderWidth: 1, padding: 5, paddingLeft: 15, paddingRight: 15, borderRadius: 30, width: "85%", alignItems: "center", justifyContent: "center" }}>
+                    <TouchableOpacity style={{ borderWidth: .5, borderColor:"#A8A8A8", padding: 5, paddingLeft: 15, paddingRight: 15, borderRadius: 30, width: "85%", alignItems: "center", justifyContent: "center" }}>
                         <Text>{t("schedule_export")}</Text>
                     </TouchableOpacity>
                 </View>
 
                 <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-end", }}>
-                    <TouchableOpacity onPress={changeView} style={{ borderWidth: 1, padding: 5, paddingLeft: 15, paddingRight: 15, borderRadius: 30, width: "85%", alignItems: "center", justifyContent: "center" }}>
+                    <TouchableOpacity onPress={changeView} style={{ borderWidth: .5, borderColor:"#A8A8A8", padding: 5, paddingLeft: 15, paddingRight: 15, borderRadius: 30, width: "85%", alignItems: "center", justifyContent: "center" }}>
                         <Text>{currentView.label}</Text>
                     </TouchableOpacity>
                 </View>
@@ -334,7 +334,7 @@ export default function MySchedule({ route, navigation }) {
                         <View style={{ position: "absolute", right: 0 }}>
                             <View style={{ alignItems: "center", justifyContent: "center", flexDirection: "row", }}>
                                 <FontAwesome style={{ height: "100%", }} name='clock-o' size={20} />
-                                <Text style={{ fontWeight: 600, fontSize: 13 }}>&nbsp;&nbsp;{new Date(item.startDate).toISOString().split('T')[1].split('.')[0]} - {new Date(item.endDate).toISOString().split('T')[1].split('.')[0]}</Text>
+                                <Text style={{ fontWeight: 600, fontSize: 13 }}>&nbsp;&nbsp;{new Date(item.startDate).toISOString().split('T')[1].split('.')[0].substring(0,5)} - {new Date(item.endDate).toISOString().split('T')[1].split('.')[0].substring(0,5)}</Text>
                             </View>
                         </View>
                     </View>
@@ -402,12 +402,12 @@ export default function MySchedule({ route, navigation }) {
                     </View>
                 </RBSheet>
 
-                <View style={{ height: 50, width: 50, backgroundColor: "blue", position: "absolute", right: 10, bottom: 10 }}
-                    onTouchEnd={() => {
+                <TouchableOpacity style={styleSelected.modalOpenButton}
+                    onPress={() => {
                         navigation.navigate("CreateEvent", { accounts: accounts })
                     }}>
-
-                </View>
+                    <FontAwesome color={colors.BaseSlot1} size={40} name='plus' />
+                </TouchableOpacity>
 
             </KeyboardAvoidingView>
 
