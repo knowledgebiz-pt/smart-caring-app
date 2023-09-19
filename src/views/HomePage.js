@@ -129,7 +129,7 @@ export default function HomePage({ route, navigation }) {
 
     useEffect(() => {
         console.log(route.params.goUp)
-        UserService.getUserDataByIdUser("ruben@teste.com", "Teste").then(res => {
+        UserService.getUserDataByIdUser("oscar.silva@knowledgebiz.pt", "1234").then(res => {
             // setUser(res.data)
             OpenAPI.TOKEN = res.token.access_token
             dispatch(insertUser(res.data))

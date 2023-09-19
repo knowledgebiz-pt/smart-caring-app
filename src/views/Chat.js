@@ -13,12 +13,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import { chatFeature, insertMessage } from '../features/chat/chat'
 import { useTranslation } from "react-i18next"
 
-var tokensClient = ["da17442d-bbf8-4309-933a-017d1e4d6b85", "9063164c-6ad7-4106-b94e-0a69d539f972", "bb36b47b-2913-4722-bedd-97c06a13af72"]
+// var tokensClient = ["da17442d-bbf8-4309-933a-017d1e4d6b85", "9063164c-6ad7-4106-b94e-0a69d539f972", "bb36b47b-2913-4722-bedd-97c06a13af72"]
 
-const ws = new WebSocket("wss://smart-caring.azurewebsites.net/private-chat", null, {
-    headers: {
-        ['token-client']: JSON.stringify(tokensClient),
-    }
+var ws = new WebSocket("wss://smart-caring.azurewebsites.net/private-chat", null, {
+    // headers: {
+    //     ['token-client']: JSON.stringify(idChats),
+    // }
 });
 
 export default function Chat({ route, navigation }) {
@@ -27,6 +27,7 @@ export default function Chat({ route, navigation }) {
     // const [list, setList] = useState([])
     const [socketData, setSocketData] = useState(null);
     const [idUser, setIdUser] = useState(null);
+    const [idChats, setIdChats] = useState([]);
     const dispatch = useDispatch()
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
@@ -37,7 +38,7 @@ export default function Chat({ route, navigation }) {
     const [indexSelected, setIndexSelected] = useState(0)
     const [find, setFind] = useState('')
 
-    const {t, i18n} = useTranslation()
+    const { t, i18n } = useTranslation()
 
     useEffect(() => {
 
@@ -165,14 +166,8 @@ export default function Chat({ route, navigation }) {
                         <TouchableOpacity
                             onPress={() => {
                                 setIndexSelected(1)
-                                ws.send(JSON.stringify({
-                                    "id-chat": "bb36b47b-2913-4722-bedd-97c06a13af72",
-                                    "id_user_sender": "321",
-                                    "name_user_sender": "Camila",
-                                    "picture_user_sender": "",
-                                    "content": "Teste com react native",
-                                    "type_content": "text"
-                                }));
+                                setIdChats([...idChats, tokensClient])
+                                console.log("IDS", idChats)
                             }}
                             style={{ borderRightWidth: 1, borderRightColor: colors.BaseSlot5, flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: indexSelected == 1 ? colors.BaseSlot6 : "transparent" }}>
                             <Text style={[styleSelected.textRegular16, { color: indexSelected == 1 ? colors.BaseSlot1 : colors.BaseSlot5 }]}>{t("private")}</Text>
@@ -193,7 +188,7 @@ export default function Chat({ route, navigation }) {
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={({ item, index }) => {
                             return (
-                                <ChatComponent value={item} navigation={navigation} idUser={idUser} ws={ws}/>
+                                <ChatComponent value={item} navigation={navigation} idUser={idUser} ws={ws} update={GetChatUpdated}/>
                             )
                         }}
                     />

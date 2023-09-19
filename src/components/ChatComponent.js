@@ -6,7 +6,7 @@ import * as NavigationBar from 'expo-navigation-bar'
 import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
 
-export default function ChatComponent({ value, navigation, idUser, ws }) {
+export default function ChatComponent({ value, navigation, idUser, ws, update }) {
     const [isLoading, setIsLoading] = useState(true)
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
@@ -46,7 +46,7 @@ export default function ChatComponent({ value, navigation, idUser, ws }) {
         <>
             <TouchableOpacity
                 style={{ height: 80, flexDirection: "row", alignItems: "center", backgroundColor: lastedMessage?.viewed ? "transparent" : colors.BaseSlot4 }}
-                onPress={() => navigation.navigate("ChatSender", {chat: value, idUser: idUser, ws: ws})}>
+                onPress={() => navigation.navigate("ChatSender", {chat: value, idUser: idUser, ws: ws, update: update})}>
                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center", marginLeft: 20, marginRight: 10, borderRadius: 60, overflow: "hidden", height: 65, maxWidth: 65 }}>
                     {
                         value.chat_members.findLast(item => item.id_user != idUser)?.picture != "" && value.chat_members.length <= 2 ? (
@@ -91,7 +91,7 @@ export default function ChatComponent({ value, navigation, idUser, ws }) {
                             )
                         }
                         {
-                            value.chat_members.findLast(item => item.id_user != idUser)?.user_type == "Caregiven" && (
+                            value.chat_members.findLast(item => item.id_user != idUser)?.user_type == "caregiver" && (
                                 <Image
                                     style={{ width: 25, height: 25, marginLeft: 10 }}
                                     resizeMode='cover'

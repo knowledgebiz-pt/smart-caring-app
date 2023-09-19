@@ -19,16 +19,17 @@ export default function ChatSender({ route, navigation }) {
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
+    const refScrollView = useRef()
 
     //redux
     const user = useSelector((state) => state.user)
     const chatMessage = useSelector((state) => state.chat)
 
-    console.log("CHAT MESSAGE OSCAR1", chatMessage)
+    // console.log("CHAT MESSAGE OSCAR1", chatMessage)
 
-    console.log("PARAMS CHAT SENDER")
+    // console.log("PARAMS CHAT SENDER")
 
-    console.log(JSON.stringify(route.params.chat, null, 4))
+    // console.log(JSON.stringify(route.params.chat, null, 4))
 
     const { t, i18n } = useTranslation()
 
@@ -39,6 +40,9 @@ export default function ChatSender({ route, navigation }) {
         AsyncStorage.getItem("@token").then((token) => {
             setIdUser(token)
         })
+        setTimeout(() => {
+            refScrollView.current.scrollToEnd({ animated: true })
+        }, 100);
         return () => {
             console.log('SCREEN', ChatSender.name, 'CLOSE')
         }
@@ -48,6 +52,9 @@ export default function ChatSender({ route, navigation }) {
         console.log("CHAT ATUALIZADO", chatMessage)
         var listAdd = chatMessage.find(item => item.id_chat == route.params.chat.id_chat)
         setMessage(listAdd.message)
+        setTimeout(() => {
+            refScrollView.current.scrollToEnd({ animated: true })
+        }, 300);
     }, [chatMessage])
 
     Appearance.getColorScheme()
@@ -75,7 +82,10 @@ export default function ChatSender({ route, navigation }) {
                 behavior={Platform.OS == 'android' ? 'height' : 'padding'}
                 keyboardVerticalOffset={Platform.OS == 'android' ? -150 : 100}
             >
-                <ScrollView style={{ backgroundColor: colors.BaseSlot5 }}>
+                <ScrollView
+                    snapToEnd={true}
+                    ref={refScrollView}
+                    style={{ backgroundColor: colors.BaseSlot5 }}>
                     {
                         message.filter(item => item.viewed == true).map((message, index) => {
                             return (
@@ -121,15 +131,26 @@ export default function ChatSender({ route, navigation }) {
                     <View style={{ flex: 1, justifyContent: "center", alignItems: "center", paddingTop: 10, paddingBottom: 10 }}>
                         <TouchableOpacity
                             onPress={() => {
-                                route.params.ws.send(JSON.stringify({
+                                console.log("ENVIANDO MENSAGEM")
+                                console.log({
                                     "id-chat": route.params.chat.id_chat,
                                     "id_user_sender": user._id.$oid,
                                     "name_user_sender": user.name,
                                     "picture_user_sender": user.picture,
                                     "content": msg,
                                     "type_content": "text"
+                                })
+                                route.params.ws.send(JSON.stringify({
+                                    "id-chat": route.params.chat.id_chat,
+                                    "id_user_sender": user._id.$oid,
+                                    "name_user_sender": user.name,
+                                    "picture_user_sender": user.picture == undefined ? "" : user.picture,
+                                    "content": msg,
+                                    "type_content": "text"
                                 }));
                                 setMsg("")
+                                route.params.update()
+                                refScrollView.current.scrollToEnd({ animated: true })
                             }}
                             style={{ backgroundColor: colors.BaseSlot2, borderRadius: 50, height: 50, width: 50, justifyContent: "center", alignItems: "center" }}>
                             <Image

@@ -405,8 +405,8 @@ export default function CreateEvent({ route, navigation }) {
                             })
                             Calendar.createEventAsync(accoutSelected.value, {
                                 title: nameEvent,
-                                startDate: new Date(dateStartEvent).setUTCHours(0, 0, 0, 0),
-                                endDate: new Date(dateEndEvent).setUTCHours(0, 0, 0, 0),
+                                startDate: new Date(dateStartEvent),
+                                endDate: new Date(dateEndEvent),
                                 location: 'Online',
                                 alarms: [{ relativeOffset: - 15, method: Calendar.AlarmMethod.ALERT }],
                                 notes: descriptionEvent
