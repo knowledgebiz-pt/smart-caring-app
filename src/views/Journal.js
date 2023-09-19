@@ -119,7 +119,7 @@ export default function Journal({ route, navigation }) {
 
     const createEntry = (val) => {
         console.log(val)
-        if (val.description.length < 50) {
+        if (!val || val.description.length < 50) {
             showToast(t("journal_toast_entry_characters"), "error")
         }
         else {
@@ -187,8 +187,13 @@ export default function Journal({ route, navigation }) {
     const deleteEntry = (val) => {
         console.log("val: ", val)
         DiaryService.deleteDiaryByIdNews(val).then(res => {
-            showToast(t("journal_toast_entry_deleted"), "success")
-            getJournalEntries()
+            showToast(t("journal_toast_entry_deleted"), "success")            
+            setJournalEntries([])
+            setOriginalData([])
+            setTimeout(() => {
+                getJournalEntries()
+
+            }, 10)
             
         })
     }

@@ -22,6 +22,6 @@ export default function SearchInput({ value, placeholder, onChangeText }) {
             NavigationBar.setBackgroundColorAsync(colorScheme === 'light' ? colors.Base_Slot_1 : colors.Base_Slot_1)
     })
     return (
-        <TextInput style={{marginLeft:10, width:"100%", height: 30 }} value={value} placeholder={placeholder} onChangeText={onChangeText} />
+        <TextInput style={{marginLeft:10, width:"100%", height: 30, minHeight:30 }} value={value} placeholder={placeholder} onChangeText={onChangeText} />
     )
 }

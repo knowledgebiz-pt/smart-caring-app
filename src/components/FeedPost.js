@@ -32,6 +32,7 @@ const FeedPost = (
         feedRole = "",
         postContent,
         user,
+        onHandleLikeFavorite,
         event
     }) => {
 
@@ -96,6 +97,7 @@ const FeedPost = (
     const likeButton = (giveLike) => {
         if (giveLike) {
             NewsService.addLikeToNewsArticle(postContent._id.$oid, user._id.$oid).then(res => {
+                return onHandleLikeFavorite([postContent._id.$oid, true, "likes"])
             }).catch(e => {
                 console.error("e: ", e)
                 showToast(t("homepage_error_like"), "error")
@@ -103,6 +105,7 @@ const FeedPost = (
         }
         else {
             NewsService.deleteLikeToNewsArticle(postContent._id.$oid, user._id.$oid).then(res => {
+                return onHandleLikeFavorite([postContent._id.$oid, false, "likes"])
             }).catch(e => {
                 console.error("e: ", e)
                 showToast(t("homepage_error_unlike"), "error")
@@ -113,6 +116,7 @@ const FeedPost = (
     const favoriteButton = (giveFavorite) => {
         if (giveFavorite) {
             NewsService.addFavoritesToNewsArticle(postContent._id.$oid, user._id.$oid).then(res => {
+                return onHandleLikeFavorite([postContent._id.$oid, true, "favorites"])
             }).catch(e => {
                 console.error("e: ", e)
                 showToast(t("homepage_error_favorite"), "error")
@@ -120,6 +124,8 @@ const FeedPost = (
         }
         else {
             NewsService.deleteFavoritesToNewsArticle(postContent._id.$oid, user._id.$oid).then(res => {
+                return onHandleLikeFavorite([postContent._id.$oid, false, "favorites"])
+
             }).catch(e => {
                 console.error("e: ", e)
                 showToast(t("homepage_error_unfavorite"), "error")

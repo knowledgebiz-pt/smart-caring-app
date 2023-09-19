@@ -12,6 +12,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useSelector, useDispatch } from 'react-redux'
 import { chatFeature, insertMessage } from '../features/chat/chat'
 import { useTranslation } from "react-i18next"
+import SearchInput from '../components/SearchInput'
+import { FontAwesome } from "@expo/vector-icons"
 
 var tokensClient = ["da17442d-bbf8-4309-933a-017d1e4d6b85", "9063164c-6ad7-4106-b94e-0a69d539f972", "bb36b47b-2913-4722-bedd-97c06a13af72"]
 
@@ -20,6 +22,12 @@ const ws = new WebSocket("wss://smart-caring.azurewebsites.net/private-chat", nu
         ['token-client']: JSON.stringify(tokensClient),
     }
 });
+
+// const ws = new WebSocket("ws://192.168.1.82:8000/private-chat", null, {
+//     headers: {
+//         ['token-client']: JSON.stringify(tokensClient),
+//     }
+// });
 
 export default function Chat({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(false)
@@ -136,8 +144,17 @@ export default function Chat({ route, navigation }) {
                 <View style={{ height: 70, justifyContent: "center", alignItems: "center" }}>
                     <Text style={styleSelected.textBold20DarkBlue}>{t("navbar_chat")}</Text>
                 </View>
-                <View style={{ height: 50, width: "90%", alignSelf: "center" }}>
-                    <TextInput
+                <View style={{ flex:.1, justifyContent: "center", alignItems: "center", }}>
+                    <View style={{ borderWidth: .5, borderColor: "#A8A8A8", width: "90%", flexDirection: "row", borderRadius: 30, padding: 3 }}>
+                        <View style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
+                            <FontAwesome size={15} color={"#A8A8A8"} name='search' />
+                        </View>
+                        <SearchInput value={search} placeholder={t("search")} onChangeText={(val) => {setSearch(val)}} />
+                    </View>
+                </View>
+                {/* <View style={{ height: 50, width: "90%", alignSelf: "center" }}> */}
+                    {/* <SearchInput value={search} placeholder={t("search")} onChangeText={(val) => {setSearch(val)}} /> */}
+                    {/* <TextInput
                         multiline={true}
                         placeholder={t("search")}
                         placeholderTextColor={colors.BaseSlot3}
@@ -151,36 +168,36 @@ export default function Chat({ route, navigation }) {
                             margin: 5,
                             borderRadius: 10,
                             padding: 10,
-                        }} />
-                </View>
+                        }} /> */}
+                {/* </View> */}
                 <View style={{ height: 70, justifyContent: "space-evenly", alignItems: "center" }}>
-                    <View style={{ height: 40, borderColor: colors.BaseSlot5, borderWidth: 1, width: "90%", borderRadius: 40, flexDirection: "row" }}>
+                    <View style={{ height: 40, borderColor: colors.BaseSlot5, borderWidth: .5, width: "90%", borderRadius: 40, flexDirection: "row" }}>
 
                         <TouchableOpacity
                             onPress={() => setIndexSelected(0)}
-                            style={{ borderRightWidth: 1, borderRightColor: colors.BaseSlot5, flex: 1, justifyContent: "center", alignItems: "center", borderTopLeftRadius: 20, borderBottomLeftRadius: 20, backgroundColor: indexSelected == 0 ? colors.BaseSlot6 : "transparent" }}>
+                            style={{ borderRightWidth: .5, borderRightColor: colors.BaseSlot5, flex: 1, justifyContent: "center", alignItems: "center", borderTopLeftRadius: 20, borderBottomLeftRadius: 20, backgroundColor: indexSelected == 0 ? colors.BaseSlot6 : "transparent" }}>
                             <Text style={[styleSelected.textRegular16, { color: indexSelected == 0 ? colors.BaseSlot1 : colors.BaseSlot5 }]}>{t("filter_all")}</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             onPress={() => {
                                 setIndexSelected(1)
-                                ws.send(JSON.stringify({
-                                    "id-chat": "bb36b47b-2913-4722-bedd-97c06a13af72",
-                                    "id_user_sender": "321",
-                                    "name_user_sender": "Camila",
-                                    "picture_user_sender": "",
-                                    "content": "Teste com react native",
-                                    "type_content": "text"
-                                }));
+                                // ws.send(JSON.stringify({
+                                //     "id-chat": "bb36b47b-2913-4722-bedd-97c06a13af72",
+                                //     "id_user_sender": "321",
+                                //     "name_user_sender": "Camila",
+                                //     "picture_user_sender": "",
+                                //     "content": "Teste com react native",
+                                //     "type_content": "text"
+                                // }));
                             }}
-                            style={{ borderRightWidth: 1, borderRightColor: colors.BaseSlot5, flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: indexSelected == 1 ? colors.BaseSlot6 : "transparent" }}>
+                            style={{ borderRightWidth: .5, borderRightColor: colors.BaseSlot5, flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: indexSelected == 1 ? colors.BaseSlot2 : "transparent" }}>
                             <Text style={[styleSelected.textRegular16, { color: indexSelected == 1 ? colors.BaseSlot1 : colors.BaseSlot5 }]}>{t("private")}</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             onPress={() => setIndexSelected(2)}
-                            style={{ flex: 1, justifyContent: "center", alignItems: "center", borderTopRightRadius: 20, borderBottomRightRadius: 20, backgroundColor: indexSelected == 2 ? colors.BaseSlot6 : "transparent" }}>
+                            style={{ flex: 1, justifyContent: "center", alignItems: "center", borderTopRightRadius: 20, borderBottomRightRadius: 20, backgroundColor: indexSelected == 2 ? colors.BaseSlot4 : "transparent" }}>
                             <Text style={[styleSelected.textRegular16, { color: indexSelected == 2 ? colors.BaseSlot1 : colors.BaseSlot5 }]}>{t("group")}</Text>
                         </TouchableOpacity>
 

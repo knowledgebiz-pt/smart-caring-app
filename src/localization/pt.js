@@ -30,6 +30,8 @@ export default {
         content: "Conteúdo",
         color: "Cor",
         description: "Descrição",
+        apps: "Aplicações",
+        websites: "Websites",
         // LOGIN SCREEN
         login_welcome: "Bem-vindo/a de volta",
         login_subtext: "Vamos iniciar sessão e continuar a ajudar outros!",
@@ -151,8 +153,14 @@ export default {
         chat_messages_unread: "mensagens não lidas",
 
         // TOOLBOX SCREEN
-        toolbox_download_app: "Descarregar app",
+        toolbox_download_app: "Descarregar App",
+        toolbox_visit_website: "Visitar Website",
         toolbox_pricing: "Preço",
+        toolbox_free: "Gratuito",
+        toolbox_most_stars: "Mais Estrelas",
+        toolbox_least_stars: "Menos Estrelas",
+        toolbox_most_languages: "Mais Idiomas",
+        toolbox_least_languages: "Menos Idiomas",
 
         // JOURNAL SCREEN
         journal_toast_no_entries: "Não foram encontradas entradas.",

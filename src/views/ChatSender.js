@@ -75,7 +75,7 @@ export default function ChatSender({ route, navigation }) {
                 behavior={Platform.OS == 'android' ? 'height' : 'padding'}
                 keyboardVerticalOffset={Platform.OS == 'android' ? -150 : 100}
             >
-                <ScrollView style={{ backgroundColor: colors.BaseSlot5 }}>
+                <ScrollView style={{ backgroundColor: "#E5E5E5", }}>
                     {
                         message.filter(item => item.viewed == true).map((message, index) => {
                             return (
