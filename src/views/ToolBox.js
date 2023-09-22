@@ -305,9 +305,9 @@ export default function ToolBox({ route, navigation }) {
                         }} />
                 </View> */}
                 <View style={{ flex:.2, justifyContent: "center", alignItems: "center", }}>
-                    <View style={{ borderWidth: .5, borderColor: "#A8A8A8", width: "90%", flexDirection: "row", borderRadius: 30, padding: 3 }}>
+                    <View style={{ borderWidth: .5, borderColor: colors.BaseSlot5, width: "90%", flexDirection: "row", borderRadius: 30, padding: 3 }}>
                         <View style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
-                            <FontAwesome size={15} color={"#A8A8A8"} name='search' />
+                            <FontAwesome size={15} color={colors.BaseSlot5} name='search' />
                         </View>
                         <SearchInput value={search} placeholder={t("search")} onChangeText={(val) => {searchFunction(val)}} />
                     </View>

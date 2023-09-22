@@ -51,6 +51,39 @@ export default function Register({ route, navigation }) {
             <Loader />
         );
     }
+
+    const testInputs = (password, email) => {
+        let rePassword = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/
+        let reEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        let passwordResult = rePassword.test(password)
+        let emailResult = reEmail.test(email)
+        if (passwordResult && emailResult) {
+            return {res: true}
+        }
+        else if (passwordResult && !emailResult) {
+            return {res: false, msg: t("email_format_error")}
+        }
+        else if (!passwordResult && emailResult) {
+            return {res: false, msg: t("password_format_error")}
+        }
+        else return {res: false, msg: t("register_no_fields")}
+    }
+
+    const handleSubmit = (email, password, confirmPassword) => {
+        if (password === confirmPassword) {
+            let shouldProceed = testInputs(password, email)
+    
+            if (shouldProceed.res) {
+                navigation.navigate('CreateAccount', {email: email, password: password})    
+            }
+            else {
+                alert(shouldProceed.msg)
+            }
+        }
+        else {
+            alert(t("passwords_not_match"))
+        }
+    }
     return (
         <SafeAreaView style={[styleSelected.backgroundPrimary, styleSelected.AndroidSafeArea, { flex: 1 }]} onLayout={onLayoutRootView}>
             <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={colorScheme === 'light' ? 'dark-content' : 'light-content'} />
@@ -77,7 +110,7 @@ export default function Register({ route, navigation }) {
                         <InputTransparent onChangeText={(text) => setPassword(text)} inputRef={ref_input2} blurOnSubmit={false} secureTextEntry={true} onSubmitEditing={() => ref_input3.current?.focus()} returnKeyType='next' placeholder={t("register_password")} />
                         <InputTransparent onChangeText={(text) => setConfirmPassword(text)} inputRef={ref_input3} secureTextEntry={true} placeholder={t("register_confirm_password")} />
 
-                        <ButtonPrimary event={() => navigation.navigate('CreateAccount', {email: email, password: password})} title={t("register_continue")} />
+                        <ButtonPrimary event={() => handleSubmit(email, password, confirmPassword)} title={t("register_continue")} />
                     </View>
                 </ScrollView>
                 {/* </KeyboardAwareScrollView> */}

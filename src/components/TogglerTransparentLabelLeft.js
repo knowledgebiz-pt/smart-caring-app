@@ -14,6 +14,7 @@ import SwitchSelector from "react-native-switch-selector"
  * @param fullWidth: boolean - If true, will use buttonSizeFullWidth style (width: "100%") instead of buttonSize style (width: "80%")
  * @param inputColor: string - Color of the input text
  * @param fontSize: integer - Size of the input text font
+ * @param initial: integer - initial option to be displayed. Defaults to 0
  * @param event: any
  */
 
@@ -30,6 +31,7 @@ export default function TogglerTransparentLabelLeft(
         inputColor,
         fontSize,
         onPress,
+        initial=0,
         event 
     }) {
 
@@ -58,7 +60,7 @@ export default function TogglerTransparentLabelLeft(
                 textColor={colors.BaseSlot3}
                 buttonColor={colors.BaseSlot5}
                 options={[{label: optionOneLabel, value: optionOneValue,}, {label: optionTwoLabel, value: optionTwoValue}]}
-                initial={0}
+                initial={initial}
                 onPress={onPress}/>
         </View>
     )

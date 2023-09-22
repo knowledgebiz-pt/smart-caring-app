@@ -19,11 +19,11 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import PhoneInputTransparentLabelAbove from '../components/PhoneInputTransparentLabelAbove'
 import Toast from 'react-native-toast-message'
 import { CommonActions } from '@react-navigation/native'
-
 import { useTranslation } from "react-i18next"
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import ButtonOutlineSuccess from '../components/ButtonOutlineSuccess'
 
-export default function CreateAccount({ route, navigation }) {
+export default function Profile({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(false)
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
@@ -46,40 +46,42 @@ export default function CreateAccount({ route, navigation }) {
 
     const handleSubmit = () => {
         if (name.length > 0 && role !== null) {
-            setIsLoading(true)
-            UserService.createUser({
-                email: route.params.email,
-                password: route.params.password,
-                name: name,
-                user_gender: gender, // M, F
-                UserType: role, // caregiver, health professional, patient
-                birthDate: birthDate.getDate()+"/"+(birthDate.getMonth()+1)+"/"+birthDate.getFullYear(),
-                visibilityUser: visibility,
-                phone: phone,
-                picture: image,
-                address: {
-                    city: "",
-                    country: "",
-                    door_number: "",
-                    postal_code: "",
-                    street: ""
-                }
-            }).then((res) => {
-                i18n.changeLanguage(language)
-                AsyncStorage.setItem("@lang", language)
-                showToast(t("create_account_toast_success"), "success")
-                setIsLoading(false)
-                navigation.dispatch(
-                    CommonActions.reset({
-                      index: 0,
-                      routes: [{ name: 'Features' }],
-                    })
-                )
-            }).catch((e) => {
-                console.error(e)
-                setIsLoading(false)
-                showToast(t("create_account_toast_error"), "error")
-            })
+            // SUBSTITUIR POR FUNÇÃO DE PATCH
+
+            // setIsLoading(true)
+            // UserService.createUser({
+            //     email: route.params.email,
+            //     password: route.params.password,
+            //     name: name,
+            //     user_gender: gender, // M, F
+            //     UserType: role, // caregiver, health professional, patient
+            //     birthDate: birthDate.getDate()+"/"+(birthDate.getMonth()+1)+"/"+birthDate.getFullYear(),
+            //     visibilityUser: visibility,
+            //     phone: phone,
+            //     picture: image,
+            //     address: {
+            //         city: "",
+            //         country: "",
+            //         door_number: "",
+            //         postal_code: "",
+            //         street: ""
+            //     }
+            // }).then((res) => {
+            //     i18n.changeLanguage(language)
+            //     AsyncStorage.setItem("@lang", language)
+            //     showToast(t("create_account_toast_success"), "success")
+            //     setIsLoading(false)
+            //     navigation.dispatch(
+            //         CommonActions.reset({
+            //           index: 0,
+            //           routes: [{ name: 'Features' }],
+            //         })
+            //     )
+            // }).catch((e) => {
+            //     console.error(e)
+            //     setIsLoading(false)
+            //     showToast(t("create_account_toast_error"), "error")
+            // })
         }
         else {
             showToast(t("register_no_fields"))
@@ -96,9 +98,9 @@ export default function CreateAccount({ route, navigation }) {
         allowsMultipleSelection: false,
         base64: true
         });
-        
-        let base64 = result.assets[0].base64
+
         console.log(result);
+        let base64 = result.assets[0].base64
 
         if (!result.canceled) {
         setImage({ type: result.assets[0].type, file: base64 });
@@ -112,13 +114,39 @@ export default function CreateAccount({ route, navigation }) {
     }
 
     useEffect(() => {
-        console.log('OPEN', CreateAccount.name, 'SCREEN')
+        setIsLoading(true)
+        AsyncStorage.getItem("@token").then(token => {
+            UserService.getUserDataByIdUserCorrectly(token).then(res => {
+                console.log(res.data)
+                setImage(res.data.picture)
+                setName(res.data.name)
+                let birthDate = res.data.birth_date.toString().split("/")
+                setBirthDate(new Date(birthDate[2], (birthDate[1]-1), birthDate[0]))
+                setGender(res.data.user_gender)
+                setRole(res.data.user_type)
+                setVisibility(res.data.visibility)
+                if (res.data.user_type.toLowerCase() === "caregiver") {
+                    setIndexSelectedButton("1")
+                }
+                else if (res.data.user_type.toLowerCase() === "health professional") {
+                    setIndexSelectedButton("2")                    
+                }
+                else if (res.data.user_type.toLowerCase() === "patient") {
+                    setIndexSelectedButton("3")                    
+                }
+                setPhone(res.data.phone)
+                setIsLoading(false)
+            })
+        }).catch(e => {
+            setIsLoading(false)
+        })
+        console.log('OPEN', Profile.name, 'SCREEN')
         //For test loading
         setTimeout(() => {
-            setIsLoading(false)
+            // setIsLoading(false)
         }, 1000);
         return () => {
-            console.log('SCREEN', CreateAccount.name, 'CLOSE')
+            console.log('SCREEN', Profile.name, 'CLOSE')
         }
     }, [])
     Appearance.getColorScheme()
@@ -155,7 +183,7 @@ export default function CreateAccount({ route, navigation }) {
             {/* <KeyboardAwareScrollView style={{flex:1}}> */}
                 <ScrollView style={[styleSelected.backgroundPrimary, { flex: 1 }]}>
                     {/* <View style={{flex:1}}> */}
-                        <Text style={[styleSelected.textBold20DarkBlue, {marginTop: 45, textAlign: "center"}]}>{t("register_title")}</Text>
+                        <Text style={[styleSelected.textBold20DarkBlue, {marginTop: 45, textAlign: "center"}]}>{t("homepage_menu_profile")}</Text>
                         <TouchableOpacity style={{marginTop:20}} onPress={pickImage}>
                             <Image
                                 style={[styleSelected.avatar, {alignSelf: "center"}]}
@@ -172,27 +200,28 @@ export default function CreateAccount({ route, navigation }) {
                     {/* </View> */}
                     <View style={{flex: 1, width: "80%", alignSelf: "center", marginTop: 20, justifyContent: "space-evenly"}}>
                         {/* <InputDefault input={name} setInput={setName} lineFocusColor=colors.BaseSlot5 inputColor="black" lineUnfocusColor=colors.BaseSlot5 placeholderFocusColor="#030849" placeholderUnfocusColor="#030849" placeholder={"Name"} /> */}
-                        <InputTransparentLabelAbove onChangeText={(text) => setName(text)} fontSize={13} inputColor={colors.BaseSlot3} fullWidth={true} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={t("name")+"*"}/>
+                        <InputTransparentLabelAbove value={name} onChangeText={(text) => setName(text)} fontSize={13} inputColor={colors.BaseSlot3} fullWidth={true} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={t("name")+"*"}/>
                         <View style={{marginTop: 7, flexDirection: "row"}}>
                             <DatePickerTransparentLabelAbove viewWidth={"20%"} event={() => {setShowPicker(true)}} showPicker={showPicker} onDateChange={(date) => {setShowPicker(false);setBirthDate(new Date(date["nativeEvent"]["timestamp"]))}} date={birthDate} placeholder={t("age")+"*"}/>
-                            <TogglerTransparentLabelAbove viewWidth={"80%"} onPress={(value) => {setGender(value)}} hasBorder={false} fullWidth={true} label={t("gender")+"*"} optionOneLabel={t("male")} optionOneValue={"M"} optionTwoLabel={t("female")} optionTwoValue={"F"}/>
+                            <TogglerTransparentLabelAbove initial={gender === "M" ? 0 : 1} viewWidth={"80%"} onPress={(value) => {setGender(value)}} hasBorder={false} fullWidth={true} label={t("gender")+"*"} optionOneLabel={t("male")} optionOneValue={"M"} optionTwoLabel={t("female")} optionTwoValue={"F"}/>
                         </View>
                         <Text style={[styleSelected.textRegular13DarkBlue, {marginLeft: 30, marginTop: 7, marginBottom: 6}]}>{t("create_account_role")}</Text>
                         <ButtonOutlineSuccessIcon styleButton={{backgroundColor: indexSelectedButton === "1" ? colors.BaseSlot4 : "transparent"}} styleText={{color: indexSelectedButton === "1" ? colors.BaseSlot1 : colors.BaseSlot4}} styleImage={{tintColor: indexSelectedButton === "1" ? colors.BaseSlot1 : colors.BaseSlot4}} onPress={() => {setIndexSelectedButton("1"); setRole("Caregiver")}}  fullWidth={true} title={t("caregiver")} />
                         <ButtonOutlinePrimaryIcon styleButton={{backgroundColor: indexSelectedButton === "2" ? colors.BaseSlot2 : "transparent"}} styleText={{color: indexSelectedButton === "2" ? colors.BaseSlot1 : colors.BaseSlot2}} styleImage={{tintColor: indexSelectedButton === "2" ? colors.BaseSlot1 : colors.BaseSlot2}} onPress={() => {setIndexSelectedButton("2"); setRole("Health Professional")}} fullWidth={true} title={t("healthPro")} />
                         <ButtonOutlineDarkBlueIcon styleButton={{backgroundColor: indexSelectedButton === "3" ? "#030849" : "transparent"}} styleText={{color: indexSelectedButton === "3" ? colors.BaseSlot1 : "#030849"}} styleImage={{tintColor: indexSelectedButton === "3" ? colors.BaseSlot1 : "#030849"}} onPress={() => {setIndexSelectedButton("3"); setRole("Patient")}} fullWidth={true} title={t("patient")} />
                         <View style={{width: "40%", alignSelf: "flex-end", marginRight: 110}}>
-                            <TogglerTransparentLabelLeft onPress={(value) => {setVisibility(value)}} hasBorder={false} fullWidth={true} label={t("create_account_share")} optionOneLabel={t("yes")} optionOneValue={true} optionTwoLabel={t("no")} optionTwoValue={false}/>
+                            <TogglerTransparentLabelLeft initial={visibility ? 0 : 1} onPress={(value) => {setVisibility(value)}} hasBorder={false} fullWidth={true} label={t("create_account_share")} optionOneLabel={t("yes")} optionOneValue={true} optionTwoLabel={t("no")} optionTwoValue={false}/>
                         </View>
-                        <TogglerTransparentLabelAbove onPress={(value) => {setLanguage(value)}} hasBorder={false} fullWidth={true} label={t("language")} optionOneLabel={t("portuguese")} optionOneValue={"pt"} optionTwoLabel={t("english")} optionTwoValue={"en"}/>
-                        <PhoneInputTransparentLabelAbove onChangeText={(text) => {setPhone(text); console.log(phone)}} fullWidth={true} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={t("create_account_phone")} />
-                    </View>
-                    <View style={{flex: 1, width:"100%", alignSelf: "center", justifyContent: "space-evenly"}}>
-                        <Text style={[styleSelected.textDisclaimer, {width:"80%", marginTop: 14, alignSelf: "center"}]}>{t("create_account_terms_begin")}<Text style={styleSelected.textBold}>{t("create_account_terms_conditions")}</Text>{t("create_account_terms_and")}<Text style={styleSelected.textBold}>{t("create_account_terms_privacy")}</Text>.</Text>
-                        <Text style={[styleSelected.textRegular10Gray, {width:"80%", marginTop: 14, alignSelf: "center"}]}>{t("create_account_mandatory")}</Text>
+                        <TogglerTransparentLabelAbove initial={0} hasBorder={false} onPress={(value => setLanguage(value))} fullWidth={true} label={t("language")} optionOneLabel={t("portuguese")} optionOneValue={"pt"} optionTwoLabel={t("english")} optionTwoValue={"en"}/>
+                        <PhoneInputTransparentLabelAbove placeholderValue={phone} onChangeText={(text) => {setPhone(text); console.log(phone)}} fullWidth={true} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={t("create_account_phone")} />
                     </View>
                     <View style={{flex: 1, width:"100%", alignSelf: "center", marginTop: 14, marginBottom: 14, justifyContent: "space-evenly"}}>
-                        <ButtonOutlinePrimary event={() => { handleSubmit()}} title={t("create_account_button")} />
+                        <ButtonOutlineSuccess event={() => { handleSubmit() }} title={t("profile_edit")} />
+                         <View style={{marginTop:14}}>
+                            <ButtonOutlinePrimary event={() => { 
+                                navigation.navigate("BottomTab")
+                            }} title={t("profile_go_back")} />
+                         </View>
                     </View>
                 </ScrollView>
                 {/* </KeyboardAwareScrollView> */}

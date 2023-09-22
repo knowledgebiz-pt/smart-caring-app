@@ -4,7 +4,8 @@ import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
 import * as SplashScreen from 'expo-splash-screen';
-import Loader from '../components/Loader'
+import Loader from '../components/Loader' 
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function ChatSenderComponent({ message, members, idUser }) {
     const [isLoading, setIsLoading] = useState(true)
@@ -48,7 +49,10 @@ export default function ChatSenderComponent({ message, members, idUser }) {
                     <View style={{ width: "80%", alignSelf: "flex-end", marginTop: 10, minHeight: 50, justifyContent: "flex-end", alignItems: "flex-end", marginRight: 10, flexDirection: "row", marginBottom:5 }}>
                         <View style={{ backgroundColor: colors.BaseSlot2, alignItems: "center", borderRadius: 10, minHeight: 50, justifyContent: "center" }}>
                             <Text style={{ color: colors.BaseSlot1, flexWrap: "wrap", width: "100%", textAlign: "right", padding: 10, maxWidth:"100%" }}>{message.content}</Text>
-                        <Text style={{alignItems:"flex-start", width:"100%", paddingLeft:5, paddingRight:5, paddingBottom:5, fontSize:11, color:"#ddd", fontWeight:600}}>{new Date(message.date).toLocaleTimeString().substring(0,5)}</Text>
+                            <View style={{flexDirection:"row", width:"100%" }}>
+                                <Text style={{ alignItems:"flex-start", paddingLeft:5, paddingRight:5, paddingBottom:5, fontSize:11, color:"#ddd", fontWeight:600}}>{new Date(message.date).toLocaleTimeString().substring(0,5)}</Text>
+                                <MaterialCommunityIcons style={{ justifyContent:"flex-end", alignContent:"flex-end", alignItems:"flex-end", paddingTop:1, paddingRight:5, color: message.viewed ? "#90CAB7" : "#ddd" }} name='check-all' size={13}/>
+                            </View>
 
                         </View>
                     </View>

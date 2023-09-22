@@ -47,15 +47,20 @@ export default function CommentInputPopup({
             text: textValue,
             link: ""
         }
-        CommentService.createComment(commentObject).then(res => {
-            onSubmit()
-            showToast(t("homepage_comment_created"), "success")
-            // setClicked(false)
-        }).catch(e => {
-            console.error("e: ", e)
-            showToast(t("homepage_comment_error"), "error")
-            // setClicked(false)
-        })
+        if (textValue.trim().length > 0) {
+            CommentService.createComment(commentObject).then(res => {
+                onSubmit()
+                showToast(t("homepage_comment_created"), "success")
+                // setClicked(false)
+            }).catch(e => {
+                console.error("e: ", e)
+                showToast(t("homepage_comment_error"), "error")
+                // setClicked(false)
+            })
+        }
+        else {
+            showToast(t("register_no_fields"))
+        }
     }
 
     const showToast = (msg, type="success") => {

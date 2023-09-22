@@ -75,7 +75,7 @@ export default function ChatComponent({ value, navigation, idUser, ws, update })
                         {
                             value.chat_members.findLast(item => item.id_user != idUser)?.user_type == "Patient" && (
                                 <Image
-                                    style={{ width: 25, height: 25, marginLeft: 10 }}
+                                    style={{ width: 25, height: 25, marginLeft: 10, tintColor: lastedMessage?.viewed ? null : "white" }}
                                     resizeMode='cover'
                                     source={require('../../assets/images/Patient.png')}
                                 />
@@ -84,7 +84,7 @@ export default function ChatComponent({ value, navigation, idUser, ws, update })
                         {
                             value.chat_members.findLast(item => item.id_user != idUser)?.user_type == "Health Professional" && (
                                 <Image
-                                    style={{ width: 25, height: 25, marginLeft: 10 }}
+                                    style={{ width: 25, height: 25, marginLeft: 10, tintColor: lastedMessage?.viewed ? null : "white" }}
                                     resizeMode='cover'
                                     source={require('../../assets/images/Healthprofessional.png')}
                                 />
@@ -93,7 +93,7 @@ export default function ChatComponent({ value, navigation, idUser, ws, update })
                         {
                             value.chat_members.findLast(item => item.id_user != idUser)?.user_type == "caregiver" && (
                                 <Image
-                                    style={{ width: 25, height: 25, marginLeft: 10 }}
+                                    style={{ width: 25, height: 25, marginLeft: 10, tintColor: lastedMessage?.viewed ? null : "white" }}
                                     resizeMode='cover'
                                     source={require('../../assets/images/Caregiver.png')}
                                 />

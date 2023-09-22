@@ -19,6 +19,7 @@ import Toast from 'react-native-toast-message';
 import ChatSender from './src/views/ChatSender';
 import CreateEvent from './src/views/CreateEvent';
 import SplashScreen from './src/views/SplashScreen';
+import Profile from './src/views/Profile';
 import { OpenAPI } from 'smart-caring-client/client';
 import store from "./src/redux/store";
 import { Provider, useDispatch, useSelector } from "react-redux";
@@ -60,6 +61,7 @@ export default function App() {
               headerTitle: t("schedule_create_event"),
             }} />
             <Stack.Screen name="SplashScreen" component={SplashScreen} />
+            <Stack.Screen name="Profile" component={Profile} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

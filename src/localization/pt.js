@@ -75,6 +75,10 @@ export default {
         register_password: "Insira a sua palavra-passe",
         register_confirm_password: "Confirme a sua palavra-passe",
         register_continue: "Continuar",
+        email_format_error: "Por favor insira um e-mail válido.",
+        password_format_error: "A palavra-passe deve conter pelo menos oito caracteres, pelo menos uma letra maiúscula e minúscula, um número e um caractere especial.",
+        register_no_fields: "Por favor preencha os campos de dados.",
+        passwords_not_match: "As palavras-passe inseridas não correspondem.",
 
         // CREATE ACCOUNT SCREEN
         // title uses register_title
@@ -97,7 +101,7 @@ export default {
         features_button: "Ir para Iniciar Sessão",
 
         // Navbar
-        navbar_home: "Página Inicial",
+        navbar_home: "Início",
         navbar_chat: "Chat",
         navbar_toolbox: "Toolbox",
         navbar_schedule: "Agenda",
@@ -113,10 +117,12 @@ export default {
         homepage_toast_error_login: "Erro: início de sessão falhado.",
         homepage_post_url_title: "Ligação URL", 
         homepage_post_url_message: "Por favor insira o URL inteiro da página web que deseja partilhar na sua publicação, incluindo ou \"https://\" ou \"http://\"",
+        homepage_post_selected_image: "Imagem selecionada!",
+        homepage_post_selected_video: "Vídeo selecionado!",
         homepage_menu_profile: "Perfil",
         homepage_menu_privacy_policy: "Política de Privacidade",
         homepage_menu_terms_use: "Termos de Utilização",
-        homepage_menu_settings: "Definições",
+        homepage_menu_language: "Mudar para Inglês",
         homepage_menu_logout: "Terminar Sessão",
         homepage_write_comment: "Escreva um comentário...",
         homepage_comment_created: "Comentário criado com sucesso.",
@@ -180,14 +186,18 @@ export default {
         schedule_previous: "Anterior",
         schedule_next: "Seguinte",
         schedule_export: "Exportar Agenda",
-        schedule_monthly: "Mensal",
-        schedule_weekly: "Semanal",
+        schedule_monthly: "Mudar para Semanal",
+        schedule_weekly: "Mudar para Mensal",
         schedule_create_event: "Criar Evento",
         schedule_select_calendar: "Selecionar agenda",
         schedule_event_date_time_start: "Selecione a data e hora de início",
         schedule_event_date_time_end: "Selecione a data e hora de fim",
         schedule_event_error_text1: "Erro",
         schedule_event_error_text2: "Erro ao criar evento",
+
+        // PROFILE SCREEN
+        profile_go_back: "Voltar Atrás",
+        profile_edit: "Editar Perfil",
 
         // MONTHS
         january: "Janeiro",
