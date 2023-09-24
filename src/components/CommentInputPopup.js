@@ -26,7 +26,8 @@ export default function CommentInputPopup({
     modalVisible,
     closeModal,
     onSubmit,
-    event
+    event,
+    updateNews,
 }) {
     // const [modalVisible, setModalVisible] = useState(false)
     let colorScheme = useColorScheme()
@@ -47,9 +48,16 @@ export default function CommentInputPopup({
             text: textValue,
             link: ""
         }
-        CommentService.createComment(commentObject).then(res => {
+        console.log("commentObject: ", commentObject)
+        CommentService.createComment({
+            link: "",
+            news_id: newsId,
+            text: textValue,
+            user_id: userId,
+        }).then(res => {
             onSubmit()
             showToast(t("homepage_comment_created"), "success")
+            updateNews()
             // setClicked(false)
         }).catch(e => {
             console.error("e: ", e)

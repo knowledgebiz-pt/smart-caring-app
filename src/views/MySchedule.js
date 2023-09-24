@@ -18,7 +18,7 @@ import { useTranslation } from "react-i18next"
 
 export default function MySchedule({ route, navigation }) {
 
-    const {t, i18n} = useTranslation()
+    const { t, i18n } = useTranslation()
 
     const [isLoading, setIsLoading] = useState(true)
     let colorScheme = useColorScheme()
@@ -35,6 +35,8 @@ export default function MySchedule({ route, navigation }) {
 
     const [calendarViews, setCalendarViews] = useState([{ label: t("schedule_monthly"), value: 1 }, { label: t("schedule_weekly"), value: 2 }])
     const [currentView, setCurrentView] = useState({ label: t("schedule_monthly"), value: 1 })
+
+    const currentDelete = useRef(null)
 
     const today = new Date()
 
@@ -101,9 +103,13 @@ export default function MySchedule({ route, navigation }) {
     ]
 
     const optionPressed = (option) => {
-        if (option.value === "delete") {
-            console.log("Delete")
-        }
+        ExpoCalendar.deleteEventAsync(currentDelete.current.id).then((data) => {
+            console.log("EVENT DELETED")
+            GetPermissionsCalendar()
+            refModalMenu.current.close()
+        }).catch((error) => {
+            console.log("Error delete event", error)
+        })
     }
 
     const changeView = () => {
@@ -143,7 +149,48 @@ export default function MySchedule({ route, navigation }) {
             .then(x => array.length == 0 ? x : executeSequentially(array));
     }
 
+    function GetEventsCalendar() {
+        ExpoCalendar.getCalendarsAsync(ExpoCalendar.EntityTypes.EVENT).then((calendars) => {
+            console.log('Here are all your calendars:');
+            console.log(JSON.stringify(calendars, undefined, 4));
+            setAccounts(calendars)
+            var idsCalendars = []
+            // setIdsCalendars(calendars.map(calendar => calendar.id))
+            calendars.forEach(calendar => {
+                idsCalendars.push(calendar.id)
+            })
+            setIdsCalendars(idsCalendars)
+            console.log("IDS CALENDARS", idsCalendars.length)
+            executeSequentially(idsCalendars).then((data) => {
+                console.log("FINISH")
+                var markedDate = {}
+                eventsCalendar.current.forEach(event => {
+                    // Transform this date 2021-10-04T23:00:00.000Z to this 2021-10-04
+                    var dateMarked = new Date(event.startDate).toISOString().split('T')[0]
+                    var timeOfMeet = new Date(event.startDate).toISOString().split('T')[1].split('.')[0]
+                    console.log("DATE MARKED", dateMarked)
+                    console.log("TIME OF MEET", timeOfMeet)
+                    var res = {
+                        marked: true,
+                        selected: true,
+                        selectedColor: "#1CA3FC"
+                    }
+                    markedDate = Object.assign(markedDate, { [dateMarked]: res })
+                })
+                setMarkedDates(markedDate)
+                setIsLoading(false)
+            }).catch((error) => {
+                console.log("Error execute sequentially", error)
+            })
+        }).catch((error) => {
+            console.log("Error get calendars", error)
+        })
+    }
+
     function GetPermissionsCalendar() {
+        eventsCalendar.current = []
+        setEventsSelecteds([])
+        setIsLoading(true)
         ExpoCalendar.requestCalendarPermissionsAsync().then((permission) => {
             console.log("STATUS CALENDAR", permission)
             if (permission.status === "granted") {
@@ -191,42 +238,6 @@ export default function MySchedule({ route, navigation }) {
         });
     }
 
-    // async function GetPermissionsCalendar() {
-    //     const { status } = await ExpoCalendar.requestCalendarPermissionsAsync();
-    //     console.log("STATUS CALENDAR", status)
-    //     if (status === 'granted') {
-    //         console.log("GRANTED")
-    //         setIsLoading(false)
-    //         const calendars = await ExpoCalendar.getCalendarsAsync(ExpoCalendar.EntityTypes.EVENT);
-    //         console.log('Here are all your calendars:');
-    //         console.log(JSON.stringify(calendars, undefined, 4));
-    //         setAccounts(calendars)
-    //         setIdsCalendars(calendars.map(calendar => calendar.id))
-    //         executeSequentially(idsCalendars).then((data) => {
-    //             console.log("FINISH")
-    //             var markedDate = {}
-    //             eventsCalendar.forEach(event => {
-    //                 // Transform this date 2021-10-04T23:00:00.000Z to this 2021-10-04
-    //                 var dateMarked = new Date(event.startDate).toISOString().split('T')[0]
-    //                 var timeOfMeet = new Date(event.startDate).toISOString().split('T')[1].split('.')[0]
-    //                 console.log("DATE MARKED", dateMarked)
-    //                 console.log("TIME OF MEET", timeOfMeet)
-    //                 var res = {
-    //                     marked: true,
-    //                     selected: true,
-    //                     selectedColor: "#1CA3FC"
-    //                 }
-    //                 markedDate = Object.assign(markedDate, { [dateMarked]: res })
-    //                 setIsLoading(false)
-    //             })
-    //             setMarkedDates(markedDate)
-    //         })
-    //     } else {
-    //         console.log("DENIED")
-    //         setIsLoading(false)
-    //     }
-    // }
-
     Appearance.getColorScheme()
     Appearance.addChangeListener(({ colorScheme }) => {
         console.log('COLOR THEME WAS ALTER')
@@ -256,32 +267,16 @@ export default function MySchedule({ route, navigation }) {
                 <Text style={{ fontWeight: 600, color: "#030849", fontSize: 20 }}>{t("navbar_schedule")}</Text>
             </View>
 
-            {/* <View style={{ flex: 1, height: 50, justifyContent: "center", alignItems: "center" }}>
-                <View style={{ borderWidth: 1, width: "90%", flexDirection: "row", borderRadius: 30, padding: 3 }}>
-                    <View style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
-                        <FontAwesome size={15} name='search' />
-                    </View>
-                    <TextInput style={{ marginLeft: 10, height: 30 }} placeholder={t("search")}></TextInput>
-                </View>
-            </View> */}
-
             <View style={{ flex: 1, flexDirection: "row", height: 50, }}>
-                <View style={{ width: "5%" }}></View>
-                <View style={{ flex: 1, justifyContent: "center" }}>
-                    <TouchableOpacity style={{ borderWidth: .5, borderColor:"#A8A8A8", padding: 5, paddingLeft: 15, paddingRight: 15, borderRadius: 30, width: "85%", alignItems: "center", justifyContent: "center" }}>
-                        <Text>{t("schedule_export")}</Text>
-                    </TouchableOpacity>
-                </View>
 
-                <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-end", }}>
-                    <TouchableOpacity onPress={changeView} style={{ borderWidth: .5, borderColor:"#A8A8A8", padding: 5, paddingLeft: 15, paddingRight: 15, borderRadius: 30, width: "85%", alignItems: "center", justifyContent: "center" }}>
+                <View style={{ flex: 1, justifyContent: "center", alignItems: "center", }}>
+                    <TouchableOpacity onPress={changeView} style={{ borderWidth: .5, borderColor: "#A8A8A8", padding: 5, paddingLeft: 15, paddingRight: 15, borderRadius: 30, width: "85%", alignItems: "center", justifyContent: "center" }}>
                         <Text>{currentView.label}</Text>
                     </TouchableOpacity>
                 </View>
-                <View style={{ width: "5%" }}></View>
 
             </View>
-            <CalendarProvider date={selected}>
+            <CalendarProvider date={selected} >
                 {currentView.value === 1 &&
                     <View style={{ flex: 1, height: 350 }}>
                         <Calendar style={{ opacity: 1 }}
@@ -319,7 +314,10 @@ export default function MySchedule({ route, navigation }) {
                         <View style={{ alignItems: "baseline", width: "90%", justifyContent: "center" }}>
                             <Text style={{ color: "#1CA3FC", fontSize: 14, fontWeight: 600 }}>{item.title}</Text>
                         </View>
-                        <TouchableOpacity onPress={() => { refModalMenu.current.open() }} style={{ position: "absolute", right: 0, justifyContent: "center", alignItems: "center", }}>
+                        <TouchableOpacity onPress={() => {
+                            currentDelete.current = item
+                            refModalMenu.current.open()
+                        }} style={{ position: "absolute", right: 0, justifyContent: "center", alignItems: "center", }}>
                             <MaterialCommunityIcons name='dots-horizontal' size={25} />
                         </TouchableOpacity>
                     </View>
@@ -334,14 +332,12 @@ export default function MySchedule({ route, navigation }) {
                         <View style={{ position: "absolute", right: 0 }}>
                             <View style={{ alignItems: "center", justifyContent: "center", flexDirection: "row", }}>
                                 <FontAwesome style={{ height: "100%", }} name='clock-o' size={20} />
-                                <Text style={{ fontWeight: 600, fontSize: 13 }}>&nbsp;&nbsp;{new Date(item.startDate).toISOString().split('T')[1].split('.')[0].substring(0,5)} - {new Date(item.endDate).toISOString().split('T')[1].split('.')[0].substring(0,5)}</Text>
+                                <Text style={{ fontWeight: 600, fontSize: 13 }}>&nbsp;&nbsp;{new Date(item.startDate).toISOString().split('T')[1].split('.')[0].substring(0, 5)} - {new Date(item.endDate).toISOString().split('T')[1].split('.')[0].substring(0, 5)}</Text>
                             </View>
                         </View>
                     </View>
                 </View>
             </View>
-            {/* <View style={{width:"10%"}}></View> */}
-
         </View>
     )
 
@@ -379,10 +375,6 @@ export default function MySchedule({ route, navigation }) {
                         }
                     }} ref={refModalMenu}>
                     <View style={{ flex: 1, padding: 25, borderTopLeftRadius: 15, borderTopRightRadius: 15, }}>
-                        {/* <View style={{flexDirection: "row"}}>
-                            <Text style={{color:"white", fontSize:14}}>{user.name}</Text>
-                            <Image style={[{width: 35, height: 20, marginLeft: 10, tintColor:"white"}, ]} source={userType}/>
-                        </View> */}
                         {options.map(list => (
                             <View key={uuid.v4.toString()} style={{ flex: 1 }}>
                                 <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", backgroundColor: "#D00", marginTop: 15, borderRadius: 10, height: 50 }}
@@ -404,7 +396,7 @@ export default function MySchedule({ route, navigation }) {
 
                 <TouchableOpacity style={styleSelected.modalOpenButton}
                     onPress={() => {
-                        navigation.navigate("CreateEvent", { accounts: accounts })
+                        navigation.navigate("CreateEvent", { accounts: accounts, GetPermissionsCalendar: GetPermissionsCalendar })
                     }}>
                     <FontAwesome color={colors.BaseSlot1} size={40} name='plus' />
                 </TouchableOpacity>

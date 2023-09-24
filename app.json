@@ -17,14 +17,23 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.knowledgebiz.smart-caring-app"
+      "bundleIdentifier": "com.knowledgebiz.smart-caring-app",
+      "infoPlist": {
+        "NSCalendarsUsageDescription": "The app needs to access your calendar.",
+        "NSRemindersUsageDescription": "Allow $(PRODUCT_NAME) to access your reminders"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.knowledgebiz.smartcaringapp"
+      "package": "com.knowledgebiz.smartcaringapp",
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.READ_CALENDAR",
+        "android.permission.WRITE_CALENDAR"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -48,6 +57,11 @@
           "remindersPermission": "Allow $(PRODUCT_NAME) to access your reminders"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "7444c676-d9b8-42e5-8849-7e2841307927"
+      }
+    }
   }
 }

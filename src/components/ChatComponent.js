@@ -115,7 +115,7 @@ export default function ChatComponent({ value, navigation, idUser, ws, update })
                 </View>
 
                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center", marginRight: 20 }}>
-                    <Text style={[styleSelected.textRegular12, { color: lastedMessage?.viewed ? colors.BaseSlot5 : colors.BaseSlot1, fontSize: 12 }]}>{new Date(lastedMessage?.date).toLocaleString().substring(0,17)}</Text>
+                    <Text style={[styleSelected.textRegular12, { color: lastedMessage?.viewed ? colors.BaseSlot5 : colors.BaseSlot1, fontSize: 12 }]}>{new Date(lastedMessage?.date).toLocaleDateString() + " " +  new Date(lastedMessage?.date).toLocaleTimeString().substring(0, 5)}</Text>
                 </View>
             </TouchableOpacity >
             <View style={{ height: 1, backgroundColor: lastedMessage?.viewed ? colors.BaseSlot5 : colors.BaseSlot1, width: "90%", alignSelf: "center" }} />

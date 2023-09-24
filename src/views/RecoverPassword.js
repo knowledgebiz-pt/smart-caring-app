@@ -9,6 +9,9 @@ import { RecoverUserPassword } from '../services/LoginService'
 import InputTransparent from '../components/InputTransparent'
 import ButtonPrimary from '../components/ButtonPrimary'
 import { useTranslation } from "react-i18next"
+import { UserService } from 'smart-caring-client/client'
+import { set } from 'react-native-reanimated'
+import Toast from 'react-native-toast-message'
 
 
 export default function RecoverPassword({ route, navigation }) {
@@ -18,7 +21,7 @@ export default function RecoverPassword({ route, navigation }) {
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
 
-    const {t, i18n} = useTranslation()
+    const { t, i18n } = useTranslation()
 
     useEffect(() => {
         console.log('OPEN', RecoverPassword.name, 'SCREEN')
@@ -30,6 +33,7 @@ export default function RecoverPassword({ route, navigation }) {
             console.log('SCREEN', RecoverPassword.name, 'CLOSE')
         }
     }, [])
+
     Appearance.getColorScheme()
     Appearance.addChangeListener(({ colorScheme }) => {
         console.log('COLOR THEME WAS ALTER')
@@ -73,10 +77,26 @@ export default function RecoverPassword({ route, navigation }) {
                     justifyContent: "center"
                 }}>
                     <View style={{ height: 70, marginTop: 20 }}>
-                        <InputTransparent placeholder={t("forgot_password_input")} />
+                        <InputTransparent placeholder={t("forgot_password_input")} value={email} setValue={setEmail} />
                     </View>
                     <ButtonPrimary title={t("forgot_password_send_code")} event={() => {
-                        navigation.navigate("RecoverPasswordCode")
+                        setIsLoading(true)
+                        UserService.recoverUserPassword(email).then((response) => {
+                            navigation.navigate("RecoverPasswordCode", { email: email })
+                            setIsLoading(false)
+                        }).catch((error) => {
+                            Toast.show({
+                                type: "error",
+                                position: 'bottom',
+                                text1: t("title_error_recovery_password"),
+                                text2: t("message_error_recovery_password"),
+                                visibilityTime: 4000,
+                                autoHide: true,
+                                bottomOffset: 40,
+                            })
+                            setIsLoading(false)
+                            console.log(error)
+                        })
                     }} />
                 </View>
             </KeyboardAvoidingView>

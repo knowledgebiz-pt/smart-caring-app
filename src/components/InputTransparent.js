@@ -30,7 +30,9 @@ export default function InputTransparent(
         borderColor,
         onChangeText,
         fullWidth = false,
-        event
+        event,
+        value,
+        setValue,
     }) {
 
     //placeholder: 
@@ -45,6 +47,11 @@ export default function InputTransparent(
     }
     return (
         <TextInput
+            value={value}
+            onChange={(text) => {
+                if (setValue == null || setValue == undefined) return
+                setValue(text.nativeEvent.text)
+            }}
             style={[sizeStyleSelected, inputStyles]}
             placeholder={placeholder}
             placeholderTextColor="rgba(101, 101, 101, 0.5)"

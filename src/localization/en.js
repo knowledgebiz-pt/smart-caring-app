@@ -44,6 +44,8 @@ export default {
         login_sign_up: "Sign up",
         login_toast_fail: "Error: failed to login",
         login_toast_missing_fields: "Please fill the login fields",
+        message_error_recovery_password: "Error recovering password",
+        title_error_recovery_password: "Error",
 
         // FORGOT PASSWORD SCREEN
         forgot_password: "Forgot Password?",

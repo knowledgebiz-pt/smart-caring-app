@@ -89,6 +89,22 @@ export default function HomePage({ route, navigation }) {
         // }
     }
 
+    function updateDataNews() {
+        NewsService.getNewsAllArticles().then(result => {
+            setFeedPosts([])
+            setFeedPosts([...result.data])
+            let array = [...result.data].sort((a, b) => {
+                return new Date(b.date) - new Date(a.date)
+            })
+            setDisplayFeedPosts(array)
+            setIsLoading(false)
+        }).catch(e => {
+            console.error("e: ", e)
+            setIsLoading(false)
+            showToast(t("homepage_toast_error_get_posts"), "error")
+        })
+    }
+
     const filterPosts = (val) => { // Will get data from original feedPosts array, but won't modify directly
         console.log(val.value === "Favorites")
         setIsLoadingSort(true)
@@ -132,26 +148,13 @@ export default function HomePage({ route, navigation }) {
         Toast.show({ type: type, text1: msg, position: 'bottom' })
     }
 
-
-
     useEffect(() => {
         console.log(route.params.goUp)
         AsyncStorage.getItem("@token").then((token) => {
             UserService.getUserDataByIdUserCorrectly(token).then(res => {
                 OpenAPI.TOKEN = res.token.access_token
                 dispatch(insertUser(res.data))
-                NewsService.getNewsAllArticles().then(result => {
-                    setFeedPosts([...result.data])
-                    let array = [...result.data].sort((a, b) => {
-                        return new Date(b.date) - new Date(a.date)
-                    })
-                    setDisplayFeedPosts(array)
-                    setIsLoading(false)
-                }).catch(e => {
-                    console.error("e: ", e)
-                    setIsLoading(false)
-                    showToast(t("homepage_toast_error_get_posts"), "error")
-                })
+                updateDataNews()
             }).catch((e) => {
                 console.error("e: ", e)
                 setIsLoading(false)
@@ -184,6 +187,7 @@ export default function HomePage({ route, navigation }) {
     const getArticleData = () => {
         setIsLoading(true)
         NewsService.getNewsAllArticles().then(result => {
+            setFeedPosts([])
             setFeedPosts([...result.data])
             let array = [...result.data].sort((a, b) => {
                 return new Date(b.date) - new Date(a.date)
@@ -215,7 +219,7 @@ export default function HomePage({ route, navigation }) {
     )
     const Item = ({ postContent, index }) => (
         <View key={index} style={{ flexDirection: "row", width: "90%", alignSelf: "center", marginTop: 20, }}>
-            <FeedPost onHandleLikeFavorite={(data) => handleLikeFavorite(data)} postContent={postContent} user={user} feedRole={postContent?.user?.user_type} buttonColor={"#030849"} />
+            <FeedPost updateNews={updateDataNews} onHandleLikeFavorite={(data) => handleLikeFavorite(data)} postContent={postContent} user={user} feedRole={postContent?.user?.user_type} buttonColor={"#030849"} />
         </View>
     )
 

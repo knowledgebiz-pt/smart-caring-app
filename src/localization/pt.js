@@ -44,6 +44,8 @@ export default {
         login_sign_up: "Registe-se",
         login_toast_fail: "Erro: não foi possivel iniciar sessão",
         login_toast_missing_fields: "Por favor, preencha os campos de dados",
+        message_error_recovery_password: "Erro ao recuperar palavra-passe",
+        title_error_recovery_password: "Erro",
 
         // FORGOT PASSWORD SCREEN
         forgot_password: "Esqueceu-se da palavra-passe?",

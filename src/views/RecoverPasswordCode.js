@@ -9,9 +9,17 @@ import InputTransparent from '../components/InputTransparent'
 import ButtonPrimary from '../components/ButtonPrimary'
 import { Keyboard } from 'react-native'
 import { useTranslation } from "react-i18next"
+import { UserService } from 'smart-caring-client/client'
+import Toast from 'react-native-toast-message'
 
 export default function RecoverPasswordCode({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(true)
+
+    const [code1, setCode1] = useState("")
+    const [code2, setCode2] = useState("")
+    const [code3, setCode3] = useState("")
+    const [code4, setCode4] = useState("")
+
     const input1 = useRef(null)
     const input2 = useRef(null)
     const input3 = useRef(null)
@@ -20,7 +28,7 @@ export default function RecoverPasswordCode({ route, navigation }) {
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
 
-    const {t, i18n} = useTranslation()
+    const { t, i18n } = useTranslation()
 
     useEffect(() => {
         console.log('OPEN', RecoverPasswordCode.name, 'SCREEN')
@@ -59,9 +67,9 @@ export default function RecoverPasswordCode({ route, navigation }) {
             >
                 <View style={[styleSelected.backgroundPrimary, { flex: 1 }]} onTouchStart={() => Keyboard.dismiss()}>
                     <View style={[styleSelected.imageContainer, { height: "50%", marginTop: 40, backgroundColor: "transparent" }]}>
-                    <Image source={require("../../assets/images/EnterCode.png")}
-                        resizeMode='cover'
-                        style={{ height: 450, width: 353, alignSelf: "center" }} />
+                        <Image source={require("../../assets/images/EnterCode.png")}
+                            resizeMode='cover'
+                            style={{ height: 450, width: 353, alignSelf: "center" }} />
                     </View>
                     <View style={{ justifyContent: "space-evenly", alignItems: "center", height: 100 }}>
                         <Text style={styleSelected.textBold20DarkBlue}>{t("enter_code")}</Text>
@@ -78,32 +86,54 @@ export default function RecoverPasswordCode({ route, navigation }) {
                     }}>
                         <View style={{ height: 70, marginTop: 20, flexDirection: "row", justifyContent: "space-evenly" }}>
                             <View onTouchEnd={() => { input1.current.focus() }} style={{ backgroundColor: colors.BaseSlot1, width: 55, height: 55, borderRadius: 20, justifyContent: "center", alignItems: "center" }}>
-                                <TextInput keyboardType='numeric' maxLength={1} style={{ fontSize: 24 }} ref={input1} returnKeyType='next' onChangeText={(value) => {
+                                <TextInput value={code1} keyboardType='numeric' maxLength={1} style={{ fontSize: 24 }} ref={input1} returnKeyType='next' onChangeText={(value) => {
+                                    setCode1(value)
                                     if (value.length == 1)
                                         input2.current.focus()
                                 }} />
                             </View>
                             <View onTouchEnd={() => { input1.current.focus() }} style={{ backgroundColor: colors.BaseSlot1, width: 55, height: 55, borderRadius: 20, justifyContent: "center", alignItems: "center" }}>
-                                <TextInput keyboardType='numeric' maxLength={1} style={{ fontSize: 24 }} ref={input2} returnKeyType='next' onChangeText={(value) => {
+                                <TextInput value={code2} keyboardType='numeric' maxLength={1} style={{ fontSize: 24 }} ref={input2} returnKeyType='next' onChangeText={(value) => {
+                                    setCode2(value)
                                     if (value.length == 1)
                                         input3.current.focus()
                                 }} />
                             </View>
                             <View onTouchEnd={() => { input1.current.focus() }} style={{ backgroundColor: colors.BaseSlot1, width: 55, height: 55, borderRadius: 20, justifyContent: "center", alignItems: "center" }}>
-                                <TextInput keyboardType='numeric' maxLength={1} style={{ fontSize: 24 }} ref={input3} returnKeyType='next' onChangeText={(value) => {
+                                <TextInput value={code3} keyboardType='numeric' maxLength={1} style={{ fontSize: 24 }} ref={input3} returnKeyType='next' onChangeText={(value) => {
+                                    setCode3(value)
                                     if (value.length == 1)
                                         input4.current.focus()
                                 }} />
                             </View>
                             <View onTouchEnd={() => { input1.current.focus() }} style={{ backgroundColor: colors.BaseSlot1, width: 55, height: 55, borderRadius: 20, justifyContent: "center", alignItems: "center" }}>
-                                <TextInput keyboardType='numeric' maxLength={1} style={{ fontSize: 24 }} ref={input4} returnKeyType='next' onChangeText={(value) => {
+                                <TextInput value={code4} keyboardType='numeric' maxLength={1} style={{ fontSize: 24 }} ref={input4} returnKeyType='next' onChangeText={(value) => {
+                                    setCode4(value)
                                     if (value.length == 1)
                                         Keyboard.dismiss()
                                 }} />
                             </View>
                         </View>
                         <ButtonPrimary title={t("enter_code_verify")} event={() => {
-                            navigation.navigate("EnterNewPassword")
+                            console.log(route.params.email)
+                            console.log(code1)
+                            console.log(code2)
+                            console.log(code3)
+                            console.log(code4)
+                            UserService.verifiesRecoveryCode(route.params.email, code1 + code2 + code3 + code4).then((response) => {
+                                navigation.navigate("EnterNewPassword", {email: route.params.email})
+                                console.log(response.data)
+                            }).catch((error) => {
+                                Toast.show({
+                                    type: "error",
+                                    position: 'bottom',
+                                    text1: t("title_error_recovery_password"),
+                                    text2: t("message_error_recovery_password"),
+                                    visibilityTime: 4000,
+                                    autoHide: true,
+                                    bottomOffset: 40,
+                                })
+                            })
                         }} />
                         <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", marginTop: 20 }}>
                             <Text style={[styleSelected.textRegular16, { color: colors.BaseSlot3 }]}>{t("enter_code_not_received")}</Text>

@@ -23,6 +23,7 @@ import { useTranslation } from "react-i18next"
  * @param feedRole: string - Defines appearance of post. Specific to SmartCaring. Accepted values: caregiver, health professional, patient
  * @param postContent: object - All content related to the post, i.e. profile picture, text, links, whether post has been favorited or liked
  * @param event: any
+ * @param updateNews: any
  */
 
 const FeedPost = (
@@ -33,7 +34,8 @@ const FeedPost = (
         postContent,
         user,
         onHandleLikeFavorite,
-        event
+        event,
+        updateNews
     }) => {
 
     const [isLoading, setIsLoading] = useState(false)
@@ -182,7 +184,7 @@ const FeedPost = (
                         }
                     }}
                 >
-                    <CommentInputPopup placeholder={t("homepage_write_comment")} feedStyle={feedStyle} postContent={postContent} user={user} feedIcon={feedIcon} newsId={postContent._id.$oid} userId={user._id.$oid} onSubmit={() => {postContent.total_comments += 1; refRBSheet.current.close(); setCommentAmount(postContent.total_comments)}} />                    
+                    <CommentInputPopup updateNews={updateNews} placeholder={t("homepage_write_comment")} feedStyle={feedStyle} postContent={postContent} user={user} feedIcon={feedIcon} newsId={postContent._id.$oid} userId={user._id.$oid} onSubmit={() => {postContent.total_comments += 1; refRBSheet.current.close(); setCommentAmount(postContent.total_comments)}} />                    
                 </RBSheet>
             </View>
             <View style={{flexDirection: "row", height:40, flex: 1}}>
@@ -275,20 +277,13 @@ const FeedPost = (
                     }
                     <TouchableOpacity onPress={() => {
                         refRBSheet.current.open()
-                        // if (modalVisible) {
-                        //     setModalVisible(false)
-                        //     setTimeout(() => {
-                        //         setModalVisible(true)
-                        //     }, 250)
-                        // }
-                        // else setModalVisible(true)
                     }} style={[styleSelected.smallButtonPost, { borderColor: buttonColor, marginLeft: 5 }]}>
                         <MaterialCommunityIcons name={'comment-outline'}
                             size={15}
                             color={buttonColor} /><Text style={[styleSelected.feedPostButtonsText, { color: buttonColor }]}> {t("homepage_comment")}</Text>
                     </TouchableOpacity>
                                         
-                    <FeedPostCommentList postContent={postContent} commentAmount={commentAmount} avatarPicture={""} modalVisible={true} userName={"teste"}  comment={"text"} />
+                    <FeedPostCommentList updateNews={updateNews} postContent={postContent} commentAmount={commentAmount} avatarPicture={""} modalVisible={true} userName={"teste"}  comment={"text"} />
                 </View>
             </View>
         </View>

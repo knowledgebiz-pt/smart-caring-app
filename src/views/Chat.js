@@ -43,6 +43,8 @@ export default function Chat({ route, navigation }) {
 
     const list = useSelector((state) => state.chat)
 
+    const [listChat, setListChat] = useState(list)
+
     const [indexSelected, setIndexSelected] = useState(0)
     const [find, setFind] = useState('')
 
@@ -97,6 +99,13 @@ export default function Chat({ route, navigation }) {
             ChatService.getChatByIdUser(token).then((response) => {
                 // setList(response.data)
                 dispatch(insertMessage(response.data))
+                setListChat([])
+                if (indexSelected == 0)
+                    setListChat(response.data)
+                if (indexSelected == 1)
+                    setListChat(response.data.filter((item) => item.chat_members.length == 2))
+                if (indexSelected == 2)
+                    setListChat(response.data.filter((item) => item.chat_members.length > 2))
             }).catch((error) => {
                 console.log(error)
             })
@@ -145,17 +154,60 @@ export default function Chat({ route, navigation }) {
                 <View style={{ height: 70, justifyContent: "center", alignItems: "center" }}>
                     <Text style={styleSelected.textBold20DarkBlue}>{t("navbar_chat")}</Text>
                 </View>
-                <View style={{ flex:.1, justifyContent: "center", alignItems: "center", }}>
+                <View style={{ flex: .1, justifyContent: "center", alignItems: "center", }}>
                     <View style={{ borderWidth: .5, borderColor: "#A8A8A8", width: "90%", flexDirection: "row", borderRadius: 30, padding: 3 }}>
                         <View style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
                             <FontAwesome size={15} color={"#A8A8A8"} name='search' />
                         </View>
-                        <SearchInput value={search} placeholder={t("search")} onChangeText={(val) => {setSearch(val)}} />
+                        <SearchInput value={search} placeholder={t("search")} onChangeText={(val) => {
+                            setSearch(val)
+                            console.log("VAL", val)
+                            if (val.length > 0) {
+                                console.log("INDEX", indexSelected)
+                                if (indexSelected == 0) {
+                                    var listWithFilter = []
+                                    list.forEach(element => {
+                                        element.chat_members.forEach(members => {
+                                            console.log("VAL", val)
+                                            console.log("NAME", members.name)
+                                            if (members.name.toLowerCase().includes(val.toLowerCase())) {
+                                                listWithFilter.push(element)
+                                            }
+                                        });
+                                    });
+                                    var t = list.filter((item) => item.chat_name.toLowerCase().includes(val.toLowerCase()))
+                                    setListChat(listWithFilter.concat(t))
+                                }
+                                else if (indexSelected == 1) {
+                                    var listWithFilter = []
+                                    list.forEach(element => {
+                                        element.chat_members.forEach(members => {
+                                            console.log("VAL", val)
+                                            console.log("NAME", members.name)
+                                            if (members.name.toLowerCase().includes(val.toLowerCase())) {
+                                                listWithFilter.push(element)
+                                            }
+                                        });
+                                    });
+                                    setListChat(listWithFilter)
+                                }
+                                else if (indexSelected == 2) {
+                                    setListChat(list.filter((item) => item.chat_name.toLowerCase().includes(val.toLowerCase())))
+                                }
+                            } else {
+                                if (indexSelected == 0)
+                                    setListChat(list)
+                                if (indexSelected == 1)
+                                    setListChat(list.filter((item) => item.chat_members.length == 2))
+                                if (indexSelected == 2)
+                                    setListChat(list.filter((item) => item.chat_members.length > 2))
+                            }
+                        }} />
                     </View>
                 </View>
                 {/* <View style={{ height: 50, width: "90%", alignSelf: "center" }}> */}
-                    {/* <SearchInput value={search} placeholder={t("search")} onChangeText={(val) => {setSearch(val)}} /> */}
-                    {/* <TextInput
+                {/* <SearchInput value={search} placeholder={t("search")} onChangeText={(val) => {setSearch(val)}} /> */}
+                {/* <TextInput
                         multiline={true}
                         placeholder={t("search")}
                         placeholderTextColor={colors.BaseSlot3}
@@ -183,7 +235,7 @@ export default function Chat({ route, navigation }) {
                         <TouchableOpacity
                             onPress={() => {
                                 setIndexSelected(1)
-                                setIdChats([...idChats, tokensClient])
+                                setListChat(list.filter((item) => item.chat_members.length == 2))
                                 console.log("IDS", idChats)
                             }}
                             style={{ borderRightWidth: .5, borderRightColor: colors.BaseSlot5, flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: indexSelected == 1 ? colors.BaseSlot2 : "transparent" }}>
@@ -191,7 +243,10 @@ export default function Chat({ route, navigation }) {
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            onPress={() => setIndexSelected(2)}
+                            onPress={() => {
+                                setIndexSelected(2)
+                                setListChat(list.filter((item) => item.chat_members.length > 2))
+                            }}
                             style={{ flex: 1, justifyContent: "center", alignItems: "center", borderTopRightRadius: 20, borderBottomRightRadius: 20, backgroundColor: indexSelected == 2 ? colors.BaseSlot4 : "transparent" }}>
                             <Text style={[styleSelected.textRegular16, { color: indexSelected == 2 ? colors.BaseSlot1 : colors.BaseSlot5 }]}>{t("group")}</Text>
                         </TouchableOpacity>
@@ -201,11 +256,11 @@ export default function Chat({ route, navigation }) {
                 </View>
                 <View style={{ flex: 1, width: "100%", alignSelf: "center", marginTop: 10 }}>
                     <FlatList
-                        data={list}
+                        data={listChat}
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={({ item, index }) => {
                             return (
-                                <ChatComponent value={item} navigation={navigation} idUser={idUser} ws={ws} update={GetChatUpdated}/>
+                                <ChatComponent value={item} navigation={navigation} idUser={idUser} ws={ws} update={GetChatUpdated} />
                             )
                         }}
                     />

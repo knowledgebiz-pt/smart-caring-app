@@ -420,7 +420,7 @@ const style = StyleSheet.create({
     marginTop:20
   },
   feedPostContentView: {
-    marginLeft: 65
+    marginLeft: 0
   },
   feedPostContentText: {
     fontSize: 10, paddingRight:10

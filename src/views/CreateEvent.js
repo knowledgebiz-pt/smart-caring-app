@@ -17,7 +17,7 @@ import { useTranslation } from "react-i18next"
 
 export default function CreateEvent({ route, navigation }) {
 
-    const {t, i18n} = useTranslation()
+    const { t, i18n } = useTranslation()
 
     const [isLoading, setIsLoading] = useState(true)
     const [nameEvent, setNameEvent] = useState("")
@@ -412,6 +412,7 @@ export default function CreateEvent({ route, navigation }) {
                                 notes: descriptionEvent
                             }).then((event) => {
                                 console.log('success', event);
+                                route.params.GetPermissionsCalendar()
                                 navigation.goBack()
                             }).catch((error) => {
                                 console.log('error', error);
