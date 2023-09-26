@@ -73,10 +73,8 @@ export default function ToolBox({ route, navigation }) {
 
     useEffect(() => {
         ToolboxService.getToolBoxAllProducts().then(res => {
-            console.log("resdata:", res.data.items)
             let data = res.data.items
             for (let i = 0; i < data.length; i++) {
-                console.log("index:",i)
                 lang = i18n.language
                 let descSlugs = data[i].toolbox_description.split(";;;")
                 let langSlugs = data[i].toolbox_languages.split(";;;")
@@ -119,6 +117,7 @@ export default function ToolBox({ route, navigation }) {
                     data[i]["stars"][ind] = "star"
                 }
             }
+            data.sort(function(a, b){return b.toolbox_rating - a.toolbox_rating})
             setDisplayData(data)
             setOriginalData(data)
             console.log('OPEN', ToolBox.name, 'SCREEN')
@@ -153,41 +152,43 @@ export default function ToolBox({ route, navigation }) {
     const searchFunction = (val) => {
         setSearch(val)
         if (val) {
-            let newData = originalData.filter((x) => {
+            let newData = displayData.filter((x) => {
                 return x.toolbox_name.includes(val)
             })
             setDisplayData(newData)
         }
         else {
-            setDisplayData([...originalData])
+            // setDisplayData([...originalData])
+            changeView(indexSelected, true)
         }
     }
 
-    const changeView = (i) => {
+    const changeView = (i, isEmpty=false) => {
         let data = null
         console.log(originalData)
         switch (i) {
             case 0:
-                filterOnChangeView(originalData)
+                filterOnChangeView(originalData, isEmpty)
                 break
             case 1:
                 data = originalData.filter((item) => {
                     return item.appUrl !== null
                 })
-                filterOnChangeView(data)
+                filterOnChangeView(data, isEmpty)
 
                 break
             case 2:
                 data = originalData.filter((item) => {
                     return item.websiteUrl !== null
                 })
-                filterOnChangeView(data)
+                filterOnChangeView(data, isEmpty)
                 break
         }
     }
 
-    const filterOnChangeView = (data) => {
-        if (search) {
+    const filterOnChangeView = (data, isEmpty=false) => {
+        console.log(search)
+        if (search && !isEmpty) {
             let newData = data.filter((x) => {
                 return x.toolbox_name.includes(search)
             })
@@ -204,8 +205,8 @@ export default function ToolBox({ route, navigation }) {
                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                     <Image
                         source={{ uri: item.toolbox_image }}
-                        style={{ width: 80, height: 80 }}
-                        resizeMode='cover' />
+                        style={{ width: 80, height: 80}}
+                        resizeMode='contain' />
                 </View>
                 <View style={{ flex: 2, alignItems: "center" }}>
                     <View style={{ width: "90%" }}>
