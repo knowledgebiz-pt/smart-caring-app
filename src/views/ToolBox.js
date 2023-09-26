@@ -40,7 +40,7 @@ export default function ToolBox({ route, navigation }) {
         { label: t("toolbox_least_languages"), value: 'leastLang' },
     ])
 
-    const [sortSelectValue, setSortSelectValue] = useState()
+    const [sortSelectValue, setSortSelectValue] = useState({ label: t("toolbox_most_stars"), value: 'mostStars' })
 
     const searchRef = useRef(null)
 
@@ -82,12 +82,12 @@ export default function ToolBox({ route, navigation }) {
                 if (lang === "en") {
                     data[i]["toolbox_description"] = descSlugs[0].replace("en:", "")
                     data[i]["toolbox_languages"] = langSlugs[0].replace("en:", "")
-                    data[i]["languageNum"] = langSlugs[0].split(",").length
+                    data[i]["languageNumber"] = langSlugs[0].split(",").length
                 }
                 else if (lang === "pt") {
                     data[i]["toolbox_description"] = descSlugs[1].replace("pt:", "")
                     data[i]["toolbox_languages"] = langSlugs[1].replace("pt:", "")
-                    data[i]["languageNum"] = langSlugs[1].split(",").length
+                    data[i]["languageNumber"] = langSlugs[1].split(",").length
 
                 }
                 if (linkSlugs[0] !== "website:null") {
@@ -192,10 +192,29 @@ export default function ToolBox({ route, navigation }) {
             let newData = data.filter((x) => {
                 return x.toolbox_name.includes(search)
             })
-            setDisplayData(newData)
+            sortOnChangeView(newData)
         }
         else { 
-            setDisplayData(data)
+            sortOnChangeView(data)
+        }
+    }
+
+    const sortOnChangeView = (array) => {
+        if (sortSelectValue.value === "mostStars") {                
+            array.sort(function(a, b){return b.toolbox_rating - a.toolbox_rating})
+            setDisplayData(array)
+        }
+        else if (sortSelectValue.value === "leastStars") {
+            array.sort(function(a, b){return a.toolbox_rating - b.toolbox_rating})           
+            setDisplayData(array)
+        }
+        else if (sortSelectValue.value === "mostLang") {
+            array.sort(function(a, b){return b.languageNumber - a.languageNumber})
+            setDisplayData(array)
+        }
+        else if (sortSelectValue.value === "leastLang") {
+            array.sort(function(a, b){return a.languageNumber - b.languageNumber})
+            setDisplayData(array)
         }
     }
 

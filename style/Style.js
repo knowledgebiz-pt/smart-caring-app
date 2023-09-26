@@ -426,7 +426,7 @@ const style = StyleSheet.create({
     marginTop:20
   },
   feedPostContentView: {
-    marginLeft: 0
+    marginLeft: 65
   },
   feedPostContentText: {
     fontSize: 10, paddingRight:10
