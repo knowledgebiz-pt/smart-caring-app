@@ -137,15 +137,21 @@ export default function PostInputTransparent(
                     path: postImage.file
                 }
             }
-            NewsService.createNews(newsObject).then(res => {
-                onSubmitEditing()
-                showToast(t("post_input_toast_created_post"), "success")
+            if (textValue.trim().length > 0) {
+                NewsService.createNews(newsObject).then(res => {
+                    onSubmitEditing()
+                    showToast(t("post_input_toast_created_post"), "success")
+                    setClicked(false)
+                }).catch(e => {
+                    console.error("e: ", e)
+                    showToast(t("post_input_toast_error_post"), "error")
+                    setClicked(false)
+                })
+            }
+            else {
+                showToast(t("register_no_fields"))
                 setClicked(false)
-            }).catch(e => {
-                console.error("e: ", e)
-                showToast(t("post_input_toast_error_post"), "error")
-                setClicked(false)
-            })
+            }
         }
         else { // Create comment on feed post
             let commentObject = {
@@ -167,23 +173,25 @@ export default function PostInputTransparent(
     }
 
     const checkLinkValidity = (url) => {
-        setLinkText(url)
-        setUrlInputVisible(false)
-        if (url === "") {
-            showToast(t("post_input_toast_no_url"), "info")
-        }
-        else if (!url.includes("http://") && !url.includes("https://")) {
-            showToast(t("post_input_toast_url_https"), "info")
-        }
-        else {
-            Linking.canOpenURL(url).then(res => {
-                if (res) {
-                    showToast(t("post_input_toast_url_valid"), "success")
-                }
-                else {
-                    showToast(t("post_input_toast_url_invalid"), "info")
-                }
-            })
+        if (url && url.trim() !== "") {
+            setLinkText(url)
+            setUrlInputVisible(false)
+            if (url === "") {
+                showToast(t("post_input_toast_no_url"), "info")
+            }
+            else if (!url.includes("http://") && !url.includes("https://")) {
+                showToast(t("post_input_toast_url_https"), "info")
+            }
+            else {
+                Linking.canOpenURL(url).then(res => {
+                    if (res) {
+                        showToast(t("post_input_toast_url_valid"), "success")
+                    }
+                    else {
+                        showToast(t("post_input_toast_url_invalid"), "info")
+                    }
+                })
+            }
         }
     }
 
@@ -221,7 +229,9 @@ export default function PostInputTransparent(
                     scrollEnabled={true}
                 />
                 {showButtons && <View style={{ flexDirection: "column" }}>
-                    <TouchableOpacity onPress={() => pickImage(ImagePicker.MediaTypeOptions.Images)} style={[styleSelected.smallButtonPost, { borderColor: borderColor }]}>
+                    <TouchableOpacity onPress={() => pickImage(ImagePicker.MediaTypeOptions.Images).then(() => {
+                        showToast(t("homepage_post_selected_image"), "success")
+                    })} style={[styleSelected.smallButtonPost, { borderColor: borderColor }]}>
                         <MaterialCommunityIcons style={{ paddingRight: 2 }} name={'plus'}
                             size={15}
                             color={borderColor} />
@@ -229,7 +239,9 @@ export default function PostInputTransparent(
                             size={15}
                             color={borderColor} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => pickImage(ImagePicker.MediaTypeOptions.Videos)} style={[styleSelected.smallButtonPost, { marginTop: 5, borderColor: borderColor }]}>
+                    <TouchableOpacity onPress={() => pickImage(ImagePicker.MediaTypeOptions.Videos).then(() => {
+                        showToast(t("homepage_post_selected_video"), "success")
+                    })} style={[styleSelected.smallButtonPost, { marginTop: 5, borderColor: borderColor }]}>
                         <MaterialCommunityIcons style={{ paddingRight: 2 }} name={'plus'}
                             size={15}
                             color={borderColor} />

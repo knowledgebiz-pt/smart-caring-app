@@ -15,7 +15,7 @@ import { useSelector } from 'react-redux';
  * @param img: string - URI of the user's profile image
  */
 
-export default function HeaderLogoAndProfileImage({img, onPressImage, user}) {
+export default function HeaderLogoAndProfileImage({img, onPressImage, user, refreshItems}) {
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
@@ -34,7 +34,7 @@ export default function HeaderLogoAndProfileImage({img, onPressImage, user}) {
         {id: 1,name:t("homepage_menu_profile"), value:"profile", icon: "user", iconType: "FontAwesome"},
         {id: 2,name:t("homepage_menu_privacy_policy"), value:"privacypolicy", icon: "shield-account", iconType: "MaterialCommunityIcons"},
         {id: 3,name:t("homepage_menu_terms_use"), value:"termsofuse", icon: "file-check", iconType: "MaterialCommunityIcons"},
-        {id: 4,name:t("homepage_menu_settings"), value:"settings", icon: "cog", iconType: "FontAwesome"},
+        {id: 4,name:t("homepage_menu_language"), value:"language", icon: "language", iconType: "FontAwesome"},
         {id: 5,name:t("homepage_menu_logout"), value:"logout", icon: "logout", iconType: "MaterialCommunityIcons"},
     ]
 
@@ -53,6 +53,7 @@ export default function HeaderLogoAndProfileImage({img, onPressImage, user}) {
     }, [])
 
     const optionPressed = (option) => {
+        console.log("OPTION", option)
         if (option.value === "logout") {
             AsyncStorage.clear()
             refModalMenu.current.close()
@@ -62,6 +63,27 @@ export default function HeaderLogoAndProfileImage({img, onPressImage, user}) {
                   routes: [{ name: 'Login' }],
                 })
             )
+        }
+        else if (option.value === "profile") {
+            navigation.navigate("Profile")
+        }
+        else if (option.value === "language") {
+            if (i18n.language === "pt") {
+                AsyncStorage.setItem("@lang", "en").then(() => {
+                    i18n.changeLanguage("en")
+                    refreshItems()
+                })
+            }
+            else {
+                AsyncStorage.setItem("@lang", "pt").then(() => {
+                    i18n.changeLanguage("pt")
+                    refreshItems()
+
+                })
+            }
+        }
+        else if (option.value === "privacypolicy") {
+            navigation.navigate("PolicyPrivacy")
         }
     }
 

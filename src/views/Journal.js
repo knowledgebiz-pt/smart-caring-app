@@ -287,12 +287,12 @@ export default function Journal({ route, navigation }) {
                 <View style={{ flex: 1, flexDirection: "row" }}>
 
                     {/* <View style={{ flex: .5, justifyContent: "center", }}>
-                        <DropDownPicker listMode="SCROLLVIEW" key={"key1"} style={{ borderWidth: .5, borderColor: "#A8A8A8", color: "red", padding: 5, paddingLeft: 15, paddingRight: 15, borderRadius: 30, width: "85%", alignItems: "center", justifyContent: "center", minHeight: 30 }} placeholder={"Sort by: " + sortSelectValue.label} onSelectItem={(val) => { setSortSelectValue(val); setSortSelectOpen(false); sortPosts(val) }} onPress={() => { setSortSelectOpen(!sortSelectOpen); setFilterSelectOpen(false) }} open={sortSelectOpen} items={sortItems}
+                        <DropDownPicker listMode="SCROLLVIEW" key={"key1"} style={{ borderWidth: .5, borderColor: colors.BaseSlot5, color: "red", padding: 5, paddingLeft: 15, paddingRight: 15, borderRadius: 30, width: "85%", alignItems: "center", justifyContent: "center", minHeight: 30 }} placeholder={"Sort by: " + sortSelectValue.label} onSelectItem={(val) => { setSortSelectValue(val); setSortSelectOpen(false); sortPosts(val) }} onPress={() => { setSortSelectOpen(!sortSelectOpen); setFilterSelectOpen(false) }} open={sortSelectOpen} items={sortItems}
                             ArrowDownIconComponent={() => {
-                                return <FontAwesome name="chevron-down" color={"#A8A8A8"} />
+                                return <FontAwesome name="chevron-down" color={colors.BaseSlot5} />
                             }}
                             ArrowUpIconComponent={() => {
-                                return <FontAwesome name="chevron-up" color={"#A8A8A8"} />
+                                return <FontAwesome name="chevron-up" color={colors.BaseSlot5} />
                             }}
                         />
 
@@ -300,12 +300,12 @@ export default function Journal({ route, navigation }) {
                     <View style={{ flex: .5, flexDirection: "row", justifyContent: "center", alignItems: "center", }}>
                         <View style={{ flex: .3, }} />
                         <View style={{ flex: .7, justifyContent: "flex-end", paddingRight: 0, }}>
-                            <DropDownPicker listMode="SCROLLVIEW" key={"key2"} maxHeight={200} dropDownContainerStyle={[{ maxHeight: 300 }]} labelStyle={{ color: "red" }} style={{ borderWidth: .5, borderColor: "#A8A8A8", padding: 5, paddingLeft: 15, paddingRight: 15, borderRadius: 30, alignItems: "center", justifyContent: "center", minHeight: 30, alignSelf: "flex-end" }} placeholder={"Filter"} onSelectItem={(val) => { setFilterSelectValue(val); setFilterSelectOpen(false); filterPosts(val) }} onPress={() => { setFilterSelectOpen(!filterSelectOpen); setSortSelectOpen(false) }} open={filterSelectOpen} items={filterItems}
+                            <DropDownPicker listMode="SCROLLVIEW" key={"key2"} maxHeight={200} dropDownContainerStyle={[{ maxHeight: 300 }]} labelStyle={{ color: "red" }} style={{ borderWidth: .5, borderColor: colors.BaseSlot5, padding: 5, paddingLeft: 15, paddingRight: 15, borderRadius: 30, alignItems: "center", justifyContent: "center", minHeight: 30, alignSelf: "flex-end" }} placeholder={"Filter"} onSelectItem={(val) => { setFilterSelectValue(val); setFilterSelectOpen(false); filterPosts(val) }} onPress={() => { setFilterSelectOpen(!filterSelectOpen); setSortSelectOpen(false) }} open={filterSelectOpen} items={filterItems}
                                 ArrowDownIconComponent={() => {
-                                    return <FontAwesome name="chevron-down" color={"#A8A8A8"} />
+                                    return <FontAwesome name="chevron-down" color={colors.BaseSlot5} />
                                 }}
                                 ArrowUpIconComponent={() => {
-                                    return <FontAwesome name="chevron-up" color={"#A8A8A8"} />
+                                    return <FontAwesome name="chevron-up" color={colors.BaseSlot5} />
                                 }}
                             />
 
@@ -315,12 +315,12 @@ export default function Journal({ route, navigation }) {
 
                     <View style={{ flex: 1, justifyContent: "center", }}>
                         <DropDownPicker listMode="SCROLLVIEW" key={"key1"} dropDownContainerStyle={{borderWidth: .5,
-                                                borderColor:"#A8A8A8",}} style={{ borderWidth: .5, borderColor: "#A8A8A8", color: "red", padding: 5, paddingLeft: 15, paddingRight: 15, borderRadius: 30,  alignItems: "center", justifyContent: "center", minHeight: 30 }} placeholder={t("sort_by") + ": " + sortSelectValue.label} onSelectItem={(val) => { setSortSelectOpen(false); sortPosts(val) }} onPress={() => { setSortSelectOpen(!sortSelectOpen) }} open={sortSelectOpen} items={sortItems}
+                                                borderColor:colors.BaseSlot5,}} style={{ borderWidth: .5, borderColor: colors.BaseSlot5, color: "red", padding: 5, paddingLeft: 15, paddingRight: 15, borderRadius: 30,  alignItems: "center", justifyContent: "center", minHeight: 30 }} placeholder={t("sort_by") + ": " + sortSelectValue.label} onSelectItem={(val) => { setSortSelectOpen(false); sortPosts(val) }} onPress={() => { setSortSelectOpen(!sortSelectOpen) }} open={sortSelectOpen} items={sortItems}
                             ArrowDownIconComponent={() => {
-                                return <FontAwesome name="chevron-down" color={"#A8A8A8"} />
+                                return <FontAwesome name="chevron-down" color={colors.BaseSlot5} />
                             }}
                             ArrowUpIconComponent={() => {
-                                return <FontAwesome name="chevron-up" color={"#A8A8A8"} />
+                                return <FontAwesome name="chevron-up" color={colors.BaseSlot5} />
                             }}
                         />
 
@@ -401,9 +401,9 @@ export default function Journal({ route, navigation }) {
                     </View>
 
                     <View style={{ flex:.085, justifyContent: "center", alignItems: "center", }}>
-                        <View style={{ borderWidth: .5, borderColor: "#A8A8A8", width: "90%", flexDirection: "row", borderRadius: 30, padding: 3 }}>
+                        <View style={{ borderWidth: .5, borderColor: colors.BaseSlot5, width: "90%", flexDirection: "row", borderRadius: 30, padding: 3 }}>
                             <View style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
-                                <FontAwesome size={15} color={"#A8A8A8"} name='search' />
+                                <FontAwesome size={15} color={colors.BaseSlot5} name='search' />
                             </View>
                             <SearchInput value={searchText} placeholder={t("search")} onChangeText={(val) => searchFunction(val)} />
                         </View>

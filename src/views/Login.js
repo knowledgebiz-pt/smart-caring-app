@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
-import { Alert,SafeAreaView, StatusBar, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text, Image, TouchableOpacity } from 'react-native'
+import { Alert, SafeAreaView, StatusBar, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text, Image, TouchableOpacity } from 'react-native'
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
@@ -32,7 +32,7 @@ export default function Login({ route, navigation }) {
             "870460584280-rscdtdn9l306hahc1o6fggajiqje5s1t.apps.googleusercontent.com",
     });
 
-    const {t, i18n} = useTranslation()
+    const { t, i18n } = useTranslation()
 
     useEffect(() => {
         console.log("INFO LOGIN");
@@ -58,8 +58,23 @@ export default function Login({ route, navigation }) {
             }
         );
         userInfoResponse.json().then((data) => {
-            console.warn(data)
-            navigation.navigate('CreateAccountWithGmail', { userInfo: data })
+            UserService.getAllUsers().then((res) => {
+                console.log(res.data)
+                res.data.forEach(element => {
+                    if (element.email == data.email) {
+                        AsyncStorage.setItem("@token", element._id.$oid)
+                        navigation.dispatch(
+                            CommonActions.reset({
+                                index: 0,
+                                routes: [{ name: 'BottomTab', params: { userData: element } }],
+                            })
+                        )
+                    } else {
+                        console.warn(data)
+                        navigation.navigate('CreateAccountWithGmail', { userInfo: data })
+                    }
+                });
+            }).catch((err) => { })
         });
     }
 
@@ -89,9 +104,9 @@ export default function Login({ route, navigation }) {
             <Loader />
         );
     }
-    const showToast = (msg, type="success") => {
+    const showToast = (msg, type = "success") => {
         // Types: success, error, info
-        Toast.show({type: type, text1: msg, position: 'bottom', props: {text1NumberOfLines: 2}})
+        Toast.show({ type: type, text1: msg, position: 'bottom', props: { text1NumberOfLines: 2 } })
     }
 
     return (
@@ -147,8 +162,8 @@ export default function Login({ route, navigation }) {
                                     AsyncStorage.setItem("@token", response.data._id.$oid)
                                     navigation.dispatch(
                                         CommonActions.reset({
-                                          index: 0,
-                                          routes: [{ name: 'BottomTab', params: { userData: response.data } }],
+                                            index: 0,
+                                            routes: [{ name: 'BottomTab', params: { userData: response.data } }],
                                         })
                                     )
                                     // navigation.navigate("BottomTab", { userData: response.data })

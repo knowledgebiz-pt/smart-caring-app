@@ -19,10 +19,13 @@ import Toast from 'react-native-toast-message';
 import ChatSender from './src/views/ChatSender';
 import CreateEvent from './src/views/CreateEvent';
 import SplashScreen from './src/views/SplashScreen';
+import Profile from './src/views/Profile';
 import { OpenAPI } from 'smart-caring-client/client';
 import store from "./src/redux/store";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next"
+import CreateChat from './src/views/CreateChat';
+import PolicyPrivacy from './src/views/PolicyPrivacy';
 
 const Stack = createNativeStackNavigator();
 
@@ -60,6 +63,12 @@ export default function App() {
               headerTitle: t("schedule_create_event"),
             }} />
             <Stack.Screen name="SplashScreen" component={SplashScreen} />
+            <Stack.Screen name="Profile" component={Profile} />
+            <Stack.Screen name="CreateChat" component={CreateChat} />
+            <Stack.Screen name="PolicyPrivacy" component={PolicyPrivacy} options={{
+              headerTitle: t("homepage_menu_privacy_policy"),
+              headerShown: true,
+            }} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

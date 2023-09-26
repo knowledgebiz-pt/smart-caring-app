@@ -106,7 +106,6 @@ export default function HomePage({ route, navigation }) {
     }
 
     const filterPosts = (val) => { // Will get data from original feedPosts array, but won't modify directly
-        console.log(val.value === "Favorites")
         setIsLoadingSort(true)
         let newArray = [...feedPosts]
         if (val.value !== "All" && val.value !== "Unlabeled" && val.value !== "Favorites" && val.value !== "Liked") {
@@ -135,11 +134,15 @@ export default function HomePage({ route, navigation }) {
                 return new Date(b.date) - new Date(a.date)
             })
             setDisplayFeedPosts(array)
-            setIsLoadingSort(false)
+            setTimeout(() => {
+                setIsLoadingSort(false)
+            }, 2000)
         }
         else if (sortSelectValue.value === "old") {
             displayFeedPosts.reverse()
-            setIsLoadingSort(false)
+            setTimeout(() => {
+                setIsLoadingSort(false)
+            }, 2000)
         }
     }
 
@@ -151,7 +154,9 @@ export default function HomePage({ route, navigation }) {
     useEffect(() => {
         console.log(route.params.goUp)
         AsyncStorage.getItem("@token").then((token) => {
+            console.log("token:",token)
             UserService.getUserDataByIdUserCorrectly(token).then(res => {
+                console.log("token2:", token)
                 OpenAPI.TOKEN = res.token.access_token
                 dispatch(insertUser(res.data))
                 updateDataNews()
@@ -161,6 +166,7 @@ export default function HomePage({ route, navigation }) {
                 showToast(t("homepage_toast_error_login"), "error")
             })
         }).catch((e) => {
+            console.error("e:", e)
             navigation.reset({
                 index: 0,
                 routes: [{ name: 'Login' }],
@@ -184,8 +190,13 @@ export default function HomePage({ route, navigation }) {
         );
     }
 
-    const getArticleData = () => {
-        setIsLoading(true)
+    const getArticleData = (isList=false) => {
+        if (!isList) {
+            setIsLoading(true)
+        }
+        else {
+            setIsLoadingSort(true)
+        }
         NewsService.getNewsAllArticles().then(result => {
             setFeedPosts([])
             setFeedPosts([...result.data])
@@ -193,10 +204,20 @@ export default function HomePage({ route, navigation }) {
                 return new Date(b.date) - new Date(a.date)
             })
             setDisplayFeedPosts(array)
+            if (!isList) {
             setIsLoading(false)
+            }
+            else {
+                setIsLoadingSort(false)
+            }
         }).catch(e => {
             console.error("e: ", e)
+            if (!isList) {
             setIsLoading(false)
+            }
+            else {
+                setIsLoadingSort(false)
+            }
             showToast(t("homepage_toast_error_get_posts"), "error")
         })
     }
@@ -258,7 +279,31 @@ export default function HomePage({ route, navigation }) {
             >
                 <View style={[styleSelected.backgroundPrimary, { flex: 1, marginTop: 30 }]}>
                     <View style={{ height: 110 }}>
-                        <HeaderLogoAndProfileImage user={user} img={user.picture} onPressImage={() => { refModalMenu.current.open() }} />
+                        <HeaderLogoAndProfileImage refreshItems={() => {
+                            setIsLoading(true)
+                            setFilterItems([{ label: t("filter_all"), value: "All" },
+                            { label: t("filter_favorites"), value: "Favorites" },
+                            { label: t("filter_liked"), value: "Liked" },
+                            { label: t("caregiver"), value: 'Caregiver' },
+                            { label: t("patient"), value: 'Patient' },
+                            { label: t("healthPro"), value: 'Health Professional' },
+                            { label: t("filter_unlabeled"), value: 'Unlabeled' }])
+
+                            let newSortValues = [
+                                { label: t("recent"), value: 'recent' },
+                                { label: t("old"), value: 'old' }
+                            ]
+
+                            setSortItems(newSortValues)
+
+                            let selectedSortIndex = newSortValues.findIndex((item) => item.value === sortSelectValue.value)
+
+                            setSortSelectValue(newSortValues[selectedSortIndex])
+                            setTimeout(() => {
+                                setIsLoading(false)
+                            }, 1000)
+
+                        }} user={user} img={user.picture} onPressImage={() => { refModalMenu.current.open() }} />
                     </View>
                     {displayFeedPosts.length === 0 &&
                         <>
@@ -298,6 +343,9 @@ export default function HomePage({ route, navigation }) {
                             // style={{zIndex:-5}}
                             removeClippedSubviews={false}
                             estimatedItemSize={194}
+                            onRefresh={() => {getArticleData(true)}}
+                            refreshing={false}
+                            
                         />
                     }
                 </View>

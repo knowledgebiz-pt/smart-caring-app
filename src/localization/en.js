@@ -77,6 +77,10 @@ export default {
         register_password: "Enter your password",
         register_confirm_password: "Confirm your password",
         register_continue: "Continue",
+        email_format_error: "Please insert a valid e-mail.",
+        password_format_error: "Password must contain at least 8 characters, at least one upper case and one lower case letter, at least one number and at least one special character.",
+        register_no_fields: "Please fill the input fields.",
+        passwords_not_match: "Passwords do not match.",
 
         // CREATE ACCOUNT SCREEN
         // title uses register_title
@@ -115,10 +119,12 @@ export default {
         homepage_toast_error_login: "Error: failed to login.",
         homepage_post_url_title: "URL Link",
         homepage_post_url_message: "Please insert the whole URL to the webpage you wish to link to in your post, including either \"https://\" or \"http://\" :",
+        homepage_post_selected_image: "Image selected!",
+        homepage_post_selected_video: "Video selected!",
         homepage_menu_profile: "Profile",
         homepage_menu_privacy_policy: "Privacy Policy",
         homepage_menu_terms_use: "Terms of Use",
-        homepage_menu_settings: "Settings",
+        homepage_menu_language: "Switch to Portuguese",
         homepage_menu_logout: "Logout",
         homepage_write_comment: "Write a comment...",
         homepage_comment_created: "Comment has been created.",
@@ -182,8 +188,8 @@ export default {
         schedule_previous: "Previous",
         schedule_next: "Next",
         schedule_export: "Export Schedule",
-        schedule_monthly: "Monthly",
-        schedule_weekly: "Weekly",
+        schedule_monthly: "Switch to Weekly",
+        schedule_weekly: "Switch to Monthly",
         schedule_create_event: "Create Event",
         schedule_select_calendar: "Select calendar",
         schedule_event_date_time_start: "Select date and time to start",
@@ -191,6 +197,9 @@ export default {
         schedule_event_error_text1: "Error",
         schedule_event_error_text2: "Error creating event",
 
+        // PROFILE SCREEN
+        profile_go_back: "Go Back",
+        profile_edit: "Edit Profile",
 
         // MONTHS
         january: "January",

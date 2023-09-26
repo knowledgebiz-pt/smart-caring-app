@@ -6,6 +6,7 @@ import PhoneInput from 'react-native-phone-number-input'
 
 /***
  * @param placeholder: string - Text that will appear as placeholder
+ * @param placeholder: string - Text that will appear as placeholder value in the input field
  * @param onChangeText: function - Callback that is called when the text input's text changes. Changed text is passed as an argument to the callback handler.
  * @param hasBorder: boolean - Determine whether the component has a border around it. Defaults to false
  * @param borderColor: string - Determine the color of the component's border, in case it has one.
@@ -19,6 +20,7 @@ import PhoneInput from 'react-native-phone-number-input'
 export default function PhoneInputTransparentLabelAbove(
     { 
         placeholder,
+        placeholderValue="",
         hasBorder=false,
         borderColor,
         onChangeText,
@@ -55,7 +57,7 @@ export default function PhoneInputTransparentLabelAbove(
                 textInputStyle={[styleSelected.phoneInputTextInput, styleSelected.textRegular13Gray]}
                 codeTextStyle={styleSelected.phoneInputCodeText}
                 countryPickerButtonStyle={styleSelected.phoneInputCountryPickerButton}
-                placeholder=" "
+                placeholder={placeholderValue}
                 onChangeFormattedText={onChangeText}
                 defaultCode="PT"
             />

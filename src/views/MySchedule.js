@@ -268,9 +268,10 @@ export default function MySchedule({ route, navigation }) {
             </View>
 
             <View style={{ flex: 1, flexDirection: "row", height: 50, }}>
+                
 
                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center", }}>
-                    <TouchableOpacity onPress={changeView} style={{ borderWidth: .5, borderColor: "#A8A8A8", padding: 5, paddingLeft: 15, paddingRight: 15, borderRadius: 30, width: "85%", alignItems: "center", justifyContent: "center" }}>
+                    <TouchableOpacity onPress={changeView} style={{ borderWidth: .5, borderColor:colors.BaseSlot5, padding: 5, paddingLeft: 15, paddingRight: 15, borderRadius: 30, width: "85%", alignItems: "center", justifyContent: "center" }}>
                         <Text>{currentView.label}</Text>
                     </TouchableOpacity>
                 </View>
@@ -309,7 +310,7 @@ export default function MySchedule({ route, navigation }) {
                 <View>
                     {/* <Text style={{ fontSize: 15, fontWeight: 600, marginBottom: 10 }}>Friday - June 23</Text> */}
                 </View>
-                <View style={{ borderWidth: .5, borderRadius: 20, flex: 1, padding: 20, borderColor: "#A8A8A8" }}>
+                <View style={{ borderWidth: .5, borderRadius: 20, flex: 1, padding: 20, borderColor: colors.BaseSlot5 }}>
                     <View style={{ flexDirection: "row", width: "100%", }}>
                         <View style={{ alignItems: "baseline", width: "90%", justifyContent: "center" }}>
                             <Text style={{ color: "#1CA3FC", fontSize: 14, fontWeight: 600 }}>{item.title}</Text>
@@ -327,7 +328,7 @@ export default function MySchedule({ route, navigation }) {
                     <View style={{ marginTop: 15, flexDirection: "row" }}>
                         <View style={{ flexDirection: "column" }}>
                             <Text style={{ fontWeight: 600, fontSize: 13 }}>{new Date(item.startDate).toISOString().split('T')[0]}</Text>
-                            <Text style={{ color: "#A8A8A8", fontSize: 13 }}>{item.recursion}</Text>
+                            <Text style={{ color: colors.BaseSlot5, fontSize: 13 }}>{item.recursion}</Text>
                         </View>
                         <View style={{ position: "absolute", right: 0 }}>
                             <View style={{ alignItems: "center", justifyContent: "center", flexDirection: "row", }}>

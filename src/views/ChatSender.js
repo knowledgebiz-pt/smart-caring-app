@@ -9,6 +9,7 @@ import ChatSenderComponent from '../components/ChatSenderComponent'
 import { useSelector } from 'react-redux'
 import { useTranslation } from "react-i18next"
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { ChatService } from 'smart-caring-client/client'
 
 
 export default function ChatSender({ route, navigation }) {
@@ -37,6 +38,13 @@ export default function ChatSender({ route, navigation }) {
         console.log('OPEN', ChatSender.name, 'SCREEN')
         console.log("CHATTTT SENDERRR", route.params.chat)
         console.log("IDDDDDD", route.params.idUser)
+
+        ChatService.updateMessageIsVisibleById(route.params.chat.id_chat).then((res) => {
+            console.log(res.data)
+        }).catch((err) => {
+            console.error(err)
+        })
+
         AsyncStorage.getItem("@token").then((token) => {
             setIdUser(token)
         })
@@ -51,11 +59,30 @@ export default function ChatSender({ route, navigation }) {
     useEffect(() => {
         console.log("CHAT ATUALIZADO", chatMessage)
         var listAdd = chatMessage.find(item => item.id_chat == route.params.chat.id_chat)
-        setMessage(listAdd.message)
+        let newArray = []
+        listAdd.message.forEach(item => {
+            let i = newArray.findIndex(entry => { return entry.date === item.date.substring(0, 10) })
+            if (i === -1) {
+                let obj = {
+                    date: item.date.substring(0, 10),
+                    messages: [item]
+                }
+                newArray.push(obj)
+            }
+            else {
+                newArray[i]["messages"].push(item)
+            }
+        });
+        setMessage(newArray)
         setTimeout(() => {
             refScrollView.current.scrollToEnd({ animated: true })
+            markAsViewed()
         }, 300);
     }, [chatMessage])
+
+    const markAsViewed = () => {
+        console.warn("MARKED AS VIEWED")
+    }
 
     Appearance.getColorScheme()
     Appearance.addChangeListener(({ colorScheme }) => {
@@ -73,6 +100,7 @@ export default function ChatSender({ route, navigation }) {
             <Loader />
         );
     }
+    let unreadMessageFlag = false
     return (
         <SafeAreaView style={[styleSelected.backgroundPrimary, { flex: 1 }]} onLayout={onLayoutRootView}>
             <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={colorScheme === 'light' ? 'dark-content' : 'light-content'} />
@@ -86,14 +114,51 @@ export default function ChatSender({ route, navigation }) {
                     snapToEnd={true}
                     ref={refScrollView}
                     style={{ backgroundColor: "#E5E5E5" }}>
+
                     {
+                        message.map((day, index) => {
+                            let returnValue = []
+                            returnValue.push(
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <View style={{ flex: 1, marginLeft: 5, height: 2, backgroundColor: colors.BaseSlot6 }} />
+                                    <View style={{ flex: 1.2, justifyContent: "center", alignItems: "center", paddingTop: 15, paddingBottom: 15, }}>
+                                        <Text style={{ fontSize: 20, fontWeight: 600, color: colors.BaseSlot6 }}>{day.date === new Date().toISOString().substring(0, 10) ? t("today") : day.date.substring(10, 8) + "/" + day.date.substring(7, 5) + "/" + day.date.substring(0, 4)}</Text>
+                                    </View>
+                                    <View style={{ flex: 1, marginRight: 5, height: 2, backgroundColor: colors.BaseSlot6 }} />
+                                </View>
+                            )
+                            day.messages.filter(item => item.viewed == true).map((curMessage, index) => {
+                                console.log(curMessage)
+                                returnValue.push(<ChatSenderComponent message={curMessage} members={route.params.chat.chat_members} idUser={route.params.idUser} />)
+
+                            })
+
+                            if (!unreadMessageFlag) {
+                                unreadMessageFlag = true
+                                day.messages.filter(item => item.viewed == false).length > 0 && (
+                                    returnValue.push(
+                                        <View style={{ width: "100%", backgroundColor: colors.BaseSlot6, height: 40, justifyContent: "center", alignItems: "center", marginTop: 10, marginBottom: 10 }}>
+                                            <Text style={[styleSelected.textSecondary, { textAlign: "center", marginTop: 10, color: colors.BaseSlot1 }]}>1 {t("chat_messages_unread")}</Text>
+                                        </View>
+                                    )
+                                )
+                            }
+
+
+                            day.messages.filter(item => item.viewed == false).map((message, index) => {
+                                returnValue.push(<ChatSenderComponent message={message} members={route.params.chat.chat_members} idUser={route.params.idUser} />)
+                            })
+                            return returnValue
+                        })
+                    }
+                    {/* {
                         message.filter(item => item.viewed == true).map((message, index) => {
                             return (
                                 <ChatSenderComponent message={message} members={route.params.chat.chat_members} idUser={route.params.idUser} />
                             )
                         })
                     }
-
+  
                     {
                         message.filter(item => item.viewed == false).length > 0 && (
                             <View style={{ width: "100%", backgroundColor: colors.BaseSlot6, height: 40, justifyContent: "center", alignItems: "center", marginTop: 10, marginBottom: 10 }}>
@@ -108,7 +173,7 @@ export default function ChatSender({ route, navigation }) {
                                 <ChatSenderComponent message={message} members={route.params.chat.chat_members} idUser={route.params.idUser} />
                             )
                         })
-                    }
+                    } */}
                 </ScrollView>
                 <View style={{ maxHeight: 150, flexDirection: "row" }}>
                     <View style={{ flex: 4, justifyContent: "center" }}>

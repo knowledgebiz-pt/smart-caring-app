@@ -90,9 +90,10 @@ export default function CreateEvent({ route, navigation }) {
                         <DropDownPicker
                             listMode="SCROLLVIEW"
                             key={"key1"}
-                            style={{ maxHeight: 40, height: 40, borderWidth: .5, borderColor: "#A8A8A8", color: "red", padding: 5, paddingLeft: 15, paddingRight: 15, width: "100%", alignItems: "center", justifyContent: "center", minHeight: 30, alignSelf: "center" }}
-                            containerStyle={{ width: "85%", marginTop: 10, backgroundColor: "white", alignSelf: "center" }}
+                            style={{ maxHeight: 40, height: 40, borderWidth: .5, borderColor: colors.BaseSlot5, color: "red", padding: 5, paddingLeft: 15, paddingRight: 15, width: "100%", alignItems: "center", justifyContent: "center", minHeight: 30, alignSelf: "center" }}
+                            containerStyle={{ width: "85%", marginTop: 10, backgroundColor: "white", alignSelf: "center", }}
                             selectedItemContainerStyle={{ height: 40, alignItems: "center", justifyContent: "center", minHeight: 30, backgroundColor: "red", alignSelf: "center" }}
+                            dropDownContainerStyle={{borderWidth:.5, borderColor:colors.BaseSlot5}}
                             onPress={() => {
                                 console.log("onPress")
                                 setIsOpenDropdown(!isOpenDropdown)
@@ -107,10 +108,10 @@ export default function CreateEvent({ route, navigation }) {
                             items={filterItems}
                             open={isOpenDropdown}
                         // ArrowDownIconComponent={() => {
-                        //     return <FontAwesome name="chevron-down" color={"#A8A8A8"} />
+                        //     return <FontAwesome name="chevron-down" color={colors.BaseSlot5} />
                         // }}
                         // ArrowUpIconComponent={() => {
-                        //     return <FontAwesome name="chevron-up" color={"#A8A8A8"} />
+                        //     return <FontAwesome name="chevron-up" color={colors.BaseSlot5} />
                         // }}
                         />
                     </View>
@@ -123,8 +124,8 @@ export default function CreateEvent({ route, navigation }) {
                         style={{
                             backgroundColor: colors.BaseSlot1,
                             minHeight: 40,
-                            borderColor: colors.BaseSlot3,
-                            borderWidth: 1,
+                            borderColor: colors.BaseSlot5,
+                            borderWidth: .5,
                             margin: 5,
                             borderRadius: 10,
                             padding: 10,
@@ -141,8 +142,8 @@ export default function CreateEvent({ route, navigation }) {
                         style={{
                             backgroundColor: colors.BaseSlot1,
                             minHeight: 40,
-                            borderColor: colors.BaseSlot3,
-                            borderWidth: 1,
+                            borderColor: colors.BaseSlot5,
+                            borderWidth: .5,
                             margin: 5,
                             borderRadius: 10,
                             padding: 10,
@@ -188,8 +189,8 @@ export default function CreateEvent({ route, navigation }) {
                                         style={{
                                             backgroundColor: colors.BaseSlot1,
                                             minHeight: 40,
-                                            borderColor: colors.BaseSlot3,
-                                            borderWidth: 1,
+                                            borderColor: colors.BaseSlot5,
+                                            borderWidth: .5,
                                             margin: 5,
                                             borderRadius: 10,
                                             padding: 10,
@@ -301,7 +302,7 @@ export default function CreateEvent({ route, navigation }) {
                                         style={{
                                             backgroundColor: colors.BaseSlot1,
                                             minHeight: 40,
-                                            borderColor: colors.BaseSlot3,
+                                            borderColor: colors.BaseSlot5,
                                             borderWidth: 1,
                                             margin: 5,
                                             borderRadius: 10,

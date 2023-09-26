@@ -21,6 +21,7 @@ import Toast from 'react-native-toast-message'
 import { CommonActions } from '@react-navigation/native'
 
 import { useTranslation } from "react-i18next"
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function CreateAccount({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(false)
@@ -43,6 +44,48 @@ export default function CreateAccount({ route, navigation }) {
 
     const {t, i18n} = useTranslation()
 
+    const handleSubmit = () => {
+        if (name.length > 0 && role !== null) {
+            setIsLoading(true)
+            UserService.createUser({
+                email: route.params.email,
+                password: route.params.password,
+                name: name,
+                user_gender: gender, // M, F
+                UserType: role, // caregiver, health professional, patient
+                birthDate: birthDate.getDate()+"/"+(birthDate.getMonth()+1)+"/"+birthDate.getFullYear(),
+                visibilityUser: visibility,
+                phone: phone,
+                picture: image,
+                address: {
+                    city: "",
+                    country: "",
+                    door_number: "",
+                    postal_code: "",
+                    street: ""
+                }
+            }).then((res) => {
+                i18n.changeLanguage(language)
+                AsyncStorage.setItem("@lang", language)
+                showToast(t("create_account_toast_success"), "success")
+                setIsLoading(false)
+                navigation.dispatch(
+                    CommonActions.reset({
+                      index: 0,
+                      routes: [{ name: 'Features' }],
+                    })
+                )
+            }).catch((e) => {
+                console.error(e)
+                setIsLoading(false)
+                showToast(t("create_account_toast_error"), "error")
+            })
+        }
+        else {
+            showToast(t("register_no_fields"))
+        }
+    }
+
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -50,13 +93,15 @@ export default function CreateAccount({ route, navigation }) {
         allowsEditing: true,
         aspect: [1, 1],
         quality: .2,
-        allowsMultipleSelection: false
+        allowsMultipleSelection: false,
+        base64: true
         });
-
+        
+        let base64 = result.assets[0].base64
         console.log(result);
 
         if (!result.canceled) {
-        setImage(result.assets[0].uri);
+        setImage({ type: result.assets[0].type, file: base64 });
         }
     };
 
@@ -126,7 +171,7 @@ export default function CreateAccount({ route, navigation }) {
 
                     {/* </View> */}
                     <View style={{flex: 1, width: "80%", alignSelf: "center", marginTop: 20, justifyContent: "space-evenly"}}>
-                        {/* <InputDefault input={name} setInput={setName} lineFocusColor="#A8A8A8" inputColor="black" lineUnfocusColor="#A8A8A8" placeholderFocusColor="#030849" placeholderUnfocusColor="#030849" placeholder={"Name"} /> */}
+                        {/* <InputDefault input={name} setInput={setName} lineFocusColor=colors.BaseSlot5 inputColor="black" lineUnfocusColor=colors.BaseSlot5 placeholderFocusColor="#030849" placeholderUnfocusColor="#030849" placeholder={"Name"} /> */}
                         <InputTransparentLabelAbove onChangeText={(text) => setName(text)} fontSize={13} inputColor={colors.BaseSlot3} fullWidth={true} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={t("name")+"*"}/>
                         <View style={{marginTop: 7, flexDirection: "row"}}>
                             <DatePickerTransparentLabelAbove viewWidth={"20%"} event={() => {setShowPicker(true)}} showPicker={showPicker} onDateChange={(date) => {setShowPicker(false);setBirthDate(new Date(date["nativeEvent"]["timestamp"]))}} date={birthDate} placeholder={t("age")+"*"}/>
@@ -139,7 +184,7 @@ export default function CreateAccount({ route, navigation }) {
                         <View style={{width: "40%", alignSelf: "flex-end", marginRight: 110}}>
                             <TogglerTransparentLabelLeft onPress={(value) => {setVisibility(value)}} hasBorder={false} fullWidth={true} label={t("create_account_share")} optionOneLabel={t("yes")} optionOneValue={true} optionTwoLabel={t("no")} optionTwoValue={false}/>
                         </View>
-                        <TogglerTransparentLabelAbove hasBorder={false} fullWidth={true} label={t("language")} optionOneLabel={t("portuguese")} optionOneValue={"pt"} optionTwoLabel={t("english")} optionTwoValue={"en"}/>
+                        <TogglerTransparentLabelAbove onPress={(value) => {setLanguage(value)}} hasBorder={false} fullWidth={true} label={t("language")} optionOneLabel={t("portuguese")} optionOneValue={"pt"} optionTwoLabel={t("english")} optionTwoValue={"en"}/>
                         <PhoneInputTransparentLabelAbove onChangeText={(text) => {setPhone(text); console.log(phone)}} fullWidth={true} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={t("create_account_phone")} />
                     </View>
                     <View style={{flex: 1, width:"100%", alignSelf: "center", justifyContent: "space-evenly"}}>
@@ -147,41 +192,7 @@ export default function CreateAccount({ route, navigation }) {
                         <Text style={[styleSelected.textRegular10Gray, {width:"80%", marginTop: 14, alignSelf: "center"}]}>{t("create_account_mandatory")}</Text>
                     </View>
                     <View style={{flex: 1, width:"100%", alignSelf: "center", marginTop: 14, marginBottom: 14, justifyContent: "space-evenly"}}>
-                        <ButtonOutlinePrimary event={() => { 
-                            setIsLoading(true)
-                            UserService.createUser({
-                                email: route.params.email,
-                                password: route.params.password,
-                                name: name,
-                                user_gender: gender, // M, F
-                                UserType: role, // caregiver, health professional, patient
-                                birthDate: birthDate.getDate()+"/"+(birthDate.getMonth()+1)+"/"+birthDate.getFullYear(),
-                                visibilityUser: visibility,
-                                phone: phone,
-                                picture: image,
-                                address: {
-                                    city: "",
-                                    country: "",
-                                    door_number: "",
-                                    postal_code: "",
-                                    street: ""
-                                }
-                            }).then((res) => {
-                                console.warn(res.data)
-                                showToast(t("create_account_toast_success"), "success")
-                                setIsLoading(false)
-                                navigation.dispatch(
-                                    CommonActions.reset({
-                                      index: 0,
-                                      routes: [{ name: 'Features' }],
-                                    })
-                                )
-                            }).catch((e) => {
-                                console.error(e)
-                                setIsLoading(false)
-                                showToast(t("create_account_toast_error"), "error")
-                            })
-                         }} title={t("create_account_button")} />
+                        <ButtonOutlinePrimary event={() => { handleSubmit()}} title={t("create_account_button")} />
                     </View>
                 </ScrollView>
                 {/* </KeyboardAwareScrollView> */}

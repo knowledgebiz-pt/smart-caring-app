@@ -35,7 +35,7 @@ export default function JournalEntryCreationPopup({
 
     const [entry, setEntry] = useState({title: null, description: null, category: null, categoryColor: null, date: `${new Date().getDate().toString().padStart(2, "0")}-${(new Date().getMonth()+1).toString().padStart(2, "0")}-${new Date().getFullYear()}`})
 
-    const [newCategory, setNewCategory] = useState({ label: null, value: null, color: null, icon: () => <FontAwesome name='circle' color={"black"} /> })
+    const [newCategory, setNewCategory] = useState({ label: "", value: null, color: null, icon: () => <FontAwesome name='circle' color={"black"} /> })
 
     //dropdown picker
     const [open, setOpen] = useState(false);
@@ -76,6 +76,24 @@ export default function JournalEntryCreationPopup({
 
     }, [])
 
+    const handleSubmit = (form) => {
+        if (form === "entryForm") {
+            if (entry.category !== null && entry.category.value !== "newCat" && entry.title !== null) {
+                event(entry);
+                setModalVisible(false)
+            }
+        }
+        else if (form === "categoryForm") {
+            if (newCategory.label.trim().length > 0 && newCategory.color !== null) {
+                setCategory(newCategory);
+                let newItems = [...items]; 
+                newItems.push(newCategory); 
+                setItems(newItems); 
+                refModalMenu.current.close()
+            }
+        }
+    }
+
     const checkValue = (val) => {
         console.log(val)
         if (val === "newCat") {
@@ -113,7 +131,7 @@ export default function JournalEntryCreationPopup({
                                     <View style={{ justifyContent: "center", marginTop: 20, flex:.15 }}>
                                         <Text style={[styleSelected.textRegular13DarkBlue, { marginLeft: 10, marginBottom: 5, fontWeight: 600 }]}>{t("title")}</Text>
                                         <TextInput
-                                            style={[styleSelected.buttonSizeFullWidth, { borderWidth: .5, borderColor:"#A8A8A8", paddingLeft: 10, borderRadius: 20 }]}
+                                            style={[styleSelected.buttonSizeFullWidth, { borderWidth: .5, borderColor:colors.BaseSlot5, paddingLeft: 10, borderRadius: 20 }]}
                                             // style={[sizeStyleSelected, inputStyles]}
                                             placeholderTextColor="rgba(101, 101, 101, 0.5)"
                                             inputMode={'text'}
@@ -135,7 +153,7 @@ export default function JournalEntryCreationPopup({
                                             inputMode={'text'}
                                         /> */}
                                         <DropDownPicker
-                                            style={{ borderRadius: 20, borderWidth: .5, borderColor: "#A8A8A8" }}
+                                            style={{ borderRadius: 20, borderWidth: .5, borderColor: colors.BaseSlot5 }}
                                             placeholder={t("journal_entry_category_placeholder")}
                                             onChangeValue={(val) => { checkValue(val) }}
                                             searchable={false}
@@ -157,7 +175,7 @@ export default function JournalEntryCreationPopup({
                                                 top: -2,
                                                 height: 100,
                                                 borderWidth: .5,
-                                                borderColor:"#A8A8A8",
+                                                borderColor:colors.BaseSlot5,
                                                 borderRadius:20
                                             }}
                                             badgeDotColors={["#e76f51", "#00b4d8", "#e9c46a", "#e76f51", "#8ac926", "#00b4d8", "#e9c46a"]}
@@ -168,7 +186,7 @@ export default function JournalEntryCreationPopup({
                                         <Text style={[styleSelected.textRegular13DarkBlue, { marginLeft: 10, marginBottom: 5, fontWeight: 600 }]}>{t("content")}</Text>
                                         <TextInput
                                         onChangeText={(val) => setEntry({title: entry.title, category: entry.category, categoryColor: entry.categoryColor, date: entry.date, description: val})}
-                                            style={[styleSelected.postInputSize, { borderWidth: .5, paddingLeft: 10, borderRadius: 20, width: "100%", marginTop: 0, borderColor:"#A8A8A8" }]}
+                                            style={[styleSelected.postInputSize, { borderWidth: .5, paddingLeft: 10, borderRadius: 20, width: "100%", marginTop: 0, borderColor:colors.BaseSlot5 }]}
                                             numberOfLines={6}
                                             scrollEnabled={true}
                                             multiline={true}
@@ -185,7 +203,7 @@ export default function JournalEntryCreationPopup({
 
                                     </View>
                                     <View style={{ flex: .25, justifyContent: "center" }}>
-                                        <ButtonPrimary fullWidth={false} title={t("submit")} event={() => { console.log("=====?");event(entry);setModalVisible(false)}} />
+                                        <ButtonPrimary fullWidth={false} title={t("submit")} event={() => { handleSubmit("entryForm");}} />
                                     </View>
                                 </View>
                                 <View style={{ flex: .05 }} />
@@ -213,12 +231,12 @@ export default function JournalEntryCreationPopup({
                     </View>
                     <View style={{ flex: .9, paddingTop: 25, paddingLeft: 25, paddingRight: 25, borderTopLeftRadius: 15, borderTopRightRadius: 15, }}>
                         <View style={{ flex: .3 }}>
-                            <InputTransparentLabelAbove borderColor={"#A8A8A8"} onChangeText={(text) => { setNewCategory({ label: text, value: text, color: newCategory.color, icon: newCategory.icon }) }} hasBorder={1} fullWidth={true} inputMode='text' placeholder={t("journal_category_name")} />
+                            <InputTransparentLabelAbove borderColor={colors.BaseSlot5} onChangeText={(text) => { setNewCategory({ label: text, value: text, color: newCategory.color, icon: newCategory.icon }) }} hasBorder={1} fullWidth={true} inputMode='text' placeholder={t("journal_category_name")} />
                         </View>
                         <View style={{ flex: .5, zIndex: 9999, }}>
                             <Text style={[styleSelected.textRegular13DarkBlue, { marginLeft: 20, marginBottom: 5 }]}>{t("color")}</Text>
                             <DropDownPicker
-                                style={{ borderRadius: 20, borderColor:"#A8A8A8",}}
+                                style={{ borderRadius: 20, borderColor:colors.BaseSlot5,}}
                                 onChangeValue={(val) => { setNewCategory({ label: newCategory.label, value: newCategory.value, color: val, icon: () => <FontAwesome name='circle' color={val} /> }) }}
                                 searchable={false}
                                 open={openColorItems}
@@ -240,13 +258,13 @@ export default function JournalEntryCreationPopup({
                                     position: 'relative',
                                     top: -2,
                                     maxHeight: 100,                                    
-                                    borderColor:"#A8A8A8",
+                                    borderColor:colors.BaseSlot5,
                                 }}
                                 badgeDotColors={["#e76f51", "#00b4d8", "#e9c46a", "#e76f51", "#8ac926", "#00b4d8", "#e9c46a"]}
                             />
                         </View>
                         <View style={{ flex: .2, alignItems: "center", paddingBottom: 15 }}>
-                            <ButtonPrimary event={() => { setCategory(newCategory); let newItems = [...items]; newItems.push(newCategory); setItems(newItems); refModalMenu.current.close() }} fullWidth={true} title={t("submit")} />
+                            <ButtonPrimary event={() => { handleSubmit("categoryForm") }} fullWidth={true} title={t("submit")} />
                         </View>
                     </View>
                 </RBSheet>

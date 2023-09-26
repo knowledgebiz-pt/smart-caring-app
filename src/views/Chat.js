@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
-import { SafeAreaView, StatusBar, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text, ScrollView, TouchableOpacity, FlatList, TextInput } from 'react-native'
+import { SafeAreaView, StatusBar, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text, ScrollView, TouchableOpacity, FlatList, TextInput, Image } from 'react-native'
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
@@ -155,9 +155,9 @@ export default function Chat({ route, navigation }) {
                     <Text style={styleSelected.textBold20DarkBlue}>{t("navbar_chat")}</Text>
                 </View>
                 <View style={{ flex: .1, justifyContent: "center", alignItems: "center", }}>
-                    <View style={{ borderWidth: .5, borderColor: "#A8A8A8", width: "90%", flexDirection: "row", borderRadius: 30, padding: 3 }}>
+                    <View style={{ borderWidth: .5, borderColor: colors.BaseSlot5, width: "90%", flexDirection: "row", borderRadius: 30, padding: 3 }}>
                         <View style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
-                            <FontAwesome size={15} color={"#A8A8A8"} name='search' />
+                            <FontAwesome size={15} color={colors.BaseSlot5} name='search' />
                         </View>
                         <SearchInput value={search} placeholder={t("search")} onChangeText={(val) => {
                             setSearch(val)
@@ -229,7 +229,7 @@ export default function Chat({ route, navigation }) {
                         <TouchableOpacity
                             onPress={() => setIndexSelected(0)}
                             style={{ borderRightWidth: .5, borderRightColor: colors.BaseSlot5, flex: 1, justifyContent: "center", alignItems: "center", borderTopLeftRadius: 20, borderBottomLeftRadius: 20, backgroundColor: indexSelected == 0 ? colors.BaseSlot6 : "transparent" }}>
-                            <Text style={[styleSelected.textRegular16, { color: indexSelected == 0 ? colors.BaseSlot1 : colors.BaseSlot5 }]}>{t("filter_all")}</Text>
+                            <Text style={{ fontSize: 13, color: indexSelected == 0 ? colors.BaseSlot1 : colors.BaseSlot5 }}>{t("filter_all")}</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
@@ -239,7 +239,7 @@ export default function Chat({ route, navigation }) {
                                 console.log("IDS", idChats)
                             }}
                             style={{ borderRightWidth: .5, borderRightColor: colors.BaseSlot5, flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: indexSelected == 1 ? colors.BaseSlot2 : "transparent" }}>
-                            <Text style={[styleSelected.textRegular16, { color: indexSelected == 1 ? colors.BaseSlot1 : colors.BaseSlot5 }]}>{t("private")}</Text>
+                            <Text style={{ fontSize: 13, color: indexSelected == 1 ? colors.BaseSlot1 : colors.BaseSlot5 }}>{t("private")}</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
@@ -248,7 +248,7 @@ export default function Chat({ route, navigation }) {
                                 setListChat(list.filter((item) => item.chat_members.length > 2))
                             }}
                             style={{ flex: 1, justifyContent: "center", alignItems: "center", borderTopRightRadius: 20, borderBottomRightRadius: 20, backgroundColor: indexSelected == 2 ? colors.BaseSlot4 : "transparent" }}>
-                            <Text style={[styleSelected.textRegular16, { color: indexSelected == 2 ? colors.BaseSlot1 : colors.BaseSlot5 }]}>{t("group")}</Text>
+                            <Text style={{ fontSize: 13, color: indexSelected == 2 ? colors.BaseSlot1 : colors.BaseSlot5 }}>{t("group")}</Text>
                         </TouchableOpacity>
 
                     </View>
@@ -265,6 +265,11 @@ export default function Chat({ route, navigation }) {
                         }}
                     />
                 </View>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate("CreateChat", { update: GetChatUpdated })}
+                    style={{ backgroundColor: colors.BaseSlot4, width: 120, height: 60, position: "absolute", bottom: 30, borderRadius: 100, right: -30, justifyContent: "center" }} >
+                    <FontAwesome color={colors.BaseSlot1} size={40} name='plus' style={{ marginLeft: 10 }} />
+                </TouchableOpacity>
             </KeyboardAvoidingView>
         </SafeAreaView>
     )
