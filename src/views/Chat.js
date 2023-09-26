@@ -54,6 +54,10 @@ export default function Chat({ route, navigation }) {
 
         GetChatUpdated()
 
+        const unsubscribe = navigation.addListener('focus', () => {
+            GetChatUpdated()
+          });
+
         console.log('INIT WebSocket connection opened');
         ws.onopen = () => {
             // Connection opened
