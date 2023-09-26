@@ -11,6 +11,7 @@ import SortAndFilterSelects from '../components/SortAndFilterSelects'
 import SearchInput from '../components/SearchInput'
 import { FontAwesome } from '@expo/vector-icons'
 import ButtonSuccess from '../components/ButtonSuccess'
+import { ToolboxService } from 'smart-caring-client/client'
 
 
 export default function ToolBox({ route, navigation }) {
@@ -26,7 +27,7 @@ export default function ToolBox({ route, navigation }) {
     const [listToSearch, setListToSearch] = useState(["Oscar", "Silva"])
     const [showPopup, setShowPopup] = useState(false)
 
-    const [mockData, setMockData] = useState([])
+    const [displayData, setDisplayData] = useState([])
     const [originalData, setOriginalData] = useState([])
     const [sortSelectOpen, setSortSelectOpen] = useState(false);
 
@@ -52,18 +53,18 @@ export default function ToolBox({ route, navigation }) {
         else {
             setSortSelectValue(val)
             if (val.value === "mostStars") {                
-                mockData.sort(function(a, b){return b.starNumber - a.starNumber})
-                console.log(mockData[0])
+                displayData.sort(function(a, b){return b.toolbox_rating - a.toolbox_rating})
+                console.log(displayData[0])
             }
             else if (val.value === "leastStars") {
-                mockData.sort(function(a, b){return a.starNumber - b.starNumber})
+                displayData.sort(function(a, b){return a.toolbox_rating - b.toolbox_rating})
                 
             }
             else if (val.value === "mostLang") {
-                mockData.sort(function(a, b){return b.languageNumber - a.languageNumber})
+                displayData.sort(function(a, b){return b.languageNumber - a.languageNumber})
             }
             else if (val.value === "leastLang") {
-                mockData.sort(function(a, b){return a.languageNumber - b.languageNumber})
+                displayData.sort(function(a, b){return a.languageNumber - b.languageNumber})
 
             }
         }
@@ -71,53 +72,60 @@ export default function ToolBox({ route, navigation }) {
 
 
     useEffect(() => {
-        let data = [
-            {
-                title:"Kwido",
-                imageUrl: "https://play-lh.googleusercontent.com/TNjRUOWBR4zEeZZbOexMIvkXyF-CDDRVHxldV5Qj6wULjrHp3DaFz7UYkuL4Fi7lKN0=w600-h300-pc0xffffff-pd",
-                url: "https://kwido.com/test",
-                content: "Testing less text",
-                languages: ["English", "Portuguese"],
-                languageNumber: 2,
-                pricing: "4.99€",
-                stars: ["star", "star", "star", "star", "star-o"],
-                starNumber: 4,
-                appUrl: null,
-                websiteUrl: "https://kwido.com/"
-            },
-            {
-                title:"Kwido",
-                imageUrl: "https://play-lh.googleusercontent.com/TNjRUOWBR4zEeZZbOexMIvkXyF-CDDRVHxldV5Qj6wULjrHp3DaFz7UYkuL4Fi7lKN0=w600-h300-pc0xffffff-pd",
-                url: "https://kwido.com/",
-                content: "It is a complete solution for the care of the elderly and dependent people, which allows you to manage the care of your loved ones in a simple and effective way.",
-                languages: ["Spanish", "English", "French", "German", "Italian", "Portuguese"],
-                languageNumber: 6,
-                pricing: t("toolbox_free"),
-                stars: ["star", "star", "star", "star-o", "star-o"],
-                starNumber: 3,
-                appUrl: "https://play.google.com/store/apps/details?id=com.eldersarea.manager",
-                websiteUrl: null
-            },
-            {
-                title:"Kwido",
-                imageUrl: "https://play-lh.googleusercontent.com/TNjRUOWBR4zEeZZbOexMIvkXyF-CDDRVHxldV5Qj6wULjrHp3DaFz7UYkuL4Fi7lKN0=w600-h300-pc0xffffff-pd",
-                url: "https://kwido.com/",
-                content: "It is a complete solution for the care of the elderly and dependent people, which allows you to manage the care of your loved ones in a simple and effective way.",
-                languages: ["Spanish", "English", "French", "German", "Italian", "Portuguese"],
-                languageNumber: 6,
-                pricing: t("toolbox_free"),
-                stars: ["star", "star", "star", "star-o", "star-o"],
-                starNumber: 3,
-                appUrl: "https://play.google.com/store/apps/details?id=com.eldersarea.manager",
-                websiteUrl: "https://kwido.com/"
+        ToolboxService.getToolBoxAllProducts().then(res => {
+            console.log("resdata:", res.data.items)
+            let data = res.data.items
+            for (let i = 0; i < data.length; i++) {
+                console.log("index:",i)
+                lang = i18n.language
+                let descSlugs = data[i].toolbox_description.split(";;;")
+                let langSlugs = data[i].toolbox_languages.split(";;;")
+                let linkSlugs = data[i].toolbox_website.split(";;;")
+                if (lang === "en") {
+                    data[i]["toolbox_description"] = descSlugs[0].replace("en:", "")
+                    data[i]["toolbox_languages"] = langSlugs[0].replace("en:", "")
+                    data[i]["languageNum"] = langSlugs[0].split(",").length
+                }
+                else if (lang === "pt") {
+                    data[i]["toolbox_description"] = descSlugs[1].replace("pt:", "")
+                    data[i]["toolbox_languages"] = langSlugs[1].replace("pt:", "")
+                    data[i]["languageNum"] = langSlugs[1].split(",").length
+
+                }
+                if (linkSlugs[0] !== "website:null") {
+                    data[i]["websiteUrl"] = linkSlugs[0].replace("website:", "")
+                }
+                else {
+                    data[i]["websiteUrl"] = null
+                }
+                if (Platform.OS === "ios") {
+                    if (linkSlugs[1] !== "ios:null") {
+                        data[i]["appUrl"] = linkSlugs[1].replace("ios:", "")
+                    }
+                    else {
+                        data[i]["appUrl"] = null
+                    }
+                }
+                else {
+                    if (linkSlugs[2] !== "android:null") {
+                        data[i]["appUrl"] = linkSlugs[2].replace("android:", "")
+                    }
+                    else {
+                        data[i]["appUrl"] = null
+                    }
+                }
+                data[i]["stars"] = ["star-o", "star-o", "star-o", "star-o", "star-o",]
+                for (let ind = 0; ind < parseInt(data[i].toolbox_rating); ind++) {
+                    data[i]["stars"][ind] = "star"
+                }
             }
-        ]
-        setMockData(data)
-        console.log("mockdata:",mockData)
-        setOriginalData(data)
-        console.log('OPEN', ToolBox.name, 'SCREEN')
-        //For test loading
-        sortFunction({ label: t("toolbox_most_stars"), value: 'mostStars' })
+            setDisplayData(data)
+            setOriginalData(data)
+            console.log('OPEN', ToolBox.name, 'SCREEN')
+            //For test loading
+            sortFunction({ label: t("toolbox_most_stars"), value: 'mostStars' })
+
+        }).catch(error => console.error(error))
         setTimeout(() => {
             setIsLoading(true)
         }, 1000);
@@ -143,24 +151,15 @@ export default function ToolBox({ route, navigation }) {
     }
 
     const searchFunction = (val) => {
-        // if (!search) {
-        //     setMockData([...originalData])
-        // }
         setSearch(val)
         if (val) {
             let newData = originalData.filter((x) => {
-                return x.title.includes(val)
+                return x.toolbox_name.includes(val)
             })
-            setMockData(newData)
-            // setTimeout(() => {
-            //     setJournalEntries(newData)
-            // }, 100)
+            setDisplayData(newData)
         }
         else {
-            // setJournalEntries([])
-            // setTimeout(() => {     
-                setMockData([...originalData])
-            // }, 100)
+            setDisplayData([...originalData])
         }
     }
 
@@ -190,12 +189,12 @@ export default function ToolBox({ route, navigation }) {
     const filterOnChangeView = (data) => {
         if (search) {
             let newData = data.filter((x) => {
-                return x.title.includes(search)
+                return x.toolbox_name.includes(search)
             })
-            setMockData(newData)
+            setDisplayData(newData)
         }
         else { 
-            setMockData(data)
+            setDisplayData(data)
         }
     }
 
@@ -204,7 +203,7 @@ export default function ToolBox({ route, navigation }) {
             <View style={{ flex: 1,  marginLeft:-5 }}>
                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                     <Image
-                        source={{ uri: item.imageUrl }}
+                        source={{ uri: item.toolbox_image }}
                         style={{ width: 80, height: 80 }}
                         resizeMode='cover' />
                 </View>
@@ -239,7 +238,7 @@ export default function ToolBox({ route, navigation }) {
                 <View style={{ flex: 1, justifyContent: "center" }}>
                     <View style={{flexDirection:"row", flex:1}}>
                         <View style={{flex:1}}>
-                            <Text style={[styleSelected.textBold20DarkBlue, {fontSize:16}]}>{item.title}</Text>
+                            <Text style={[styleSelected.textBold20DarkBlue, {fontSize:16}]}>{item.toolbox_name}</Text>
                         </View>
                         <View style={{flex:.7, right:0, flexDirection:"row"}}>
                             { item.stars.map(
@@ -251,24 +250,21 @@ export default function ToolBox({ route, navigation }) {
                     </View>
                 </View>
                 <View style={{ flex: 1, justifyContent: "center", paddingTop:5, paddingBottom:15 }}>
-                    <Text style={{ color: colors.BaseSlot2, textDecorationLine:'underline', fontStyle:'italic', fontSize:11 }}>{item.url}</Text>
+                    <Text style={{ color: colors.BaseSlot2, textDecorationLine:'underline', fontStyle:'italic', fontSize:11 }}>{item.websiteUrl !== null ? item.websiteUrl : ""}</Text>
                 </View>
                 <View style={{ flex: 2, justifyContent: "center", paddingBottom:15}}>
-                    <Text style={{fontSize:12}}>{item.content}</Text>
+                    <Text style={{fontSize:12}}>{item.toolbox_description}</Text>
                 </View>
                 <View style={{ flex: 1, flexDirection: "row" }}>
                     <View style={{ flex: 2 }}>
                         <Text style={{fontSize:12, fontWeight:600, color:colors.BaseSlot3}}>{t("languages")}</Text>
                         <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "flex-start" }}>
-                            {item.languages.map(
-                                el => 
-                                <Text style={{ marginRight: 2, color: colors.BaseSlot3, fontSize:11 }}>{el}</Text>
-                                )}
+                            <Text style={{ marginRight: 2, color: colors.BaseSlot3, fontSize:11 }}>{item.toolbox_languages}</Text>
                         </View>
                     </View>
                     <View style={{ flex: 1, }}>
                         <Text style={{fontSize:12, fontWeight:600, color:colors.BaseSlot3}}>{t("toolbox_pricing")}</Text>
-                        <Text style={{ marginRight: 2, color: colors.BaseSlot3, fontSize:11 }}>{item.pricing}</Text>
+                        <Text style={{ marginRight: 2, color: colors.BaseSlot3, fontSize:11 }}>{item.toolbox_price === "0" ? t("toolbox_free") : item.toolbox_price}</Text>
                     </View>
                 </View>
             </View>
@@ -287,23 +283,6 @@ export default function ToolBox({ route, navigation }) {
                 <View style={{ height: 70, justifyContent: "center", alignItems: "center" }}>
                     <Text style={styleSelected.textBold20DarkBlue}>{t("navbar_toolbox")}</Text>
                 </View>
-                {/* <View style={{ height: 50, width: "90%", alignSelf: "center" }}>
-                    <TextInput
-                        multiline={true}
-                        placeholder={t('search')}
-                        placeholderTextColor={colors.BaseSlot3}
-                        onChangeText={(text) => setSearch(text)}
-                        value={search}
-                        style={{
-                            backgroundColor: colors.BaseSlot1,
-                            minHeight: 40,
-                            borderColor: colors.BaseSlot3,
-                            borderWidth: 1,
-                            margin: 5,
-                            borderRadius: 10,
-                            padding: 10,
-                        }} />
-                </View> */}
                 <View style={{ flex:.2, justifyContent: "center", alignItems: "center", }}>
                     <View style={{ borderWidth: .5, borderColor: colors.BaseSlot5, width: "90%", flexDirection: "row", borderRadius: 30, padding: 3 }}>
                         <View style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
@@ -339,7 +318,7 @@ export default function ToolBox({ route, navigation }) {
                 <View style={{flex:2}}>
                     <SortAndFilterSelects sortItems={sortItems} filterItems={[]} onSelectSort={(val) => { setSortSelectOpen(false); sortFunction(val) }} sortValue={sortSelectValue} onSelectFilter={(val) => {return "a"}} filterValue={{}} />
                     <FlatList 
-                        data={mockData}
+                        data={displayData}
                         renderItem={({ item, index }) => { return <Item item={item} index={index} /> }}
                         // keyExtractor={item => item._id.$oid}
                     />
