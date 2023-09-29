@@ -14,9 +14,11 @@ export default function PostInputPopup({
     placeholder,
     img,
     userId,
+    setModalVisible,
+    modalVisible,
     event
 }) {
-    const [modalVisible, setModalVisible] = useState(false)
+    // const [modalVisible, setModalVisible] = useState(false)
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
@@ -27,7 +29,7 @@ export default function PostInputPopup({
 
     return (
         <View style={{ paddingTop: 10 }}>
-            <TouchableOpacity style={styleSelected.modalOpenButton} onPress={() => { setModalVisible(true) }}><FontAwesome color={colors.BaseSlot1} size={40} name='plus' /></TouchableOpacity>
+            {/* <TouchableOpacity style={styleSelected.modalOpenButton} onPress={() => { setModalVisible(true) }}><FontAwesome color={colors.BaseSlot1} size={40} name='plus' /></TouchableOpacity> */}
             <View style={styleSelected.modalCenteredView}>
                 <Modal animationType='fade' transparent={true} visible={modalVisible}>
                     <Pressable style={styleSelected.modalCenteredView} onPress={(event) => event.target === event.currentTarget && setModalVisible(false)}>

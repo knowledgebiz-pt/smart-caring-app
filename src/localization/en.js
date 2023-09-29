@@ -126,6 +126,8 @@ export default {
         homepage_menu_terms_use: "Terms of Use",
         homepage_menu_language: "Switch to Portuguese",
         homepage_menu_logout: "Logout",
+        homepage_menu_delete: "Delete Account",
+        warning_delete: "Are you sure you wish to delete your account?",
         homepage_write_comment: "Write a comment...",
         homepage_comment_created: "Comment has been created.",
         homepage_comment_error: "Error commenting on post.",
@@ -159,6 +161,8 @@ export default {
 
         // CHAT SCREEN
         chat_messages_unread: "messages unread",
+        create_chat: "Create Chat",
+        error_create_chat: "Error creating chat",
 
         // TOOLBOX SCREEN
         toolbox_download_app: "Download App",
@@ -245,5 +249,33 @@ export default {
         friday_short: "Fri",
         saturday_short: "Sat",
         today: "Today",
+
+        privacy_policy_1:"Thank you for joining the SMARTCaring community. The purpose of this informative document is to provide you with all the necessary information about how your personal data will be processed when you use SMARTCaring. The processing of your personal data will be done in compliance with the General Data Protection Regulation (GDPR).  ",
+        privacy_policy_2:"What data are collected? ",
+        privacy_policy_3:"SMARTCaring App will gather and process some of your personal data, including your name, age, birth date, gender, contact information (address, email and phone number) and role in caregiving environment (caregiver, patient or formal support staff).  ",
+        privacy_policy_4:"How your data are collected? ",
+        privacy_policy_5:"The personal data you provide is collected when you register online on SMARTCaring App. ",
+        privacy_policy_6:"How your data are going to be used? ",
+        privacy_policy_7:"The personal data collected will be related to a code number (token) and will be anonymized and will be used only for account management. Only the personal information, besides first name, that you expressly authorize, will be shown on the platform (in the Community and Chat Room). The personal data related to your age, gender and location can also be used for statistical purposes, regarding tools performance and/or research purposes, always anonymized. Your data will never be shared with other external entities. ",
+        privacy_policy_8:"How your data will be stored?  ",
+        privacy_policy_9:"The personal data collected will be stored in CloudDB, where all data exchange is encrypted, and the storage of sensitive data is also encrypted (256 bits). The personal data will be stored until you expressly close and delete your account.",
+        privacy_policy_10:"What are your data protection rights? ",
+        privacy_policy_11:`SMARTCaring wants to make sure that you are fully aware of all your data protection rights, that are the following:
+Right to Access: You have the right to request SMARTCaring for copies of your personal data. A small fee can be charged for this service.
+Right to Rectification: You have the right to request SMARTCaring to correct any information you believe is inaccurate. You also have the right to request SMARTCaring to complete information you believe is incomplete.
+Right to Erasure: You have the right to request SMARTCaring to erase your personal data, under certain conditions.
+Right to Restrict Processing: You have the right to request SMARTCaring to restrict the processing of your personal data, under certain conditions.
+Right to Object Processing: You have the right to object to SMARTCaring processing of your personal data, under certain conditions.
+Right to Data Portability: You have the right to request SMARTCaring to transfer the collected data to another organization or directly to you, under certain conditions.
+If you make a request SMARTCaring will answer you within one month. If you would like to exercise any of these rights, please contact SMARTCaring at the email: info@smartcaring.pt`,
+        privacy_policy_12:"Privacy policies of other websites or Apps  ",
+        privacy_policy_13:"SMARTCaring App contains links to other websites and Apps. Our privacy policy applies only to SMARTCaring App, so, if you click on a link to another website or App, you should read their privacy policy.",
+        privacy_policy_14:"Changes to our privacy policy  ",
+        privacy_policy_15:"SMARTCaring keeps its privacy under regular review and places any updates on the App. This privacy policy was last updated on 1st of June 2023.",
+        privacy_policy_16:"How to contact SMARTCaring ",
+        privacy_policy_17:"If you have any questions about SMARTCaring privacy policy, what personal data is hold by SMARTCaring, or you would like to exercise one of your data protection rights, please do not hesitate in contact SMARTCaring at the mail: info@smartcaring.pt",
+        privacy_policy_18:"How to contact the appropriate authority ",
+        privacy_policy_19:"Should you wish to report a complaint or if you feel that SMARTCaring has not addressed your concern in a satisfactory manner, you may contact the CNPD – Portuguese National Data Protection Commission at CNPD.",
+
     }
 }

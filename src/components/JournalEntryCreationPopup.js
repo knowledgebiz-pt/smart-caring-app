@@ -22,11 +22,13 @@ export default function JournalEntryCreationPopup({
     placeholder,
     img,
     userId,
+    modalVisible,
+    setModalVisible,
     event
 }) {
     const {t, i18n} = useTranslation()
     
-    const [modalVisible, setModalVisible] = useState(false)
+    // const [modalVisible, setModalVisible] = useState(false)
     const refModalMenu = useRef()
 
     const [title, setTitle] = useState(null)
@@ -109,7 +111,6 @@ export default function JournalEntryCreationPopup({
 
     return (
         <KeyboardAvoidingView style={{ paddingTop: 10 }}>
-            <TouchableOpacity style={styleSelected.journalEntryCreationOpenButton} onPress={() => { setModalVisible(true) }}><FontAwesome color={colors.BaseSlot1} size={40} name='plus' /></TouchableOpacity>
             <View style={styleSelected.modalCenteredView}>
                 <Modal animationType='fade' transparent={true} visible={modalVisible} statusBarTranslucent={true}>
                     <Pressable style={styleSelected.modalCenteredView} onPress={(event) => event.target === event.currentTarget && setModalVisible(false)}>

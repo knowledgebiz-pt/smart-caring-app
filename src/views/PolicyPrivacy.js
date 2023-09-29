@@ -6,12 +6,14 @@ import * as NavigationBar from 'expo-navigation-bar'
 import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
 import { ScrollView } from 'react-native-gesture-handler'
+import { useTranslation } from "react-i18next"
 
 export default function PolicyPrivacy({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(true)
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
+    const {t, i18n} = useTranslation()
 
     useEffect(() => {
         console.log('OPEN', PolicyPrivacy.name, 'SCREEN')
@@ -45,52 +47,34 @@ export default function PolicyPrivacy({ route, navigation }) {
                 keyboardVerticalOffset={Platform.OS == 'android' ? -150 : -150}
             >
                 <ScrollView style={[styleSelected.backgroundPrimary, { flex: 1, margin: 10 }]}>
-                    <Text style={{ fontSize: 16, textAlign: "justify" }}>Thank you for joining the SMARTCaring community.
-                        The purpose of this informative document is to provide you with all the necessary information about how your personal data will be processed when you use SMARTCaring.
-                        The processing of your personal data will be done in compliance with the General Data Protection Regulation (GDPR).  </Text>
+                    <Text style={{ fontSize: 16, textAlign: "justify" }}>{t("privacy_policy_1")}</Text>
                     <View style={{ height: 25 }} />
-                    <Text style={{ fontWeight: 800, fontSize: 16 }}>What data are collected? </Text>
-                    <Text style={{ fontSize: 16, textAlign: "justify" }}>SMARTCaring App will gather and process some of your personal data, including your name, age, birth date, gender, contact information (address, email and phone number) and role in caregiving environment (caregiver, patient or formal support staff).  </Text>
+                    <Text style={{ fontWeight: 800, fontSize: 16 }}>{t("privacy_policy_2")}</Text>
+                    <Text style={{ fontSize: 16, textAlign: "justify" }}>{t("privacy_policy_3")}</Text>
                     <View style={{ height: 25 }} />
-                    <Text style={{ fontWeight: 800, fontSize: 16 }}>How your data are collected? </Text>
-                    <Text style={{ fontSize: 16, textAlign: "justify" }}>The personal data you provide is collected when you register online on SMARTCaring App. </Text>
+                    <Text style={{ fontWeight: 800, fontSize: 16 }}>{t("privacy_policy_4")}</Text>
+                    <Text style={{ fontSize: 16, textAlign: "justify" }}>{t("privacy_policy_5")}</Text>
                     <View style={{ height: 25 }} />
-                    <Text style={{ fontWeight: 800, fontSize: 16 }}>How your data are going to be used? </Text>
-                    <Text style={{ fontSize: 16, textAlign: "justify" }}>The personal data collected will be related to a code number (token) and will be anonymized and will be used only for account management. Only the personal information, besides first name, that you expressly authorize, will be shown on the platform (in the Community and Chat Room).
-                        The personal data related to your age, gender and location can also be used for statistical purposes, regarding tools performance and/or research purposes, always anonymized.
-                        Your data will never be shared with other external entities. </Text>
+                    <Text style={{ fontWeight: 800, fontSize: 16 }}>{t("privacy_policy_6")}</Text>
+                    <Text style={{ fontSize: 16, textAlign: "justify" }}>{t("privacy_policy_7")}</Text>
                     <View style={{ height: 25 }} />
-                    <Text style={{ fontWeight: 800, fontSize: 16 }}>How your data will be stored?  </Text>
-                    <Text style={{ fontSize: 16, textAlign: "justify" }}>The personal data collected will be stored in CloudDB, where all data exchange is encrypted, and the storage of sensitive data is also encrypted (256 bits).
-                        The personal data will be stored until you expressly close and delete your account.
-                    </Text>
+                    <Text style={{ fontWeight: 800, fontSize: 16 }}>{t("privacy_policy_8")}</Text>
+                    <Text style={{ fontSize: 16, textAlign: "justify" }}>{t("privacy_policy_9")}</Text>
                     <View style={{ height: 25 }} />
-                    <Text style={{ fontWeight: 800, fontSize: 16 }}>What are your data protection rights? </Text>
-                    <Text style={{ fontSize: 16, textAlign: "justify" }}>SMARTCaring wants to make sure that you are fully aware of all your data protection rights, that are the following:
-                        Right to Access: You have the right to request SMARTCaring for copies of your personal data. A small fee can be charged for this service.
-                        Right to Rectification: You have the right to request SMARTCaring to correct any information you believe is inaccurate. You also have the right to request SMARTCaring to complete information you believe is incomplete.
-                        Right to Erasure: You have the right to request SMARTCaring to erase your personal data, under certain conditions.
-                        Right to Restrict Processing: You have the right to request SMARTCaring to restrict the processing of your personal data, under certain conditions.
-                        Right to Object Processing: You have the right to object to SMARTCaring processing of your personal data, under certain conditions.
-                        Right to Data Portability: You have the right to request SMARTCaring to transfer the collected data to another organization or directly to you, under certain conditions.
-                        If you make a request SMARTCaring will answer you within one month. If you would like to exercise any of these rights, please contact SMARTCaring at the email: info@smartcaring.pt
-                    </Text>
+                    <Text style={{ fontWeight: 800, fontSize: 16 }}>{t("privacy_policy_10")}</Text>
+                    <Text style={{ fontSize: 16, textAlign: "justify" }}>{t("privacy_policy_11")}</Text>
                     <View style={{ height: 25 }} />
-                    <Text style={{ fontWeight: 800, fontSize: 16 }}>Privacy policies of other websites or Apps  </Text>
-                    <Text style={{ fontSize: 16, textAlign: "justify" }}>SMARTCaring App contains links to other websites and Apps. Our privacy policy applies only to SMARTCaring App, so, if you click on a link to another website or App, you should read their privacy policy.
-                    </Text>
+                    <Text style={{ fontWeight: 800, fontSize: 16 }}>{t("privacy_policy_12")}</Text>
+                    <Text style={{ fontSize: 16, textAlign: "justify" }}>{t("privacy_policy_13")}</Text>
                     <View style={{ height: 25 }} />
-                    <Text style={{ fontWeight: 800, fontSize: 16 }}>Changes to our privacy policy  </Text>
-                    <Text style={{ fontSize: 16, textAlign: "justify" }}>SMARTCaring keeps its privacy under regular review and places any updates on the App. This privacy policy was last updated on 1st of June 2023.
-                    </Text>
+                    <Text style={{ fontWeight: 800, fontSize: 16 }}>{t("privacy_policy_14")}</Text>
+                    <Text style={{ fontSize: 16, textAlign: "justify" }}>{t("privacy_policy_15")}</Text>
                     <View style={{ height: 25 }} />
-                    <Text style={{ fontWeight: 800, fontSize: 16 }}>How to contact SMARTCaring </Text>
-                    <Text style={{ fontSize: 16, textAlign: "justify" }}>If you have any questions about SMARTCaring privacy policy, what personal data is hold by SMARTCaring, or you would like to exercise one of your data protection rights, please do not hesitate in contact SMARTCaring at the mail: info@smartcaring.pt
-                    </Text>
+                    <Text style={{ fontWeight: 800, fontSize: 16 }}>{t("privacy_policy_16")}</Text>
+                    <Text style={{ fontSize: 16, textAlign: "justify" }}>{t("privacy_policy_17")}</Text>
                     <View style={{ height: 25 }} />
-                    <Text style={{ fontWeight: 800, fontSize: 16 }}>How to contact the appropriate authority </Text>
-                    <Text style={{ fontSize: 16, textAlign: "justify" }}>Should you wish to report a compliant or if you feel that SMARTCaring has not addressed your concern in a satisfactory manner, you may contact the CNPD – Portuguese National Data Protection Commission at CNPD.
-                    </Text>
+                    <Text style={{ fontWeight: 800, fontSize: 16 }}>{t("privacy_policy_18")}</Text>
+                    <Text style={{ fontSize: 16, textAlign: "justify" }}>{t("privacy_policy_19")}</Text>
                 </ScrollView>
             </KeyboardAvoidingView>
         </SafeAreaView>

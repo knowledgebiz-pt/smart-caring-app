@@ -126,6 +126,8 @@ export default {
         homepage_menu_terms_use: "Termos de Utilização",
         homepage_menu_language: "Mudar para Inglês",
         homepage_menu_logout: "Terminar Sessão",
+        homepage_menu_delete: "Apagar Conta",
+        warning_delete: "Tem a certeza de que deseja apagar a sua conta?",
         homepage_write_comment: "Escreva um comentário...",
         homepage_comment_created: "Comentário criado com sucesso.",
         homepage_comment_error: "Erro ao criar comentário.",
@@ -159,6 +161,8 @@ export default {
 
         // CHAT SCREEN
         chat_messages_unread: "mensagens não lidas",
+        create_chat: "Criar Conversa",
+        error_create_chat: "Erro ao criar conversa",
 
         // TOOLBOX SCREEN
         toolbox_download_app: "Descarregar App",
@@ -244,6 +248,34 @@ export default {
         thursday_short: "Qui",
         friday_short: "Sex",
         saturday_short: "Sáb",
-        today: "Hoje",
+        today: "Hoje",        
+
+        privacy_policy_1:"Obrigado por se juntar à comunidade SMARTCaring. O objetivo deste documento informativo é fornecer-lhe todas as informações necessárias sobre a forma como os seus dados pessoais serão tratados ao utilizar o SMARTCaring. O tratamento dos seus dados pessoais será efectuado em conformidade com o Regulamento Geral sobre a Proteção de Dados (RGPD).",
+        privacy_policy_2:"Que dados são recolhidos? ",
+        privacy_policy_3:"A aplicação SMARTCaring irá recolher e processar alguns dos seus dados pessoais, incluindo o seu nome, idade, data de nascimento, género, informações de contacto (morada, e-mail e número de telefone) e função no ambiente de prestação de cuidados (cuidador, paciente ou pessoal de apoio formal).",
+        privacy_policy_4:"Como são recolhidos os seus dados? ",
+        privacy_policy_5:"Os dados pessoais que fornece são recolhidos quando se regista online na aplicação SMARTCaring.",
+        privacy_policy_6:"Como serão utilizados os seus dados? ",
+        privacy_policy_7:"Os dados pessoais recolhidos estarão relacionados com um número de código (token) e serão anonimizados e utilizados apenas para a gestão da conta. Apenas as informações pessoais, para além do nome próprio, que o utilizador expressamente autorizar, serão exibidas na plataforma (na Comunidade e na Sala de Chat). Os dados pessoais relacionados com a sua idade, género e localização podem também ser utilizados para fins estatísticos, relativos ao desempenho das ferramentas e/ou para fins de pesquisa, sempre de forma anónima. Os seus dados nunca serão partilhados com outras entidades externas. ",
+        privacy_policy_8:"Como serão armazenados os dados?",
+        privacy_policy_9:"Os dados pessoais recolhidos serão armazenados em CloudDB, onde todas as trocas de dados são encriptadas e o armazenamento de dados sensíveis é também encriptado (256 bits). Os dados pessoais serão armazenados até que o utilizador feche e apague expressamente a sua conta.",
+        privacy_policy_10:"Quais são os seus direitos relativos à proteção de dados? ",
+        privacy_policy_11:`A SMARTCaring pretende certificar-se de que o utilizador tem pleno conhecimento de todos os seus direitos relativos à proteção de dados, que são os seguintes:
+Direito de Acesso: O utilizador tem o direito de solicitar à SMARTCaring cópias dos seus dados pessoais. Poderá ser cobrada uma pequena taxa por este serviço.
+Direito de Retificação: O utilizador tem o direito de solicitar à SMARTCaring a correção de qualquer informação que considere incorrecta. Tem também o direito de solicitar à SMARTCaring que complete a informação que considera incompleta.
+Direito de Apagar: O utilizador tem o direito de solicitar à SMARTCaring que apague os seus dados pessoais, sob certas condições.
+Direito de Restringir Processamento: O utilizador tem o direito de solicitar à SMARTCaring que restrinja o processamento dos seus dados pessoais, sob certas condições.
+Direito de Objeção ao Processamento: O utilizador tem o direito de se opor ao processamento dos seus dados pessoais pela SMARTCaring, sob determinadas condições.
+Direito à Portabilidade dos Dados: Tem o direito de solicitar à SMARTCaring que transfira os dados recolhidos para outra organização ou diretamente para si, sob determinadas condições.
+Se fizer um pedido, a SMARTCaring responder-lhe-á no prazo de um mês. Caso pretenda exercer algum destes direitos, por favor contacte a SMARTCaring através do email: info@smartcaring.pt`,
+        privacy_policy_12:"Políticas de privacidade de outros websites ou aplicações ",
+        privacy_policy_13:"A aplicação SMARTCaring contém ligações para outros websites e aplicações. A nossa política de privacidade aplica-se apenas à aplicação SMARTCaring, pelo que, se clicar numa ligação para outro website ou aplicação, deverá ler a respectiva política de privacidade.",
+        privacy_policy_14:"Alterações à nossa política de privacidade  ",
+        privacy_policy_15:"A SMARTCaring revê regularmente a sua privacidade e coloca quaisquer atualizações na aplicação. Esta política de privacidade foi atualizada pela última vez a 1 de junho de 2023.",
+        privacy_policy_16:"Como contactar a SMARTCaring ",
+        privacy_policy_17:"Se tiver alguma dúvida sobre a política de privacidade da SMARTCaring, que dados pessoais são mantidos pela SMARTCaring, ou se pretender exercer um dos seus direitos de proteção de dados, não hesite em contactar a SMARTCaring através do e-mail: info@smartcaring.pt",
+        privacy_policy_18:"Como contactar a autoridade competente ",
+        privacy_policy_19:"Se desejar apresentar uma queixa ou se considerar que a SMARTCaring não tratou a sua preocupação de forma satisfatória, pode contactar a CNPD - Comissão Nacional de Proteção de Dados.",
+
     }
 }

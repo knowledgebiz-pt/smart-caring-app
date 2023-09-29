@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { useColorScheme, View, Image, TouchableOpacity, Text } from 'react-native'
+import { useColorScheme, View, Image, TouchableOpacity, Text, Alert } from 'react-native'
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import { MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
@@ -35,6 +35,7 @@ export default function HeaderLogoAndProfileImage({img, onPressImage, user, refr
         {id: 2,name:t("homepage_menu_privacy_policy"), value:"privacypolicy", icon: "shield-account", iconType: "MaterialCommunityIcons"},
         {id: 3,name:t("homepage_menu_terms_use"), value:"termsofuse", icon: "file-check", iconType: "MaterialCommunityIcons"},
         {id: 4,name:t("homepage_menu_language"), value:"language", icon: "language", iconType: "FontAwesome"},
+        {id: 6,name:t("homepage_menu_delete"), value:"delete", icon: "trash", iconType: "FontAwesome"},
         {id: 5,name:t("homepage_menu_logout"), value:"logout", icon: "logout", iconType: "MaterialCommunityIcons"},
     ]
 
@@ -85,6 +86,16 @@ export default function HeaderLogoAndProfileImage({img, onPressImage, user, refr
         else if (option.value === "privacypolicy") {
             navigation.navigate("PolicyPrivacy")
         }
+        else if (option.value === "delete") {
+            Alert.alert(t('homepage_menu_delete'), t("warning_delete"), [
+                {
+                  text: t('cancel'),
+                  onPress: () => console.log('Cancel Pressed'),
+                  style: 'cancel',
+                },
+                {text: t('yes'), onPress: () => console.log('Yes Pressed')},
+              ]);
+        }
     }
 
     return (
@@ -111,7 +122,7 @@ export default function HeaderLogoAndProfileImage({img, onPressImage, user, refr
             </View>
             {/* <View style={[styleSelected.feedPostContainer, { zIndex: 99999999 }]}> */}
                 <RBSheet 
-                    height={430}
+                    height={470}
                     customStyles={{
                     wrapper: {
                         backgroundColor: "#00000070"

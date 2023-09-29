@@ -33,6 +33,9 @@ export default function Journal({ route, navigation }) {
 
     const [originalData, setOriginalData] = useState([...journalEntries])
 
+    const [modalVisible, setModalVisible] = useState(false)
+
+
     const [searchText, setSearchText] = useState(null)
 
     const [openEntry, setOpenEntry] = useState(false)
@@ -383,7 +386,7 @@ export default function Journal({ route, navigation }) {
         <SafeAreaView style={[styleSelected.backgroundPrimary, { flex: 1 }]} onLayout={onLayoutRootView}>
             <StatusBar translucent={true} backgroundColor={'white'} barStyle={colorScheme === 'light' ? 'dark-content' : 'light-content'} />
             <KeyboardAvoidingView
-                style={{ flex: 1, marginBottom: 10, marginTop: 25 }}
+                style={{ flex: 1, marginTop: 25 }}
                 enabled={true}
                 behavior={Platform.OS == 'android' ? 'height' : 'padding'}
                 keyboardVerticalOffset={Platform.OS == 'android' ? -150 : -150}
@@ -391,8 +394,9 @@ export default function Journal({ route, navigation }) {
                 {/* <View style={{zIndex: 99999}}>
                     <JournalEntryPopup />
                 </View> */}
-                <View style={{ zIndex: 9999, position: "absolute" }} >
-                    <JournalEntryCreationPopup event={(val) => { createEntry(val);}} />
+                <TouchableOpacity style={styleSelected.modalOpenButton} onPress={() => { setModalVisible(true) }}><FontAwesome color={colors.BaseSlot1} size={40} name='plus' /></TouchableOpacity>
+                <View style={{ zIndex: 9999}} >
+                    <JournalEntryCreationPopup modalVisible={modalVisible} setModalVisible={setModalVisible} event={(val) => { createEntry(val);}} />
                 </View>
 
                 <View style={[styleSelected.backgroundPrimary, { flex: 1, }]}>

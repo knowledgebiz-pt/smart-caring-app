@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react'
-import { SafeAreaView, StatusBar, FlatList, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text } from 'react-native'
+import { SafeAreaView, StatusBar, FlatList, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text, TouchableOpacity } from 'react-native'
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
@@ -19,6 +19,7 @@ import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from 'react-redux'
 import { insertUser } from '../features/user/user'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { FontAwesome } from "@expo/vector-icons"
 
 export default function HomePage({ route, navigation }) {
     const { t, i18n } = useTranslation()
@@ -266,8 +267,9 @@ export default function HomePage({ route, navigation }) {
         <View style={[styleSelected.backgroundPrimary, { flex: 1 }]} onLayout={onLayoutRootView}>
             {/* <MyDrawer/> */}
             <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={colorScheme === 'light' ? 'dark-content' : 'light-content'} />
+            <TouchableOpacity style={styleSelected.modalOpenButton}  onPress={() => { setModalVisible(true) }}><FontAwesome color={colors.BaseSlot1} size={40} name='plus' /></TouchableOpacity>
             <View style={{ zIndex: 9999, }}>
-                <PostInputPopup onSubmitEditing={() => { getArticleData() }} userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={t("homepage_post_placeholder")} />
+                <PostInputPopup setModalVisible={setModalVisible} modalVisible={modalVisible} onSubmitEditing={() => { getArticleData() }} userId={user._id.$oid} blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={t("homepage_post_placeholder")} />
                 {/* <ModalMenu ref={refModalMenu} /> */}
                 {/* <CommentInputPopup modalVisible={modalVisible} closeModal={() => {setModalVisible(false)}}  blurOnSubmit={false} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"Leave your comment:"} /> */}
             </View>

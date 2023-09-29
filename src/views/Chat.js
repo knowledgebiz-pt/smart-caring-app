@@ -271,8 +271,8 @@ export default function Chat({ route, navigation }) {
                 </View>
                 <TouchableOpacity
                     onPress={() => navigation.navigate("CreateChat", { update: GetChatUpdated })}
-                    style={{ backgroundColor: colors.BaseSlot4, width: 120, height: 60, position: "absolute", bottom: 30, borderRadius: 100, right: -30, justifyContent: "center" }} >
-                    <FontAwesome color={colors.BaseSlot1} size={40} name='plus' style={{ marginLeft: 10 }} />
+                    style={styleSelected.modalOpenButton} >
+                    <FontAwesome color={colors.BaseSlot1} size={40} name='plus' />
                 </TouchableOpacity>
             </KeyboardAvoidingView>
         </SafeAreaView>
