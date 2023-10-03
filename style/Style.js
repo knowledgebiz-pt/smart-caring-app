@@ -479,8 +479,6 @@ const style = StyleSheet.create({
   },
   modalOpenButton: {
     position:'absolute', 
-    marginLeft: 346, 
-    marginTop: 725, 
     backgroundColor: colors.BaseSlot4, 
     width: 80, 
     borderBottomLeftRadius:30, 
@@ -488,7 +486,9 @@ const style = StyleSheet.create({
     paddingTop:10, 
     paddingBottom:5, 
     borderTopLeftRadius:30, 
-    alignItems:"center" 
+    alignItems:"center", 
+    right: 0,
+    bottom: 20
   },
   journalEntryCreationOpenButton: {
     position:'absolute', 

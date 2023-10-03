@@ -29,9 +29,11 @@ export default function Journal({ route, navigation }) {
         Toast.show({ type: type, text1: msg, position: 'bottom' })
     }
 
-    const {t, i18n} = useTranslation()
+    const { t, i18n } = useTranslation()
 
     const [originalData, setOriginalData] = useState([...journalEntries])
+
+    const [modalVisible, setModalVisible] = useState(false)
 
     const [searchText, setSearchText] = useState(null)
 
@@ -130,7 +132,7 @@ export default function Journal({ route, navigation }) {
                     content: val.description,
                     anexed_file: "",
                     tags: val.category + ";;;" + val.categoryColor + ";;;" + val.date,
-                    visibility:false
+                    visibility: false
                 }
                 console.log(formattedData)
                 console.log(formattedData.tags.split(";;;"))
@@ -139,7 +141,7 @@ export default function Journal({ route, navigation }) {
                     showToast(t("journal_toast_created_entry"), "success")
                     getJournalEntries()
                 })
-    
+
             })
         }
     }
@@ -187,14 +189,14 @@ export default function Journal({ route, navigation }) {
     const deleteEntry = (val) => {
         console.log("val: ", val)
         DiaryService.deleteDiaryByIdNews(val).then(res => {
-            showToast(t("journal_toast_entry_deleted"), "success")            
+            showToast(t("journal_toast_entry_deleted"), "success")
             setJournalEntries([])
             setOriginalData([])
             setTimeout(() => {
                 getJournalEntries()
 
             }, 10)
-            
+
         })
     }
 
@@ -214,7 +216,7 @@ export default function Journal({ route, navigation }) {
         }
         else {
             setJournalEntries([])
-            setTimeout(() => {     
+            setTimeout(() => {
                 setJournalEntries([...originalData])
             }, 100)
         }
@@ -314,8 +316,10 @@ export default function Journal({ route, navigation }) {
                     </View> */}
 
                     <View style={{ flex: 1, justifyContent: "center", }}>
-                        <DropDownPicker listMode="SCROLLVIEW" key={"key1"} dropDownContainerStyle={{borderWidth: .5,
-                                                borderColor:colors.BaseSlot5,}} style={{ borderWidth: .5, borderColor: colors.BaseSlot5, color: "red", padding: 5, paddingLeft: 15, paddingRight: 15, borderRadius: 30,  alignItems: "center", justifyContent: "center", minHeight: 30 }} placeholder={t("sort_by") + ": " + sortSelectValue.label} onSelectItem={(val) => { setSortSelectOpen(false); sortPosts(val) }} onPress={() => { setSortSelectOpen(!sortSelectOpen) }} open={sortSelectOpen} items={sortItems}
+                        <DropDownPicker listMode="SCROLLVIEW" key={"key1"} dropDownContainerStyle={{
+                            borderWidth: .5,
+                            borderColor: colors.BaseSlot5,
+                        }} style={{ borderWidth: .5, borderColor: colors.BaseSlot5, color: "red", padding: 5, paddingLeft: 15, paddingRight: 15, borderRadius: 30, alignItems: "center", justifyContent: "center", minHeight: 30 }} placeholder={t("sort_by") + ": " + sortSelectValue.label} onSelectItem={(val) => { setSortSelectOpen(false); sortPosts(val) }} onPress={() => { setSortSelectOpen(!sortSelectOpen) }} open={sortSelectOpen} items={sortItems}
                             ArrowDownIconComponent={() => {
                                 return <FontAwesome name="chevron-down" color={colors.BaseSlot5} />
                             }}
@@ -373,8 +377,8 @@ export default function Journal({ route, navigation }) {
 
     const EmptyList = () => (
         <>
-            <View style={{ flex: 1, marginLeft: "10%", marginRight: "10%", alignItems:"center" }}>
-                {originalData.length === 0 && <Text style={{fontWeight:600, marginTop:50}}>{t("journal_begin_message")}</Text>}
+            <View style={{ flex: 1, marginLeft: "10%", marginRight: "10%", alignItems: "center" }}>
+                {originalData.length === 0 && <Text style={{ fontWeight: 600, marginTop: 50 }}>{t("journal_begin_message")}</Text>}
             </View>
         </>
     )
@@ -392,15 +396,15 @@ export default function Journal({ route, navigation }) {
                     <JournalEntryPopup />
                 </View> */}
                 <View style={{ zIndex: 9999, position: "absolute" }} >
-                    <JournalEntryCreationPopup event={(val) => { createEntry(val);}} />
+                    <JournalEntryCreationPopup event={(val) => { createEntry(val); }} setModalVisible={setModalVisible} visible={modalVisible}/>
                 </View>
 
                 <View style={[styleSelected.backgroundPrimary, { flex: 1, }]}>
-                    <View style={[styleSelected.backgroundPrimary, { flex:.065, justifyContent: "center", alignItems: "center",}]}>
+                    <View style={[styleSelected.backgroundPrimary, { flex: .065, justifyContent: "center", alignItems: "center", }]}>
                         <Text style={{ fontWeight: 600, color: "#030849", fontSize: 20 }}>{t("navbar_journal")}</Text>
                     </View>
 
-                    <View style={{ flex:.085, justifyContent: "center", alignItems: "center", }}>
+                    <View style={{ flex: .085, justifyContent: "center", alignItems: "center", }}>
                         <View style={{ borderWidth: .5, borderColor: colors.BaseSlot5, width: "90%", flexDirection: "row", borderRadius: 30, padding: 3 }}>
                             <View style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
                                 <FontAwesome size={15} color={colors.BaseSlot5} name='search' />
@@ -408,27 +412,34 @@ export default function Journal({ route, navigation }) {
                             <SearchInput value={searchText} placeholder={t("search")} onChangeText={(val) => searchFunction(val)} />
                         </View>
                     </View>
-                    <View style={{flex:.085,zIndex:999999, alignContent:"center", justifyContent:"center"}}>
-                        <Header/>
+                    <View style={{ flex: .085, zIndex: 999999, alignContent: "center", justifyContent: "center" }}>
+                        <Header />
 
                     </View>
-                    <View style={{flex:1}}>
+                    <View style={{ flex: 1 }}>
                         {
-                        journalEntries.length ?
-                        <FlashList
-                            // ListHeaderComponent={<Header />}
-                            // ListHeaderComponentStyle={{ zIndex: 9999 }}
-                            stickyHeaderIndices={[0]}
-                            data={journalEntries}
-                            extraData={refresh}
-                            renderItem={({ item, index }) => { return journalEntries.length && <JournalEntry event={(val) => deleteEntry(val)} item={item} index={index} /> }}
-                            estimatedItemSize={61}
-                        />
-                        :
-                        <EmptyList />
+                            journalEntries.length ?
+                                <FlashList
+                                    // ListHeaderComponent={<Header />}
+                                    // ListHeaderComponentStyle={{ zIndex: 9999 }}
+                                    stickyHeaderIndices={[0]}
+                                    data={journalEntries}
+                                    extraData={refresh}
+                                    renderItem={({ item, index }) => { return journalEntries.length && <JournalEntry event={(val) => deleteEntry(val)} item={item} index={index} /> }}
+                                    estimatedItemSize={61}
+                                />
+                                :
+                                <EmptyList />
                         }
-                        
+
                     </View>
+                    <TouchableOpacity style={styleSelected.modalOpenButton}
+                        onPress={() => {
+                            // navigation.navigate("CreateEvent", { accounts: accounts, GetPermissionsCalendar: GetPermissionsCalendar })
+                            setModalVisible(true)
+                        }}>
+                        <FontAwesome color={colors.BaseSlot1} size={40} name='plus' />
+                    </TouchableOpacity>
                 </View>
             </KeyboardAvoidingView>
         </SafeAreaView>

@@ -243,7 +243,7 @@ const FeedPost = (
                     <FontAwesome name={favoriteIcon.name} style={[styleSelected.feedPostHeartIcon, {color: favoriteIcon.color}]} />
                 </TouchableOpacity>
             </View> */}
-            <View style={styleSelected.feedPostContentView}>
+            <View style={[styleSelected.feedPostContentView, { marginLeft: 20}]}>
                 <Text style={styleSelected.feedPostContentText}>{postContent.text}</Text>
                 {/* { !previewLoaded && <View style= {{height:147}}> */}
                 {/* <LottieView style={{ marginRight: 30 }} resizeMode="contain" autoPlay={true} source={require('../../assets/json/loading-heart.json')} /> */}

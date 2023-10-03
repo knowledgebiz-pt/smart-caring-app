@@ -12,6 +12,7 @@ import RBSheet from 'react-native-raw-bottom-sheet'
 import ButtonPrimary from './ButtonPrimary'
 
 import { useTranslation } from "react-i18next"
+import { NewsService, UserService } from 'smart-caring-client/client'
 
 
 export default function JournalEntryCreationPopup({
@@ -22,11 +23,13 @@ export default function JournalEntryCreationPopup({
     placeholder,
     img,
     userId,
-    event
+    event,
+    setModalVisible,
+    visible
 }) {
     const {t, i18n} = useTranslation()
     
-    const [modalVisible, setModalVisible] = useState(false)
+    // const [modalVisible, setModalVisible] = useState(false)
     const refModalMenu = useRef()
 
     const [title, setTitle] = useState(null)
@@ -95,6 +98,11 @@ export default function JournalEntryCreationPopup({
     }
 
     const checkValue = (val) => {
+
+        UserService.getUserDataByIdUser("teste@", "123").then((res) => {
+                
+        }).catch((err) => {console.error(err)})
+
         console.log(val)
         if (val === "newCat") {
             refModalMenu.current.open()
@@ -109,9 +117,9 @@ export default function JournalEntryCreationPopup({
 
     return (
         <KeyboardAvoidingView style={{ paddingTop: 10 }}>
-            <TouchableOpacity style={styleSelected.journalEntryCreationOpenButton} onPress={() => { setModalVisible(true) }}><FontAwesome color={colors.BaseSlot1} size={40} name='plus' /></TouchableOpacity>
+            {/* <TouchableOpacity style={styleSelected.journalEntryCreationOpenButton} onPress={() => { setModalVisible(true) }}><FontAwesome color={colors.BaseSlot1} size={40} name='plus' /></TouchableOpacity> */}
             <View style={styleSelected.modalCenteredView}>
-                <Modal animationType='fade' transparent={true} visible={modalVisible} statusBarTranslucent={true}>
+                <Modal animationType='fade' transparent={true} visible={visible} statusBarTranslucent={true}>
                     <Pressable style={styleSelected.modalCenteredView} onPress={(event) => event.target === event.currentTarget && setModalVisible(false)}>
                         <View style={[{
                             flex: 1, marginBottom: 100, marginTop: 50,
