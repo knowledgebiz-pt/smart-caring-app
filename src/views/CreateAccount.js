@@ -33,7 +33,7 @@ export default function CreateAccount({ route, navigation }) {
     const [birthDate, setBirthDate] = useState(new Date())
     const [gender, setGender] = useState("M")
     const [role, setRole] = useState(null)
-    const [visibility, setVisibility] = useState(false)
+    const [visibility, setVisibility] = useState(true)
     const [language, setLanguage] = useState("en")
     const [phone, setPhone] = useState(null)
     const [showPicker, setShowPicker] = useState(false)
@@ -161,12 +161,13 @@ export default function CreateAccount({ route, navigation }) {
                                 style={[styleSelected.avatar, {alignSelf: "center"}]}
                                 source={{uri: image ? image : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"}}
                             />
-                            <MaterialCommunityIcons
-                                name={'plus'}
-                                size={25}
-                                color={colors.BaseSlot1}
-                                style={styleSelected.plusCircleAvatar}
-                            />
+                            <View style={styleSelected.plusCircleAvatar}>                                
+                                <MaterialCommunityIcons
+                                    name={'plus'}
+                                    size={25}
+                                    color={colors.BaseSlot1}
+                                />
+                            </View>
                         </TouchableOpacity>
 
                     {/* </View> */}

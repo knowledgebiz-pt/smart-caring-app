@@ -192,12 +192,13 @@ export default function Profile({ route, navigation }) {
                             style={[styleSelected.avatar, { alignSelf: "center" }]}
                             source={{ uri: image ? image : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541" }}
                         />
-                        <MaterialCommunityIcons
-                            name={'plus'}
-                            size={25}
-                            color={colors.BaseSlot1}
-                            style={styleSelected.plusCircleAvatar}
-                        />
+                        <View style={styleSelected.plusCircleAvatar}>                                
+                            <MaterialCommunityIcons
+                                name={'plus'}
+                                size={25}
+                                color={colors.BaseSlot1}
+                            />
+                        </View>
                     </TouchableOpacity>
 
                     {/* </View> */}
