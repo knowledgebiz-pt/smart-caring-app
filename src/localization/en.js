@@ -277,5 +277,16 @@ If you make a request SMARTCaring will answer you within one month. If you would
         privacy_policy_18:"How to contact the appropriate authority ",
         privacy_policy_19:"Should you wish to report a complaint or if you feel that SMARTCaring has not addressed your concern in a satisfactory manner, you may contact the CNPD – Portuguese National Data Protection Commission at CNPD.",
 
+        // COLORS
+        red: "Red",
+        green: "Green",
+        blue: "Blue",
+        yellow: "Yellow",
+        pink: "Pink",
+        orange: "Orange",
+        black: "Black",
+        cyan: "Cyan",
+        lime: "Lime"
+
     }
 }

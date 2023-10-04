@@ -56,15 +56,15 @@ export default function JournalEntryCreationPopup({
     const [openColorItems, setOpenColorItems] = useState(false);
     const [valueColorItems, setValueColorItems] = useState(null);
     const [colorItems, setColorItems] = useState([
-        { label: 'Red', value: 'red', icon: () => <FontAwesome name='circle' color={"red"} /> },
-        { label: 'Green', value: 'green', icon: () => <FontAwesome name='circle' color={"green"} /> },
-        { label: 'Blue', value: 'blue', icon: () => <FontAwesome name='circle' color={"blue"} /> },
-        { label: 'Red', value: 'red1', icon: () => <FontAwesome name='circle' color={"red"} /> },
-        { label: 'Green', value: 'green1', icon: () => <FontAwesome name='circle' color={"green"} /> },
-        { label: 'Blue', value: 'blue1', icon: () => <FontAwesome name='circle' color={"blue"} /> },
-        { label: 'Red', value: 'red2', icon: () => <FontAwesome name='circle' color={"red"} /> },
-        { label: 'Green', value: 'green2', icon: () => <FontAwesome name='circle' color={"green"} /> },
-        { label: 'Blue', value: 'blue2', icon: () => <FontAwesome name='circle' color={"blue"} /> },
+        { label: t("red"), value: 'red', icon: () => <FontAwesome name='circle' color={"red"} /> },
+        { label: t("green"), value: 'green', icon: () => <FontAwesome name='circle' color={"green"} /> },
+        { label: t('blue'), value: 'blue', icon: () => <FontAwesome name='circle' color={"blue"} /> },
+        { label: t('yellow'), value: 'yellow', icon: () => <FontAwesome name='circle' color={"yellow"} /> },
+        { label: t('pink'), value: 'pink', icon: () => <FontAwesome name='circle' color={"pink"} /> },
+        { label: t('orange'), value: 'orange', icon: () => <FontAwesome name='circle' color={"orange"} /> },
+        { label: t('black'), value: 'black', icon: () => <FontAwesome name='circle' color={"black"} /> },
+        { label: t('cyan'), value: 'cyan', icon: () => <FontAwesome name='circle' color={"cyan"} /> },
+        { label: t('lime'), value: 'lime', icon: () => <FontAwesome name='circle' color={"lime"} /> },
     ])
 
 
@@ -90,7 +90,7 @@ export default function JournalEntryCreationPopup({
                 setCategory(newCategory);
                 let newItems = [...items]; 
                 newItems.push(newCategory); 
-                setItems(newItems); 
+                setItems(newItems);
                 refModalMenu.current.close()
             }
         }

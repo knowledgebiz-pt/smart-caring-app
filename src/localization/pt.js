@@ -277,5 +277,16 @@ Se fizer um pedido, a SMARTCaring responder-lhe-á no prazo de um mês. Caso pre
         privacy_policy_18:"Como contactar a autoridade competente ",
         privacy_policy_19:"Se desejar apresentar uma queixa ou se considerar que a SMARTCaring não tratou a sua preocupação de forma satisfatória, pode contactar a CNPD - Comissão Nacional de Proteção de Dados.",
 
+        // COLORS
+        red: "Vermelho",
+        green: "Verde",
+        blue: "Azul",
+        yellow: "Amarelo",
+        pink: "Rosa",
+        orange: "Laranja",
+        black: "Preto",
+        cyan: "Ciano",
+        lime: "Lima"
+
     }
 }
