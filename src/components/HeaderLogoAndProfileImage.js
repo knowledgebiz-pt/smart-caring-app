@@ -88,11 +88,9 @@ export default function HeaderLogoAndProfileImage({img, onPressImage, user, refr
     }
 
     return (
-        <View style={{flexDirection: "row"}}>
-            {/* <ModalMenu ref={refModalMenu} /> */}
-
+        <View style={{flexDirection: "row",}}>
             <Image source={require("../../assets/images/logo.png")} style={styleSelected.logoLeftSide} resizeMode='contain' />
-            <View style={{justifyContent:"center", alignItems:"center"}}>
+            <View style={{justifyContent:"center", flex:1, alignItems:"center", right: 40}}>
                 <TouchableOpacity onPress={() => {refModalMenu.current.open()}} style={[styleSelected.avatarRightSide]}>
                     <Image
                         style={[styleSelected.avatar, styleSelected.avatarRightSide]}

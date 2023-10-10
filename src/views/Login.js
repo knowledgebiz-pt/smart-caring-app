@@ -13,6 +13,8 @@ import * as Google from "expo-auth-session/providers/google";
 import Toast from 'react-native-toast-message'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { CommonActions } from '@react-navigation/native'
+import * as AppleAuthentication from "expo-apple-authentication"
+import * as jwtDecode from "jwt-decode"
 
 import { useTranslation } from "react-i18next"
 
@@ -193,9 +195,52 @@ export default function Login({ route, navigation }) {
                                 style={{ backgroundColor: colors.BaseSlot1, width: 150, borderRadius: 30, justifyContent: "center", alignItems: "center", height: 50 }}>
                                 <Image source={require("../../assets/images/google.png")} style={{ height: 35, width: 35 }} />
                             </TouchableOpacity>
-                            <TouchableOpacity style={{ backgroundColor: colors.BaseSlot1, width: 150, borderRadius: 30, justifyContent: "center", alignItems: "center" }}>
+                            <AppleAuthentication.AppleAuthenticationButton style={{ width: 150, justifyContent: "center", alignItems: "center" }}
+                                buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+                                buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.WHITE}                                
+                                cornerRadius={30}
+                                onPress={async () => {
+                                    try {
+                                      const credential = await AppleAuthentication.signInAsync({
+                                        requestedScopes: [
+                                          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+                                          AppleAuthentication.AppleAuthenticationScope.EMAIL,
+                                        ],
+                                      }                                      
+                                      ).then((data) => {
+                                        let tokenData = jwtDecode.default(data.identityToken)
+                                        let email = tokenData.email
+                                        UserService.getAllUsers().then((res) => {
+                                            res.data.forEach(element => {
+                                                if (element.email == email) {
+                                                    AsyncStorage.setItem("@token", element._id.$oid)
+                                                    navigation.dispatch(
+                                                        CommonActions.reset({
+                                                            index: 0,
+                                                            routes: [{ name: 'BottomTab', params: { userData: element } }],
+                                                        })
+                                                    )
+                                                    return
+                                                } else {
+                                                    navigation.navigate('CreateAccountWithGmail', { userInfo: {given_name: "", family_name: "", picture: null, email} })
+                                                    return
+                                                }
+                                            });
+                                        }).catch((err) => { })
+                                      });
+                                      // signed in
+                                    } catch (e) {
+                                      if (e.code === 'ERR_REQUEST_CANCELED') {
+                                        // handle that the user canceled the sign-in flow
+                                      } else {
+                                        // handle other errors
+                                      }
+                                    }
+                                  }}
+                             />
+                            {/* <TouchableOpacity style={{ backgroundColor: colors.BaseSlot1, width: 150, borderRadius: 30, justifyContent: "center", alignItems: "center" }}>
                                 <Image source={require("../../assets/images/facebook.png")} style={{ height: 35, width: 35 }} />
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                         </View>
                         <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", marginTop: 20 }} onPress={() => { navigation.navigate("Register") }}>
                             <Text style={[styleSelected.textRegular16, { color: colors.BaseSlot3 }]}>{t("login_no_account")}</Text>

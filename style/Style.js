@@ -318,12 +318,11 @@ const style = StyleSheet.create({
     padding: 20,
   },
   plusCircleAvatar: {
-    alignContent: "center", 
-    borderRadius: 30, 
-    textAlignVertical: "center", 
-    position: "absolute", 
-    marginLeft: 222, 
-    marginTop: 40, 
+    borderRadius:30, 
+    position:"absolute",
+    left:"52%",
+    top:"55%", 
+    position: "absolute",
     backgroundColor: colors.BaseSlot3
   },
   avatarRightSide: {

@@ -22,7 +22,8 @@
         "NSCalendarsUsageDescription": "The app needs to access your calendar.",
         "NSRemindersUsageDescription": "Allow $(PRODUCT_NAME) to access your reminders"
       },
-      "buildNumber": "4"
+      "buildNumber": "4",
+      "usesAppleSignIn": true
     },
     "android": {
       "adaptiveIcon": {
@@ -57,6 +58,9 @@
         {
           "remindersPermission": "Allow $(PRODUCT_NAME) to access your reminders"
         }
+      ],
+      [
+        "expo-apple-authentication"
       ]
     ],
     "extra": {
