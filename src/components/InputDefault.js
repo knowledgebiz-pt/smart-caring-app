@@ -1,5 +1,5 @@
-import React, { useRef, useState, useEffect } from "react";
-import { Animated, Text, View, useColorScheme } from "react-native";
+import React, { useRef, useState } from "react";
+import { Animated, View, useColorScheme } from "react-native";
 import { TextInput } from "react-native";
 import style from "../../style/Style";
 import styleDark from "../../style/StyleDark";

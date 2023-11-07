@@ -2,7 +2,7 @@ import React, { useState, useEffect, memo } from "react";
 import { Text, Image, View, useColorScheme } from "react-native";
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
-import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons"
+import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { CommentService } from "smart-caring-client/client";
 
 /***
@@ -27,40 +27,24 @@ const FeedPostComment = ( // IN PROGRESS
         commentInfo,
         updateNews,
     }) => {
-
-    const [image, setImage] = useState(null)
-    const [favoriteIcon, setFavoriteIcon] = useState({ name: "heart-o", color: "#030849" })
-    const [hasLike, setLike] = useState(false)
-    const [previewLoaded, setPreviewLoaded] = useState(false)
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
     let feedStyle = {
         backgroundColor: "#5B5E8910", // in case of no role
     }
-    let feedIcon = null
 
     if (feedRole.toLowerCase() === "caregiver") {
         feedStyle["backgroundColor"] = "rgba(86, 178, 136, 0.1)"
-        feedIcon = require("../../assets/images/Caregiver.png")
     }
     else if (feedRole.toLowerCase() === "health professional") {
         feedStyle["backgroundColor"] = "rgba(28, 163, 252, 0.1)"
-        feedIcon = require("../../assets/images/Healthprofessional.png")
     }
     else if (feedRole.toLowerCase() === "patient") {
         feedStyle["backgroundColor"] = "rgba(3, 8, 73, 0.1)"
-        feedIcon = require("../../assets/images/Patient.png")
     }
 
     useEffect(() => {
-        // setImage(img)
-        // if (postContent.isFavorite) {
-        //     setFavoriteIcon({name: "heart", color: "#CB1000"})        
-        // }
-        // if (postContent.hasLike) {
-        //     setLike(true)
-        // }
         console.log("comment", commentInfo)
     }, [])
 

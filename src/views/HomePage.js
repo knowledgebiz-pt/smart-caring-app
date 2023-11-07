@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react'
-import { SafeAreaView, StatusBar, FlatList, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text } from 'react-native'
+import { StatusBar, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text } from 'react-native'
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
@@ -12,7 +12,6 @@ import PostInputPopup from '../components/PostInputPopup'
 import SortAndFilterSelects from '../components/SortAndFilterSelects'
 import Toast from 'react-native-toast-message'
 import CustomLoader from '../components/CustomLoader'
-import ModalMenu from '../components/ModalMenu'
 import { FlashList } from "@shopify/flash-list"
 
 import { useTranslation } from "react-i18next"
@@ -24,20 +23,14 @@ export default function HomePage({ route, navigation }) {
     const { t, i18n } = useTranslation()
     const [isLoading, setIsLoading] = useState(true)
     const [isLoadingSort, setIsLoadingSort] = useState(false)
-    // const [user, setUser] = useState(null)
-    // const [name, setName] = useState("")
-    const [open, setOpen] = useState(false)
     const [sortSelectOpen, setSortSelectOpen] = useState(false)
     const [filterSelectOpen, setFilterSelectOpen] = useState(false)
     const [sortSelectValue, setSortSelectValue] = useState({ label: t("recent"), value: 'recent' })
     const [filterSelectValue, setFilterSelectValue] = useState(null)
-    const [modalVisible, setModalVisible] = useState(false)
 
     const user = useSelector((state) => state.user)
 
-
     const refModalMenu = useRef()
-    const refScroll = useRef()
 
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
@@ -73,20 +66,6 @@ export default function HomePage({ route, navigation }) {
                 setIsLoadingSort(false)
             }, 2000)
         }
-        // if (val.value === "recent") {
-        //     let array = [...displayFeedPosts].sort((a, b) => {
-        //         return new Date(b.date) - new Date(a.date)
-        //     })
-        //     setDisplayFeedPosts(array)
-        //     setIsLoadingSort(false)
-        // }
-        // else if (val.value === "old") {
-        //     displayFeedPosts.reverse()
-        //     setTimeout(() => {
-        //         setIsLoadingSort(false)
-
-        //     }, 2000)
-        // }
     }
 
     function updateDataNews() {
@@ -154,9 +133,7 @@ export default function HomePage({ route, navigation }) {
     useEffect(() => {
         console.log(route.params.goUp)
         AsyncStorage.getItem("@token").then((token) => {
-            console.log("token:",token)
             UserService.getUserDataByIdUserCorrectly(token).then(res => {
-                console.log("token2:", token)
                 OpenAPI.TOKEN = res.token.access_token
                 dispatch(insertUser(res.data))
                 updateDataNews()
@@ -245,9 +222,6 @@ export default function HomePage({ route, navigation }) {
     )
 
     const handleLikeFavorite = ([id, shouldAdd, arrayName]) => {
-        console.log("handleLike ID:", id)
-        console.log("Add or retract:", shouldAdd ? "Add" : "Retract")
-        console.log(displayFeedPosts.findIndex((post) => post._id.$oid === id))
         let index = displayFeedPosts.findIndex((post) => post._id.$oid === id)
         if (shouldAdd) {
             if (!displayFeedPosts[index][arrayName].includes(user._id.$oid)) {

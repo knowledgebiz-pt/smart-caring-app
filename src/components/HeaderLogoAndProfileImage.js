@@ -3,9 +3,7 @@ import { useColorScheme, View, Image, TouchableOpacity, Text } from 'react-nativ
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import { MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
-import ModalMenu from './ModalMenu';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import { OpenAPI } from 'smart-caring-client/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, CommonActions } from '@react-navigation/native'
 import { useTranslation } from "react-i18next"
@@ -24,7 +22,6 @@ export default function HeaderLogoAndProfileImage({img, onPressImage, user, refr
 
     const {t, i18n} = useTranslation()
 
-    const [image, setImage] = useState(null);
     const [userType, setUserType] = useState("")
     const refModalMenu = useRef()
 
@@ -39,7 +36,6 @@ export default function HeaderLogoAndProfileImage({img, onPressImage, user, refr
     ]
 
     useEffect(() => {
-        setImage(img)
         console.log("USER INFO", userInfo)
         if (userInfo.user_type.toLowerCase() === "health professional") {
             setUserType(require("../../assets/images/Caregiver.png"))
@@ -53,7 +49,6 @@ export default function HeaderLogoAndProfileImage({img, onPressImage, user, refr
     }, [])
 
     const optionPressed = (option) => {
-        console.log("OPTION", option)
         if (option.value === "logout") {
             AsyncStorage.clear()
             refModalMenu.current.close()
@@ -107,7 +102,6 @@ export default function HeaderLogoAndProfileImage({img, onPressImage, user, refr
                     </View>
                 </TouchableOpacity>
             </View>
-            {/* <View style={[styleSelected.feedPostContainer, { zIndex: 99999999 }]}> */}
                 <RBSheet 
                     height={430}
                     customStyles={{
@@ -125,10 +119,6 @@ export default function HeaderLogoAndProfileImage({img, onPressImage, user, refr
                     }
                     }} ref={refModalMenu}>
                     <View style={{flex:1,padding:25, borderTopLeftRadius: 15, borderTopRightRadius: 15, }}>
-                        {/* <View style={{flexDirection: "row"}}>
-                            <Text style={{color:"white", fontSize:14}}>{user.name}</Text>
-                            <Image style={[{width: 35, height: 20, marginLeft: 10, tintColor:"white"}, ]} source={userType}/>
-                        </View> */}
                         <View style={{flex: 1,flexDirection:"row", alignItems:"center", justifyContent:"flex-start"}}>
                             <View style={{flex: .19, height:"100%", justifyContent:"center", alignItems:"center"}}>
                                 <Image
@@ -161,7 +151,6 @@ export default function HeaderLogoAndProfileImage({img, onPressImage, user, refr
                         
                     </View>
                 </RBSheet>
-            {/* </View> */}
         </View>
         
     )

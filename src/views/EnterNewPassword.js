@@ -3,11 +3,9 @@ import { SafeAreaView, KeyboardAvoidingView, StatusBar, ScrollView, Appearance, 
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
-import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
 import ButtonPrimary from '../components/ButtonPrimary'
 import InputTransparent from '../components/InputTransparent'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useTranslation } from "react-i18next"
 import { UserService } from 'smart-caring-client/client'
 import Toast from 'react-native-toast-message'

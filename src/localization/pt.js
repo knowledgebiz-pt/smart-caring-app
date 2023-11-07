@@ -32,6 +32,7 @@ export default {
         description: "Descrição",
         apps: "Aplicações",
         websites: "Websites",
+        group: "Grupo",
         // LOGIN SCREEN
         login_welcome: "Bem-vindo/a de volta",
         login_subtext: "Vamos iniciar sessão e continuar a ajudar outros!",
@@ -87,7 +88,7 @@ export default {
         create_account_role: "Que função lhe descreve melhor?*",
         create_account_share: "Partilhar a minha função*",
         create_account_phone: "Número de telemóvel",
-        create_account_terms_begin: "Ao clicar em Vamos começar!, Registar com Google, ou Registar com Facebook, concorda com os nossos ",
+        create_account_terms_begin: "Ao clicar em Vamos começar!, Registar com Google, ou Registar com Apple, concorda com os nossos ",
         create_account_terms_conditions: "Termos e Condições",
         create_account_terms_and: " e ",
         create_account_terms_privacy: "Declaração de Privacidade",

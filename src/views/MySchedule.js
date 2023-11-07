@@ -1,18 +1,15 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
-import { SafeAreaView, StatusBar, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text, TouchableOpacity, TextInput } from 'react-native'
+import { SafeAreaView, StatusBar, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text, TouchableOpacity } from 'react-native'
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
-import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
-import { Calendar, CalendarList, Agenda, WeekCalendar, CalendarProvider, LocaleConfig } from 'react-native-calendars';
+import { Calendar, WeekCalendar, CalendarProvider, LocaleConfig } from 'react-native-calendars';
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons"
 import { FlashList } from '@shopify/flash-list'
 import RBSheet from 'react-native-raw-bottom-sheet'
 import * as ExpoCalendar from 'expo-calendar';
-import ButtonPrimary from '../components/ButtonPrimary'
 import uuid from 'react-native-uuid';
-import { set } from 'react-native-reanimated'
 import { useTranslation } from "react-i18next"
 
 
@@ -25,7 +22,6 @@ export default function MySchedule({ route, navigation }) {
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')
     const [selected, setSelected] = useState(`${new Date().getFullYear()}-${(new Date().getMonth() + 1).toString().padStart(2, "0")}-${new Date().getDate().toString().padStart(2, "0")}`);
-    const [initialDate, setInitialDate] = useState(new Date())
     const [idsCalendars, setIdsCalendars] = useState([])
     const [accounts, setAccounts] = useState([])
     // const [eventsCalendar, setEventsCalendar] = useState([])
@@ -93,7 +89,6 @@ export default function MySchedule({ route, navigation }) {
 
     const onDayPress = useCallback(day => {
         var filterByDay = eventsCalendar.current.filter(event => event.startDate.split('T')[0] === day.dateString)
-        console.log("FILTER BY DAY", filterByDay)
         setEventsSelecteds(filterByDay)
         setSelected(day.dateString)
     })
@@ -104,7 +99,6 @@ export default function MySchedule({ route, navigation }) {
 
     const optionPressed = (option) => {
         ExpoCalendar.deleteEventAsync(currentDelete.current.id).then((data) => {
-            console.log("EVENT DELETED")
             GetPermissionsCalendar()
             refModalMenu.current.close()
         }).catch((error) => {
@@ -132,7 +126,6 @@ export default function MySchedule({ route, navigation }) {
     function createPromise(value) {
         return new Promise(res => {
             ExpoCalendar.getEventsAsync([value], new Date(2023, 1, 1), new Date(2027, 12, 31)).then((data) => {
-                console.log("GETING EVENTS")
                 eventsCalendar.current = [...eventsCalendar.current, ...data]
                 // setEventsCalendar(eventsCalendar => [...eventsCalendar, ...data])
                 res(data)
@@ -149,55 +142,14 @@ export default function MySchedule({ route, navigation }) {
             .then(x => array.length == 0 ? x : executeSequentially(array));
     }
 
-    function GetEventsCalendar() {
-        ExpoCalendar.getCalendarsAsync(ExpoCalendar.EntityTypes.EVENT).then((calendars) => {
-            console.log('Here are all your calendars:');
-            console.log(JSON.stringify(calendars, undefined, 4));
-            setAccounts(calendars)
-            var idsCalendars = []
-            // setIdsCalendars(calendars.map(calendar => calendar.id))
-            calendars.forEach(calendar => {
-                idsCalendars.push(calendar.id)
-            })
-            setIdsCalendars(idsCalendars)
-            console.log("IDS CALENDARS", idsCalendars.length)
-            executeSequentially(idsCalendars).then((data) => {
-                console.log("FINISH")
-                var markedDate = {}
-                eventsCalendar.current.forEach(event => {
-                    // Transform this date 2021-10-04T23:00:00.000Z to this 2021-10-04
-                    var dateMarked = new Date(event.startDate).toISOString().split('T')[0]
-                    var timeOfMeet = new Date(event.startDate).toISOString().split('T')[1].split('.')[0]
-                    console.log("DATE MARKED", dateMarked)
-                    console.log("TIME OF MEET", timeOfMeet)
-                    var res = {
-                        marked: true,
-                        selected: true,
-                        selectedColor: "#1CA3FC"
-                    }
-                    markedDate = Object.assign(markedDate, { [dateMarked]: res })
-                })
-                setMarkedDates(markedDate)
-                setIsLoading(false)
-            }).catch((error) => {
-                console.log("Error execute sequentially", error)
-            })
-        }).catch((error) => {
-            console.log("Error get calendars", error)
-        })
-    }
-
     function GetPermissionsCalendar() {
         eventsCalendar.current = []
         setEventsSelecteds([])
         setIsLoading(true)
         ExpoCalendar.requestCalendarPermissionsAsync().then((permission) => {
-            console.log("STATUS CALENDAR", permission)
             if (permission.status === "granted") {
                 console.log("GRANTED")
                 ExpoCalendar.getCalendarsAsync(ExpoCalendar.EntityTypes.EVENT).then((calendars) => {
-                    console.log('Here are all your calendars:');
-                    console.log(JSON.stringify(calendars, undefined, 4));
                     setAccounts(calendars)
                     var idsCalendars = []
                     // setIdsCalendars(calendars.map(calendar => calendar.id))
@@ -205,12 +157,10 @@ export default function MySchedule({ route, navigation }) {
                         idsCalendars.push(calendar.id)
                     })
                     setIdsCalendars(idsCalendars)
-                    console.log("IDS CALENDARS", idsCalendars.length)
                     executeSequentially(idsCalendars).then((data) => {
-                        console.log("FINISH")
                         var markedDate = {}
                         eventsCalendar.current.forEach(event => {
-                            // Transform this date 2021-10-04T23:00:00.000Z to this 2021-10-04
+                            // Transform a date like 2021-10-04T23:00:00.000Z to 2021-10-04
                             var dateMarked = new Date(event.startDate).toISOString().split('T')[0]
                             var timeOfMeet = new Date(event.startDate).toISOString().split('T')[1].split('.')[0]
                             console.log("DATE MARKED", dateMarked)

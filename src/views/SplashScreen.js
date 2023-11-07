@@ -1,11 +1,8 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, useColorScheme, View,  } from 'react-native'
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
-import * as NavigationBar from 'expo-navigation-bar'
-import Loader from '../components/Loader'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { OpenAPI, } from 'smart-caring-client/client'
 import { CommonActions } from '@react-navigation/native'
 
 export default function SplashScreen({ route, navigation }) {

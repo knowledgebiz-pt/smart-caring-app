@@ -1,10 +1,8 @@
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { useColorScheme, Image } from 'react-native';
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { FontAwesome } from "@expo/vector-icons"
 
 import HomePage from '../views/HomePage';
 import Chat from '../views/Chat';

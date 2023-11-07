@@ -1,5 +1,5 @@
 import React from "react";
-import { View,Text, TouchableOpacity, TextInput, useColorScheme } from "react-native";
+import { View,Text, useColorScheme } from "react-native";
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import SwitchSelector from "react-native-switch-selector"
@@ -38,7 +38,6 @@ export default function TogglerTransparentLabelAbove(
         event 
     }) {
 
-    //placeholder: 
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
     var colors = require('../../style/Colors.json')

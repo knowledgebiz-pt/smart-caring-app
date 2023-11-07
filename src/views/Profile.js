@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { TouchableOpacity, SafeAreaView, KeyboardAvoidingView, StatusBar, ScrollView, Appearance, useColorScheme, Platform, View, Text, Image } from 'react-native'
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
@@ -12,13 +12,12 @@ import ButtonOutlinePrimaryIcon from '../components/ButtonOutlinePrimaryIcon'
 import ButtonOutlineDarkBlueIcon from '../components/ButtonOutlineDarkBlueIcon'
 import TogglerTransparentLabelAbove from "../components/TogglerTransparentLabelAbove"
 import TogglerTransparentLabelLeft from '../components/TogglerTransparentLabelLeft'
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 import { UserService } from "smart-caring-client/client"
 import DatePickerTransparentLabelAbove from '../components/DatePickerTransparentLabelAbove'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import PhoneInputTransparentLabelAbove from '../components/PhoneInputTransparentLabelAbove'
 import Toast from 'react-native-toast-message'
-import { CommonActions } from '@react-navigation/native'
 import { useTranslation } from "react-i18next"
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import ButtonOutlineSuccess from '../components/ButtonOutlineSuccess'
@@ -49,26 +48,6 @@ export default function Profile({ route, navigation }) {
 
     const handleSubmit = () => {
         if (name.length > 0 && role !== null) {
-            console.log(name)
-            console.log(birthDate)
-            console.log(gender)
-            console.log(role)
-            console.log(visibility)
-            console.log(language)
-            console.log(phone)
-            console.log(image)
-            console.log(indexSelectedButton)
-
-            console.log({
-                "name": name,
-                "email": user.email,
-                "birth_date": birthDate.getDate() + "/" + (birthDate.getMonth() + 1) + "/" + birthDate.getFullYear(),
-                "user_gender": gender,
-                "user_type": role,
-                "visibility": visibility,
-                "phone": phone,
-                "picture": image
-            })
 
             UserService.updateUserData(user._id.$oid, {
                 email: user.email,
@@ -101,8 +80,6 @@ export default function Profile({ route, navigation }) {
             allowsMultipleSelection: false,
             base64: true
         });
-
-        console.log(result);
         let base64 = result.assets[0].base64
 
         if (!result.canceled) {
@@ -110,17 +87,10 @@ export default function Profile({ route, navigation }) {
         }
     };
 
-    const launchLibrary = async () => {
-        const result = await launchImageLibrary({}, (res) => {
-            console.log(res)
-        })
-    }
-
     useEffect(() => {
         setIsLoading(true)
         AsyncStorage.getItem("@token").then(token => {
             UserService.getUserDataByIdUserCorrectly(token).then(res => {
-                console.log(res.data)
                 setImage(res.data.picture)
                 setName(res.data.name)
                 let birthDate = res.data.birth_date.toString().split("/")

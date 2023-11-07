@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { View,Text, useColorScheme, TouchableOpacity } from "react-native";
+import { View, useColorScheme } from "react-native";
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import Carousel, { Pagination } from "react-native-snap-carousel"
@@ -9,9 +9,6 @@ import Animated, {FadeIn, FadeOut} from "react-native-reanimated";
 import { useNavigation,CommonActions } from "@react-navigation/native";
 
 import { useTranslation } from "react-i18next"
-
-
-
 
 export default function CarouselCards({}) {
     let colorScheme = useColorScheme()

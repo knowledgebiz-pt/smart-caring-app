@@ -32,6 +32,7 @@ export default {
         description: "Description",
         apps: "Apps",
         websites: "Websites",
+        group: "Group",
         // LOGIN SCREEN
         login_welcome: "Welcome back",
         login_subtext: "Let's log in and continue helping others!",
@@ -87,7 +88,7 @@ export default {
         create_account_role: "Which role describes you best?*",
         create_account_share: "Share my role*",
         create_account_phone: "Phone number",
-        create_account_terms_begin: "By clicking Let's go!, Sign up with Google, or Sign up with Facebook, you agree to our ",
+        create_account_terms_begin: "By clicking Let's go!, Sign up with Google, or Sign in with Apple, you agree to our ",
         create_account_terms_conditions: "Terms and Conditions",
         create_account_terms_and: " and ",
         create_account_terms_privacy: "Privacy Statement",

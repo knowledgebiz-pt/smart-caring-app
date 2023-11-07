@@ -3,7 +3,6 @@ import { SafeAreaView, StatusBar, Appearance, useColorScheme, Platform, Keyboard
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
-import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
 import ChatSenderComponent from '../components/ChatSenderComponent'
 import { useSelector } from 'react-redux'

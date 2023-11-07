@@ -1,8 +1,8 @@
-import React, {useState} from "react";
-import { View,Text, TouchableOpacity, TextInput, useColorScheme } from "react-native";
+import React from "react";
+import { View,Text, TouchableOpacity, useColorScheme } from "react-native";
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
-import DateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 /***
  * @param placeholder: string - Text that will appear as placeholder
  * @param date: Date - Value for date picker

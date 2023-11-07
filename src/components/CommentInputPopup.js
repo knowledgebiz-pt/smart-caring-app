@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { useColorScheme, View, TouchableOpacity, Modal, Pressable, Image, Text, TextInput } from 'react-native'
+import { useColorScheme, View, Image, Text, TextInput } from 'react-native'
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
-import PostInputTransparent from './PostInputTransparent'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
-import { FontAwesome } from "@expo/vector-icons"
-import { NewsService, CommentService } from 'smart-caring-client/client'
+import { CommentService } from 'smart-caring-client/client'
 import Toast from 'react-native-toast-message'
 import { useTranslation } from "react-i18next"
 
@@ -58,11 +55,9 @@ export default function CommentInputPopup({
             onSubmit()
             showToast(t("homepage_comment_created"), "success")
             updateNews()
-            // setClicked(false)
         }).catch(e => {
             console.error("e: ", e)
             showToast(t("homepage_comment_error"), "error")
-            // setClicked(false)
         })
     }
 
@@ -72,17 +67,6 @@ export default function CommentInputPopup({
     }
 
     return (
-        // <View style={{paddingTop: 10}}>
-        //     <View style={styleSelected.modalCenteredView}>
-        //         <Modal animationType='fade' transparent={true} visible={modalVisible}>
-        //             <Pressable style={styleSelected.modalCenteredView} onPress={closeModal}>
-        //                 <View style={styleSelected.modalView}>
-        //                     <PostInputTransparent onSubmitEditing={onSubmitEditing} showButtons={false} userId={userId} newsId={newsId} blurOnSubmit={blurOnSubmit} img={img} hasBorder={hasBorder} borderColor={borderColor} placeholder={placeholder}/>
-        //                 </View>
-        //             </Pressable>
-        //         </Modal>
-        //     </View>
-        // </View>
         <>
             <View style={[feedStyle, styleSelected.feedPostContainer, { zIndex: 99999999 }]}>
                 <View style={{ flexDirection: "row" }}>

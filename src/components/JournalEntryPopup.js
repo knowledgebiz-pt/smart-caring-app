@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { useColorScheme, View, TouchableOpacity, Pressable, Text, ScrollView, Modal, Image } from 'react-native'
+import React, { useState, useRef } from 'react'
+import { useColorScheme, View, TouchableOpacity, Pressable, Text, ScrollView, Modal } from 'react-native'
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import { MaterialCommunityIcons, FontAwesome } from "@expo/vector-icons"
@@ -8,9 +8,8 @@ import { useTranslation } from "react-i18next"
 
 
 export default function JournalEntryPopup({
-    item = { title: "Physiotherapy", category: "Physiotherapy", categoryColor: "orange", date: "18-06-2023", description: "Details details details details details details Details details details details details details Details details details details details details Details details details details details details Details details details details details details Details details details details details details Details details details details details details Details details details details details details" },
+    item,
     event,
-    openEntry,
     closeEntry
 }) {
 
@@ -26,11 +25,6 @@ export default function JournalEntryPopup({
     ]
     const refModalMenu = useRef()
 
-    useEffect(() => {
-    }, [])
-
-    const openMenu = () => { setMenuVisible(true); console.log(menuVisible) }
-
     const closeMenu = () => { setMenuVisible(false); console.log("just closed") }
 
     const optionPressed = (val) => {
@@ -38,13 +32,11 @@ export default function JournalEntryPopup({
             closeMenu()
             event(item.id)
             closeEntry()
-
         }
     }
 
     return (
         <View>
-            <TouchableOpacity style={[styleSelected.modalOpenButton, {  position: "absolute" }]} onPress={() => { setModalVisible(true) }}><FontAwesome color={colors.BaseSlot1} size={40} name='plus' /></TouchableOpacity>
             <View style={styleSelected.modalCenteredView}>
                 <Modal animationType='fade' transparent={true} >
                     <Pressable style={styleSelected.modalCenteredView} onPress={(event) => { event.target === event.currentTarget && closeEntry() }}>
@@ -122,10 +114,6 @@ export default function JournalEntryPopup({
                         }
                     }} ref={refModalMenu}>
                     <View style={{ flex: 1, padding: 25, borderTopLeftRadius: 15, borderTopRightRadius: 15, }}>
-                        {/* <View style={{flexDirection: "row"}}>
-                            <Text style={{color:"white", fontSize:14}}>{user.name}</Text>
-                            <Image style={[{width: 35, height: 20, marginLeft: 10, tintColor:"white"}, ]} source={userType}/>
-                        </View> */}
                         {options.map(list => (
                             <View style={{ flex: 1 }}>
                                 <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", backgroundColor: "#D00", marginTop: 15, borderRadius: 10, height: 50 }}

@@ -1,16 +1,13 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { SafeAreaView, StatusBar, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text, TextInput } from 'react-native'
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
-import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
-import InputDefault from '../components/InputDefault'
 import DropDownPicker from 'react-native-dropdown-picker'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import ButtonPrimary from '../components/ButtonPrimary'
 import * as Calendar from 'expo-calendar';
-import { and, set } from 'react-native-reanimated'
 import { Toast } from 'react-native-toast-message/lib/src/Toast'
 import { useTranslation } from "react-i18next"
 

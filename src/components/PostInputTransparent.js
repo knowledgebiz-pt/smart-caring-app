@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Text, Image, View, Linking, TouchableOpacity, Touchable, TextInput, useColorScheme, Alert, Platform } from "react-native";
+import { Image, View, Linking, TouchableOpacity, TextInput, useColorScheme } from "react-native";
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome } from "@expo/vector-icons"
 import * as ImagePicker from "expo-image-picker"
 import { CommentService, NewsService } from "smart-caring-client/client";
-import * as DocumentPicker from 'expo-document-picker'
 import * as FileSystem from 'expo-file-system'
 import Toast from 'react-native-toast-message'
 import DialogInput from 'react-native-dialog-input';
@@ -80,27 +79,6 @@ export default function PostInputTransparent(
             setPostImage({ type: result.assets[0].type, file: base64 });
         }
     };
-
-    const pickDocument = async () => {
-        let result = await DocumentPicker.getDocumentAsync({
-            copyToCacheDirectory: true,
-            type: "application/pdf"
-        })
-        let filePath = result.uri
-        if (Platform.OS === "android") {
-            filePath = encodeURI(`${filePath}`)
-            // change the file:// to content:// uri
-            // FileSystem.getContentUriAsync(filePath).then((uri) => {filePath = uri; console.log(uri)});
-            console.log(filePath)
-            // filePath = filePath.replace("file", "content")
-            // console.log(filePath)
-        }
-        let fileBase64 = await FileSystem.readAsStringAsync(filePath, { encoding: "base64" })
-        console.warn(fileBase64)
-        // let base64 = result.assets[0].base64
-        // console.log("base64: ",base64)
-        // console.warn(result.assets[0])
-    }
 
     let colorScheme = useColorScheme()
     var styleSelected = colorScheme == 'light' ? style : styleDark
@@ -248,9 +226,6 @@ export default function PostInputTransparent(
                         <MaterialCommunityIcons name={'movie-open-play'}
                             size={15}
                             color={borderColor} />
-                        {/* <FontAwesome  name={'file-text-o'}
-                    size={15}
-                    color={borderColor}/> */}
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => { setUrlInputVisible(true) }} style={[styleSelected.smallButtonPost, { marginTop: 5, borderColor: borderColor }]}>
                         <MaterialCommunityIcons style={{ paddingRight: 2 }} name={'plus'}

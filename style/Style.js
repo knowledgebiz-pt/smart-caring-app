@@ -512,6 +512,26 @@ const style = StyleSheet.create({
     marginTop: 200,
     borderRadius: 20,
     paddingBottom: 35,
+  },
+  chatComponentTouchableOpacity: {
+    height: 80, 
+    flexDirection: "row", 
+    alignItems: "center"
+  },
+  chatComponentItem: {
+    flex: 1, 
+    justifyContent: "center", 
+    alignItems: "center", 
+    marginLeft: 20,
+    marginRight: 10, 
+    borderRadius: 60, 
+    overflow: "hidden", 
+    height: 65, 
+    maxWidth: 65
+  },
+  chatComponentItemImage: {
+    width: 70, 
+    height: 70
   }
 });
 

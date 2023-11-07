@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import { View,Text, Image, TouchableOpacity, TextInput, useColorScheme } from "react-native";
+import React from "react";
+import { View,Text, useColorScheme } from "react-native";
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import DropDownPicker from 'react-native-dropdown-picker'
@@ -49,9 +49,6 @@ export default function SelectTransparent(
         key2,
         event 
     }) {
-    
-    // const [open, setOpen] = useState(false)
-    // const [selectedValue, setSelectedValue] = useState({label: "Recent"})
 
     //placeholder: 
     let colorScheme = useColorScheme()
@@ -96,7 +93,7 @@ export default function SelectTransparent(
         alignDropDownContainerStyle["borderColor"] = colors.BaseSlot2
         alignDropDownContainerStyle["alignSelf"] = "flex-end"
     }
-    const placeholderText = <Text style={textStyles}>{placeholder}{displaySelectedOption ? <Text style={{fontWeight: "bold"}}>{selectedValue.label}</Text> : ""}</Text>
+    const placeholderText = <Text style={textStyles}>{placeholder}{displaySelectedOption ? <Text style={{fontWeight: "bold"}}>{selectedValue ? selectedValue.label : ""}</Text> : ""}</Text>
     return (
         <View ref={ref} style={{marginLeft: marginLeft, width: "50%",}}>
             {/* <Text style={[styleSelected.textRegular13DarkBlue,{marginLeft: 20, marginTop: 25, zIndex: 999}]}>{placeholder + selectedValue.label} </Text> */}

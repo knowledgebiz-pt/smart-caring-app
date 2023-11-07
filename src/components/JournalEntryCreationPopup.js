@@ -1,18 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { useColorScheme, View, TouchableOpacity, Modal, Pressable, Text, TextInput, KeyboardAvoidingView, Image } from 'react-native'
+import { useColorScheme, View, TouchableOpacity, Modal, Pressable, Text, TextInput, KeyboardAvoidingView } from 'react-native'
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
-import PostInputTransparent from './PostInputTransparent'
 import { FontAwesome } from "@expo/vector-icons"
 import InputTransparentLabelAbove from './InputTransparentLabelAbove'
 import DropDownPicker from 'react-native-dropdown-picker';
-import DialogInput from 'react-native-dialog-input';
-import ModalMenu from '../components/ModalMenu'
 import RBSheet from 'react-native-raw-bottom-sheet'
 import ButtonPrimary from './ButtonPrimary'
 
 import { useTranslation } from "react-i18next"
-import { NewsService, UserService } from 'smart-caring-client/client'
+import { UserService } from 'smart-caring-client/client'
 
 
 export default function JournalEntryCreationPopup({
@@ -31,10 +28,6 @@ export default function JournalEntryCreationPopup({
     
     // const [modalVisible, setModalVisible] = useState(false)
     const refModalMenu = useRef()
-
-    const [title, setTitle] = useState(null)
-    const [category, setCategory] = useState(null)
-    const [content, setContent] = useState(null)
 
     const [entry, setEntry] = useState({title: null, description: null, category: null, categoryColor: null, date: `${new Date().getDate().toString().padStart(2, "0")}-${(new Date().getMonth()+1).toString().padStart(2, "0")}-${new Date().getFullYear()}`})
 
@@ -88,7 +81,6 @@ export default function JournalEntryCreationPopup({
         }
         else if (form === "categoryForm") {
             if (newCategory.label.trim().length > 0 && newCategory.color !== null) {
-                setCategory(newCategory);
                 let newItems = [...items]; 
                 newItems.push(newCategory); 
                 setItems(newItems); 
@@ -103,13 +95,11 @@ export default function JournalEntryCreationPopup({
                 
         }).catch((err) => {console.error(err)})
 
-        console.log(val)
         if (val === "newCat") {
             refModalMenu.current.open()
         }
         else {
             let chosenCategoryIndex = items.findIndex(x =>{return x.value === val})
-            console.log(chosenCategoryIndex)
 
             setEntry({title: entry.title, category: items[chosenCategoryIndex].label, categoryColor: items[chosenCategoryIndex].color, date: entry.date, description: entry.description})
         }
@@ -117,7 +107,6 @@ export default function JournalEntryCreationPopup({
 
     return (
         <KeyboardAvoidingView style={{ paddingTop: 10 }}>
-            {/* <TouchableOpacity style={styleSelected.journalEntryCreationOpenButton} onPress={() => { setModalVisible(true) }}><FontAwesome color={colors.BaseSlot1} size={40} name='plus' /></TouchableOpacity> */}
             <View style={styleSelected.modalCenteredView}>
                 <Modal animationType='fade' transparent={true} visible={visible} statusBarTranslucent={true}>
                     <Pressable style={styleSelected.modalCenteredView} onPress={(event) => event.target === event.currentTarget && setModalVisible(false)}>
@@ -140,26 +129,14 @@ export default function JournalEntryCreationPopup({
                                         <Text style={[styleSelected.textRegular13DarkBlue, { marginLeft: 10, marginBottom: 5, fontWeight: 600 }]}>{t("title")}</Text>
                                         <TextInput
                                             style={[styleSelected.buttonSizeFullWidth, { borderWidth: .5, borderColor:colors.BaseSlot5, paddingLeft: 10, borderRadius: 20 }]}
-                                            // style={[sizeStyleSelected, inputStyles]}
                                             placeholderTextColor="rgba(101, 101, 101, 0.5)"
                                             inputMode={'text'}
                                             onChangeText={(val) => {setEntry({title: val, category: entry.category, categoryColor: entry.categoryColor, date: entry.date, description: entry.description})}}
-                                        // onSubmitEditing={onSubmitEditing}
-                                        // returnKeyType={returnKeyType}
-                                        // ref={inputRef}
-                                        // blurOnSubmit={blurOnSubmit}
-                                        // onChangeText={onChangeText}
-                                        // value={value}       
                                         />
 
                                     </View>
                                     <View style={{ flex:.30, marginTop: 20, zIndex: 898887 }}>
                                         <Text style={[styleSelected.textRegular13DarkBlue, { marginLeft: 10, marginBottom: 5, fontWeight: 600 }]}>{t("category")}</Text>
-                                        {/* <TextInput
-                                            style={[styleSelected.buttonSizeFullWidth, { borderWidth: 1, paddingLeft: 10, borderRadius: 20 }]}
-                                            placeholderTextColor="rgba(101, 101, 101, 0.5)"
-                                            inputMode={'text'}
-                                        /> */}
                                         <DropDownPicker
                                             style={{ borderRadius: 20, borderWidth: .5, borderColor: colors.BaseSlot5 }}
                                             placeholder={t("journal_entry_category_placeholder")}
@@ -198,15 +175,8 @@ export default function JournalEntryCreationPopup({
                                             numberOfLines={6}
                                             scrollEnabled={true}
                                             multiline={true}
-                                            // style={[sizeStyleSelected, inputStyles]}
                                             placeholderTextColor="rgba(101, 101, 101, 0.5)"
                                             inputMode={'text'}
-                                        // onSubmitEditing={onSubmitEditing}
-                                        // returnKeyType={returnKeyType}
-                                        // ref={inputRef}
-                                        // blurOnSubmit={blurOnSubmit}
-                                        // onChangeText={onChangeText}
-                                        // value={value}       
                                         />
 
                                     </View>
