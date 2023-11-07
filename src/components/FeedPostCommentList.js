@@ -2,10 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { Text, ScrollView, Modal, Pressable, Image, View, Linking, TouchableOpacity, TextInput, useColorScheme, Touchable } from "react-native";
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { FontAwesome } from "@expo/vector-icons"
-import RNUrlPreview from 'react-native-url-preview';
-import LottieView from 'lottie-react-native';
 import { FlatList } from "react-native-gesture-handler";
 import FeedPostComment from "./FeedPostComment";
 import { CommentService } from "smart-caring-client/client";
@@ -34,7 +30,6 @@ export default function FeedPostCommentList(
         updateNews,
     }) {
 
-    const [image, setImage] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
     const [comments, setComments] = useState([])
     const [isLoading, setIsLoading] = useState(false)
@@ -50,7 +45,6 @@ export default function FeedPostCommentList(
     const refRBSheet = useRef()
 
     useEffect(() => {
-        setImage(img)
     }, [])
 
     const showToast = (msg, type = "success") => {
@@ -96,12 +90,6 @@ export default function FeedPostCommentList(
             </Pressable>
         </View>
     </>)
-
-    // if (isLoading) {
-    //     return (
-    //         <Loader />
-    //     );
-    // }
 
     return (<>
         <TouchableOpacity style={styleSelected.feedPostContentSeeCommentsTouchableOpacity} onPress={() => {

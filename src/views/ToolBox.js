@@ -1,17 +1,17 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
-import { SafeAreaView, StatusBar, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text, TextInput, TouchableOpacity, ScrollView, Image, FlatList, Linking } from 'react-native'
+import { SafeAreaView, StatusBar, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text, Image, FlatList, Linking } from 'react-native'
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
-import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
 import ButtonPrimary from '../components/ButtonPrimary'
 import { useTranslation } from "react-i18next"
 import SortAndFilterSelects from '../components/SortAndFilterSelects'
-import SearchInput from '../components/SearchInput'
 import { FontAwesome } from '@expo/vector-icons'
 import ButtonSuccess from '../components/ButtonSuccess'
 import { ToolboxService } from 'smart-caring-client/client'
+import SearchBar from '../components/SearchBar'
+import ThreeOptionBar from '../components/ThreeOptionBar'
 
 
 export default function ToolBox({ route, navigation }) {
@@ -42,19 +42,15 @@ export default function ToolBox({ route, navigation }) {
 
     const [sortSelectValue, setSortSelectValue] = useState()
 
-    const searchRef = useRef(null)
-
     const sortFunction = (val) => {
         console.log(val)
         if (sortSelectValue && val.value === sortSelectValue.value) {
-            console.log("?????")
             return false
         }
         else {
             setSortSelectValue(val)
             if (val.value === "mostStars") {                
                 displayData.sort(function(a, b){return b.toolbox_rating - a.toolbox_rating})
-                console.log(displayData[0])
             }
             else if (val.value === "leastStars") {
                 displayData.sort(function(a, b){return a.toolbox_rating - b.toolbox_rating})
@@ -73,10 +69,8 @@ export default function ToolBox({ route, navigation }) {
 
     useEffect(() => {
         ToolboxService.getToolBoxAllProducts().then(res => {
-            console.log("resdata:", res.data.items)
             let data = res.data.items
             for (let i = 0; i < data.length; i++) {
-                console.log("index:",i)
                 lang = i18n.language
                 let descSlugs = data[i].toolbox_description.split(";;;")
                 let langSlugs = data[i].toolbox_languages.split(";;;")
@@ -165,7 +159,6 @@ export default function ToolBox({ route, navigation }) {
 
     const changeView = (i) => {
         let data = null
-        console.log(originalData)
         switch (i) {
             case 0:
                 filterOnChangeView(originalData)
@@ -284,35 +277,17 @@ export default function ToolBox({ route, navigation }) {
                     <Text style={styleSelected.textBold20DarkBlue}>{t("navbar_toolbox")}</Text>
                 </View>
                 <View style={{ flex:.2, justifyContent: "center", alignItems: "center", }}>
-                    <View style={{ borderWidth: .5, borderColor: colors.BaseSlot5, width: "90%", flexDirection: "row", borderRadius: 30, padding: 3 }}>
-                        <View style={{ justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
-                            <FontAwesome size={15} color={colors.BaseSlot5} name='search' />
-                        </View>
-                        <SearchInput value={search} placeholder={t("search")} onChangeText={(val) => {searchFunction(val)}} />
-                    </View>
+                    <SearchBar searchText={search} onChangeText={(val) => {searchFunction(val)}} />
                 </View>
                 <View style={{ height: 70, justifyContent: "space-evenly", alignItems: "center" }}>
-                    <View style={{ height: 40, borderColor: colors.BaseSlot5, borderWidth: .5, width: "90%", borderRadius: 40, flexDirection: "row" }}>
-
-                        <TouchableOpacity
-                            onPress={() => {setIndexSelected(0); changeView(0)}}
-                            style={{ borderRightWidth: .5, borderRightColor: colors.BaseSlot5, flex: 1, justifyContent: "center", alignItems: "center", borderTopLeftRadius: indexSelected == 0 ? 20 : 0, borderBottomLeftRadius: indexSelected == 0 ? 20 : 0, backgroundColor: indexSelected == 0 ? colors.BaseSlot6 : "transparent" }}>
-                            <Text style={[{ fontSize:13, color: indexSelected == 0 ? colors.BaseSlot1 : colors.BaseSlot5 }]}>{t("filter_all")}</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            onPress={() => {setIndexSelected(1); changeView(1)}}
-                            style={{ borderRightWidth: .5, borderRightColor: colors.BaseSlot5, flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: indexSelected == 1 ? colors.BaseSlot2 : "transparent" }}>
-                            <Text style={[{ fontSize:13, color: indexSelected == 1 ? colors.BaseSlot1 : colors.BaseSlot5 }]}>{t("apps")}</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            onPress={() => {setIndexSelected(2); changeView(2)}}
-                            style={{ flex: 1, justifyContent: "center", alignItems: "center", borderTopRightRadius: 20, borderBottomRightRadius: 20, backgroundColor: indexSelected == 2 ? colors.BaseSlot4 : "transparent" }}>
-                            <Text style={[{ fontSize:13, color: indexSelected == 2 ? colors.BaseSlot1 : colors.BaseSlot5 }]}>{t("websites")}</Text>
-                        </TouchableOpacity>
-
-                    </View>
+                    <ThreeOptionBar indexSelected={indexSelected}
+                        onPressLeft={() => {setIndexSelected(0); changeView(0)}} 
+                        onPressCenter={() => {setIndexSelected(1); changeView(1)}}
+                        onPressRight={() => {setIndexSelected(2); changeView(2)}} 
+                        textLeft={t("filter_all")}
+                        textCenter={t("apps")}
+                        textRight={t("websites")}
+                    />
                     <View style={{ height: 1, backgroundColor: colors.BaseSlot5, width: "90%" }} />
                 </View>
                 <View style={{flex:2}}>

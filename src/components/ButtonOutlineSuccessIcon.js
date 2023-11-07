@@ -1,14 +1,16 @@
-import {React, useState, useEffect} from "react";
+import { React } from "react";
 import { Text, TouchableOpacity, useColorScheme, Image, View } from "react-native";
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 
 /***
  * @param title: string - Text that will appear in the button
- * @param colorBackground: string - Set background color for button.
- * @param colorText: string - Set button text color
- * @param buttonRef: ref - Set button reference
+ * @param styleButton: object - Style to apply to TouchableOpacity component
+ * @param styleText: object - Style to apply to button Text component
+ * @param styleImage: object - Style to apply to icon Image component
+ * @param onPress: function - Callback triggered on pressing the TouchableOpacity component
  * @param fullWidth: boolean - If true, will use buttonSizeFullWidth style (width: "100%") instead of buttonSize style (width: "80%")
+ * @param event: any
  */
 
 export default function ButtonOutlineSuccessIcon({ title, styleButton, styleText, styleImage, fullWidth=false, onPress, event }) {

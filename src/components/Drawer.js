@@ -1,15 +1,13 @@
-import { createDrawerNavigator, DrawerToggleButton } from '@react-navigation/drawer';
-import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import DrawerItems from '../util/DrawerItems';
-import { Text, Image, FlatList } from 'react-native'
+import { Image } from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HeaderLogoAndProfileImage from './HeaderLogoAndProfileImage';
 
 const Drawer = createDrawerNavigator();
-const Stack = createNativeStackNavigator()
+
 function LogoTitle() {
     return (
         <Image

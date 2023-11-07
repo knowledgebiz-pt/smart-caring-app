@@ -113,7 +113,7 @@ export default function Profile({ route, navigation }) {
       showToast(t("register_no_fields"));
     }
   };
-
+      
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -206,6 +206,7 @@ export default function Profile({ route, navigation }) {
   };
 
   return (
+   <>
     <SafeAreaView
       style={[
         styleSelected.backgroundPrimary,
@@ -449,5 +450,6 @@ export default function Profile({ route, navigation }) {
         {/* </KeyboardAwareScrollView> */}
       </KeyboardAvoidingView>
     </SafeAreaView>
+   </>
   );
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TouchableOpacity, TextInput, useColorScheme } from "react-native";
+import { TextInput, useColorScheme } from "react-native";
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 /***

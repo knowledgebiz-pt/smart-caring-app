@@ -1,16 +1,13 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react'
-import { SafeAreaView, Image, TextInput, TouchableOpacity, Pressable, StatusBar, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text } from 'react-native'
+import React, { useEffect, useState, useCallback } from 'react'
+import { SafeAreaView, Image, StatusBar, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text } from 'react-native'
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
-import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
-import { RecoverUserPassword } from '../services/LoginService'
 import InputTransparent from '../components/InputTransparent'
 import ButtonPrimary from '../components/ButtonPrimary'
 import { useTranslation } from "react-i18next"
 import { UserService } from 'smart-caring-client/client'
-import { set } from 'react-native-reanimated'
 import Toast from 'react-native-toast-message'
 
 

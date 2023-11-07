@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { TouchableOpacity, SafeAreaView, KeyboardAvoidingView, StatusBar, ScrollView, Appearance, useColorScheme, Platform, View, Text, Image } from 'react-native'
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
@@ -12,8 +12,8 @@ import ButtonOutlinePrimaryIcon from '../components/ButtonOutlinePrimaryIcon'
 import ButtonOutlineDarkBlueIcon from '../components/ButtonOutlineDarkBlueIcon'
 import TogglerTransparentLabelAbove from "../components/TogglerTransparentLabelAbove"
 import TogglerTransparentLabelLeft from '../components/TogglerTransparentLabelLeft'
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { OpenAPI, UserService } from "smart-caring-client/client"
+import { launchImageLibrary } from 'react-native-image-picker';
+import { UserService } from "smart-caring-client/client"
 import DatePickerTransparentLabelAbove from '../components/DatePickerTransparentLabelAbove'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import PhoneInputTransparentLabelAbove from '../components/PhoneInputTransparentLabelAbove'

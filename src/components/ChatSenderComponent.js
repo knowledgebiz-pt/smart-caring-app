@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react'
-import { SafeAreaView, StatusBar, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text, Image } from 'react-native'
+import React, { useEffect, useState, useCallback } from 'react'
+import { Appearance, useColorScheme, Platform, View, Text, Image } from 'react-native'
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
-import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader' 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 

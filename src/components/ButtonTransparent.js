@@ -6,7 +6,8 @@ import styleDark from '../../style/StyleDark'
 /***
  * @param title: string - Text that will appear in the button
  * @param titleBold: string - Text that will appear in the button in bold
- * @param fullWidth: boolean - If true, will use buttonSizeFullWidth style (width: "100%") instead of buttonSize style (width: "80%")
+ * @param fullWidth: boolean - If true, will use buttonSizeFullWidth style (width: "100%") instead of buttonSize style (width: "80%"). Defaults to false
+ * @param event: any
  */
 
 export default function ButtonTransparent({ title, titleBold, fullWidth=false, event }) {

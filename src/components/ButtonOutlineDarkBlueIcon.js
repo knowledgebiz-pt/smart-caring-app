@@ -5,7 +5,12 @@ import styleDark from '../../style/StyleDark'
 
 /***
  * @param title: string - Text that will appear in the button
+ * @param styleButton: object - Style to apply to TouchableOpacity component
+ * @param styleText: object - Style to apply to button Text component
+ * @param styleImage: object - Style to apply to icon Image component
+ * @param onPress: function - Callback triggered on pressing the TouchableOpacity component
  * @param fullWidth: boolean - If true, will use buttonSizeFullWidth style (width: "100%") instead of buttonSize style (width: "80%")
+ * @param event: any
  */
 
 export default function ButtonOutlineDarkBlueIcon({ title, styleButton, styleText, styleImage, onPress, fullWidth=false, event }) {

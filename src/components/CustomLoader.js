@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, useColorScheme } from "react-native";
+import { View, useColorScheme } from "react-native";
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import LottieView from 'lottie-react-native';

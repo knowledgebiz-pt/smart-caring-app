@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef, memo } from "react";
-import { Text, KeyboardAvoidingView, Image, View, Linking, TouchableOpacity, TextInput, useColorScheme, Touchable } from "react-native";
+import { Text, Image, View, Linking, TouchableOpacity, useColorScheme } from "react-native";
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome } from "@expo/vector-icons"
-import LottieView from 'lottie-react-native';
 import FeedPostCommentList from "./FeedPostCommentList";
 import { NewsService, CommentService } from "smart-caring-client/client";
 import { Video, ResizeMode } from 'expo-av';
@@ -40,13 +39,10 @@ const FeedPost = (
     }) => {
 
     const [isLoading, setIsLoading] = useState(false)
-    const [image, setImage] = useState(null)
     const [favoriteIcon, setFavoriteIcon] = useState({ name: "heart-o", color: "#030849" })
     const [hasLike, setLike] = useState(false)
     const [hasFavorite, setFavorite] = useState(false)
     const [previewLoaded, setPreviewLoaded] = useState(false)
-    const [modalVisible, setModalVisible] = useState(false)
-    const [comments, setComments] = useState([])
     const [commentAmount, setCommentAmount] = useState(0)
 
     const refRBSheet = useRef()
@@ -76,7 +72,6 @@ const FeedPost = (
 
     useEffect(() => {
         setCommentAmount(postContent.total_comments)
-        setImage(img)
         if (postContent.favorites && postContent.favorites.length) {
             let foundId = postContent.favorites.find((id) => { return id === user._id.$oid })
             if (foundId) {
@@ -90,7 +85,6 @@ const FeedPost = (
                 setLike(true)
             }
         }
-        // retrieveComments()
     }, [])
 
     const showToast = (msg, type = "success") => {
@@ -137,24 +131,6 @@ const FeedPost = (
         }
     }
 
-    const retrieveComments = () => {
-        setIsLoading(true)
-        CommentService.getCommentsByIdNews(postContent._id.$oid).then(res => {
-            setComments(res.data)
-            console.warn(1)
-            setIsLoading(false)
-        }).catch(e => {
-            if (!e.includes("Not Found")) {
-                console.error("e: ", e)
-                showToast(t("homepage_comment_get_error"), "error")
-            }
-            setIsLoading(false)
-            console.warn(2)
-        })
-        console.warn(3)
-        setIsLoading(false)
-    }
-
     if (isLoading) {
         return (
             <Loader />
@@ -163,7 +139,6 @@ const FeedPost = (
 
     return (<>
         <View style={[feedStyle, styleSelected.feedPostContainer]}>
-            {/* <CommentInputPopup onSubmitEditing={() => {postContent.total_comments += 1; setModalVisible(false)}} newsId={postContent._id.$oid} userId={user._id.$oid} img={user.picture} hasBorder={true} borderColor={colors.BaseSlot5} placeholder={"What's on your mind?"} modalVisible={modalVisible} closeModal={() => {setModalVisible(false)}} /> */}
             <View >
                 <RBSheet
                     keyboardAvoidingViewEnabled={false}
@@ -290,7 +265,7 @@ const FeedPost = (
                 {postContent.content.type === "video" &&
                     <Video resizeMode={ResizeMode.CONTAIN} useNativeControls source={{ uri: postContent.content.path ? postContent.content.path : null }} onLoad={() => setPreviewLoaded(true)} style={styleSelected.feedPostContentUrlPreviewImage} />
                 }
-                {postContent.link !== "" && // postContent.link &&
+                {postContent.link !== "" &&
                     <Text onPress={() => { Linking.openURL(postContent.link) }} style={styleSelected.feedPostContentUrl}>{postContent.link}</Text>
 
                 }

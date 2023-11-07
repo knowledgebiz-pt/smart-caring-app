@@ -1,5 +1,5 @@
 import React from "react";
-import { View,Text, TouchableOpacity, TextInput, useColorScheme } from "react-native";
+import { View,Text, useColorScheme } from "react-native";
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import SwitchSelector from "react-native-switch-selector"

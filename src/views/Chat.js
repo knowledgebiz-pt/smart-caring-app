@@ -1,19 +1,18 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react'
-import { SafeAreaView, StatusBar, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text, ScrollView, TouchableOpacity, FlatList, TextInput, Image } from 'react-native'
+import React, { useEffect, useState, useCallback } from 'react'
+import { SafeAreaView, StatusBar, Appearance, useColorScheme, Platform, KeyboardAvoidingView, View, Text, TouchableOpacity, FlatList } from 'react-native'
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
-import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
 import ChatComponent from '../components/ChatComponent'
-import InputDefault from '../components/InputDefault'
-import { ChatService, CommentService } from 'smart-caring-client/client'
+import { ChatService } from 'smart-caring-client/client'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useSelector, useDispatch } from 'react-redux'
-import { chatFeature, insertMessage } from '../features/chat/chat'
+import { insertMessage } from '../features/chat/chat'
 import { useTranslation } from "react-i18next"
 import SearchInput from '../components/SearchInput'
 import { FontAwesome } from "@expo/vector-icons"
+import ThreeOptionBar from '../components/ThreeOptionBar'
 
 // var tokensClient = ["da17442d-bbf8-4309-933a-017d1e4d6b85", "9063164c-6ad7-4106-b94e-0a69d539f972", "bb36b47b-2913-4722-bedd-97c06a13af72"]
 
@@ -165,15 +164,11 @@ export default function Chat({ route, navigation }) {
                         </View>
                         <SearchInput value={search} placeholder={t("search")} onChangeText={(val) => {
                             setSearch(val)
-                            console.log("VAL", val)
                             if (val.length > 0) {
-                                console.log("INDEX", indexSelected)
                                 if (indexSelected == 0) {
                                     var listWithFilter = []
                                     list.forEach(element => {
                                         element.chat_members.forEach(members => {
-                                            console.log("VAL", val)
-                                            console.log("NAME", members.name)
                                             if (members.name.toLowerCase().includes(val.toLowerCase())) {
                                                 listWithFilter.push(element)
                                             }
@@ -186,8 +181,6 @@ export default function Chat({ route, navigation }) {
                                     var listWithFilter = []
                                     list.forEach(element => {
                                         element.chat_members.forEach(members => {
-                                            console.log("VAL", val)
-                                            console.log("NAME", members.name)
                                             if (members.name.toLowerCase().includes(val.toLowerCase())) {
                                                 listWithFilter.push(element)
                                             }
@@ -200,7 +193,7 @@ export default function Chat({ route, navigation }) {
                                 }
                             } else {
                                 if (indexSelected == 0)
-                                    setListChat(list)
+                                    setListChat([...list])
                                 if (indexSelected == 1)
                                     setListChat(list.filter((item) => item.chat_members.length == 2))
                                 if (indexSelected == 2)
@@ -209,53 +202,24 @@ export default function Chat({ route, navigation }) {
                         }} />
                     </View>
                 </View>
-                {/* <View style={{ height: 50, width: "90%", alignSelf: "center" }}> */}
-                {/* <SearchInput value={search} placeholder={t("search")} onChangeText={(val) => {setSearch(val)}} /> */}
-                {/* <TextInput
-                        multiline={true}
-                        placeholder={t("search")}
-                        placeholderTextColor={colors.BaseSlot3}
-                        onChangeText={(text) => setSearch(text)}
-                        value={search}
-                        style={{
-                            backgroundColor: colors.BaseSlot1,
-                            minHeight: 40,
-                            borderColor: colors.BaseSlot3,
-                            borderWidth: 1,
-                            margin: 5,
-                            borderRadius: 10,
-                            padding: 10,
-                        }} /> */}
-                {/* </View> */}
                 <View style={{ height: 70, justifyContent: "space-evenly", alignItems: "center" }}>
-                    <View style={{ height: 40, borderColor: colors.BaseSlot5, borderWidth: .5, width: "90%", borderRadius: 40, flexDirection: "row" }}>
-
-                        <TouchableOpacity
-                            onPress={() => setIndexSelected(0)}
-                            style={{ borderRightWidth: .5, borderRightColor: colors.BaseSlot5, flex: 1, justifyContent: "center", alignItems: "center", borderTopLeftRadius: 20, borderBottomLeftRadius: 20, backgroundColor: indexSelected == 0 ? colors.BaseSlot6 : "transparent" }}>
-                            <Text style={{ fontSize: 13, color: indexSelected == 0 ? colors.BaseSlot1 : colors.BaseSlot5 }}>{t("filter_all")}</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            onPress={() => {
-                                setIndexSelected(1)
-                                setListChat(list.filter((item) => item.chat_members.length == 2))
-                                console.log("IDS", idChats)
-                            }}
-                            style={{ borderRightWidth: .5, borderRightColor: colors.BaseSlot5, flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: indexSelected == 1 ? colors.BaseSlot2 : "transparent" }}>
-                            <Text style={{ fontSize: 13, color: indexSelected == 1 ? colors.BaseSlot1 : colors.BaseSlot5 }}>{t("private")}</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            onPress={() => {
-                                setIndexSelected(2)
-                                setListChat(list.filter((item) => item.chat_members.length > 2))
-                            }}
-                            style={{ flex: 1, justifyContent: "center", alignItems: "center", borderTopRightRadius: 20, borderBottomRightRadius: 20, backgroundColor: indexSelected == 2 ? colors.BaseSlot4 : "transparent" }}>
-                            <Text style={{ fontSize: 13, color: indexSelected == 2 ? colors.BaseSlot1 : colors.BaseSlot5 }}>{t("group")}</Text>
-                        </TouchableOpacity>
-
-                    </View>
+                    <ThreeOptionBar indexSelected={indexSelected}
+                        onPressLeft={() => {
+                            setIndexSelected(0); 
+                            setListChat(list)
+                        }} 
+                        onPressCenter={() => {
+                            setIndexSelected(1)
+                            setListChat(list.filter((item) => item.chat_members.length == 2))
+                        }}
+                        onPressRight={() => {
+                            setIndexSelected(2)
+                            setListChat(list.filter((item) => item.chat_members.length > 2))
+                        }} 
+                        textLeft={t("filter_all")}
+                        textCenter={t("private")}
+                        textRight={t("group")}
+                    />
                     <View style={{ height: 1, backgroundColor: colors.BaseSlot5, width: "90%" }} />
                 </View>
                 <View style={{ flex: 1, width: "100%", alignSelf: "center", marginTop: 10 }}>

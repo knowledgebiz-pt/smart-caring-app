@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { useColorScheme, Alert, View, TouchableOpacity, Modal, Pressable, Text, TextInput, ScrollView } from 'react-native'
+import { useColorScheme, View, TouchableOpacity, Text, } from 'react-native'
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
-import { MaterialCommunityIcons, FontAwesome } from "@expo/vector-icons"
 import JournalEntryPopup from './JournalEntryPopup'
 
 
