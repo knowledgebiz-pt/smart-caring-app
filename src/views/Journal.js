@@ -121,7 +121,7 @@ export default function Journal({ route, navigation }) {
 
     const createEntry = (val) => {
         console.log(val)
-        if (!val || val.description.length < 50) {
+        if (!val || val.description.length < 5) {
             showToast(t("journal_toast_entry_characters"), "error")
         }
         else {

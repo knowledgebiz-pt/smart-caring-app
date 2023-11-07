@@ -96,7 +96,7 @@ export default function SelectTransparent(
         alignDropDownContainerStyle["borderColor"] = colors.BaseSlot2
         alignDropDownContainerStyle["alignSelf"] = "flex-end"
     }
-    const placeholderText = <Text style={textStyles}>{placeholder}{displaySelectedOption ? <Text style={{fontWeight: "bold"}}>{selectedValue.label}</Text> : ""}</Text>
+    const placeholderText = <Text style={textStyles}>{placeholder}{displaySelectedOption ? <Text style={{fontWeight: "bold"}}>{selectedValue?.label}</Text> : ""}</Text>
     return (
         <View ref={ref} style={{marginLeft: marginLeft, width: "50%",}}>
             {/* <Text style={[styleSelected.textRegular13DarkBlue,{marginLeft: 20, marginTop: 25, zIndex: 999}]}>{placeholder + selectedValue.label} </Text> */}

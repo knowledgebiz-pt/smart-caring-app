@@ -402,7 +402,7 @@ const style = StyleSheet.create({
     width: "100%",
     borderRadius: 15,
     paddingTop:10,
-    paddingBottom: 20,
+    paddingBottom: 5,
     paddingRight: 10
   },
   feedPostUserName: {

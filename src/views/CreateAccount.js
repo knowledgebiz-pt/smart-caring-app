@@ -99,10 +99,16 @@ export default function CreateAccount({ route, navigation }) {
         
         let base64 = result.assets[0].base64
         console.log(result);
-
-        if (!result.canceled) {
-        setImage({ type: result.assets[0].type, file: base64 });
-        }
+        
+        UserService.uploadUserImage({
+            base64: result.assets[0].base64
+        })
+          .then(res => {
+            setImage(res.data);
+          })
+          .catch(e => {
+            console.error(e);
+          });
     };
 
     const launchLibrary = async () => {

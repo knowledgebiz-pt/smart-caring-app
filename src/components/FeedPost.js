@@ -13,6 +13,7 @@ import Loader from "./Loader";
 import Toast from 'react-native-toast-message'
 import RBSheet from 'react-native-raw-bottom-sheet'
 import PostInputTransparent from "./PostInputTransparent";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useTranslation } from "react-i18next"
 
@@ -49,6 +50,7 @@ const FeedPost = (
     const [commentAmount, setCommentAmount] = useState(0)
 
     const refRBSheet = useRef()
+    const refRBSheetMore = useRef()
     const {t, i18n} = useTranslation()
 
     let colorScheme = useColorScheme()
@@ -186,9 +188,76 @@ const FeedPost = (
                 >
                     <CommentInputPopup updateNews={updateNews} placeholder={t("homepage_write_comment")} feedStyle={feedStyle} postContent={postContent} user={user} feedIcon={feedIcon} newsId={postContent._id.$oid} userId={user._id.$oid} onSubmit={() => {postContent.total_comments += 1; refRBSheet.current.close(); setCommentAmount(postContent.total_comments)}} />                    
                 </RBSheet>
+                <RBSheet
+                    keyboardAvoidingViewEnabled={false}
+                    ref={refRBSheetMore}
+                    closeOnDragDown={true}
+                    closeOnPressMask={true}
+                    animationType="fade"
+                    closeDuration={50}
+                    height={200}
+                    customStyles={{
+                        wrapper: {
+                            backgroundColor: "#00000070"
+                        },
+                        draggableIcon: {
+                            backgroundColor: "#000"
+                        },
+                        container: {
+                            borderTopRightRadius: 15,
+                            borderTopLeftRadius: 15
+                        }
+                    }}
+                >
+                    <TouchableOpacity 
+                    onPress={() => {
+                        AsyncStorage.getItem("@ocultedPosts").then((res) => {
+                            if (res != null) {
+                                console.log("S")
+                                console.log(res)
+                                var posts = JSON.parse(res)
+                                posts.push(postContent._id.$oid)
+                                AsyncStorage.setItem("@ocultedPosts", JSON.stringify(posts))
+                                updateNews()
+                                refRBSheetMore.current.close()
+                            }else {
+                                console.log("N")
+                                AsyncStorage.setItem("@ocultedPosts", JSON.stringify([postContent._id.$oid]))
+                                updateNews()
+                                refRBSheetMore.current.close()
+                            }   
+                        })
+                    }}
+                    style={{backgroundColor: colors.BaseSlot1, height: 50, margin: 10, borderRadius: 20, justifyContent: "center", alignItems: "center"}}>
+                        <Text>{t("ocult")}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                    onPress={() => {
+                        AsyncStorage.getItem("@ocultedPosts").then((res) => {
+                            Toast.show({ type: "success", text1: t("report_message"), position: 'bottom' })
+                            if (res != null) {
+                                console.log("S")
+                                console.log(res)
+                                var posts = JSON.parse(res)
+                                posts.push(postContent._id.$oid)
+                                AsyncStorage.setItem("@ocultedPosts", JSON.stringify(posts))
+                                updateNews()
+                                refRBSheetMore.current.close()
+                            }else {
+                                console.log("N")
+                                AsyncStorage.setItem("@ocultedPosts", JSON.stringify([postContent._id.$oid]))
+                                updateNews()
+                                refRBSheetMore.current.close()
+                            }   
+                        })
+                    }}
+                    style={{backgroundColor: "red", height: 50, margin: 10, borderRadius: 20, justifyContent: "center", alignItems: "center"}}>
+                        <Text>{t("report")}</Text>
+                    </TouchableOpacity>
+                </RBSheet>
             </View>
             <View style={{flexDirection: "row", height:40, flex: 1}}>
-                <View style={{flex: .75}} >
+                <View style={{flex: .75, marginRight: 10}} >
                 <Image
                     style={[styleSelected.avatar, styleSelected.avatarLeftSide, {marginTop: 0, justifyContent:"center", alignItems:"center"}]}
                     source={{uri: postContent?.user?.picture ? postContent?.user?.picture : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"}}
@@ -212,44 +281,9 @@ const FeedPost = (
                     <FontAwesome name={favoriteIcon.name} style={[styleSelected.feedPostHeartIcon, {color: favoriteIcon.color, marginTop:0,justifyContent:"center", alignItems:"center" }]} />
                 </TouchableOpacity>
                 </View>
-                {/* <Image
-                    style={[styleSelected.avatar, styleSelected.avatarLeftSide, {marginTop: 10}]}
-                    source={{uri: postContent.user.picture ? postContent.user.picture : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"}}
-                /> 
-                <Text style={styleSelected.feedPostUserName}>{postContent.user.name.substring(0,25)}{postContent.user.name.length > 25 && "..."} <Image style={styleSelected.feedPostRoleIcon} source={feedIcon}/></Text>
-                <Text style={[styleSelected.feedPostContentSeeComments, {verticalAlign: "middle", flex: 1, marginRight:45, marginTop:5, textDecorationLine: "none"}]}>{postContent.date.substring(0,10)}</Text>
-                <TouchableOpacity style={styleSelected.feedPostHeartIconPosition} onPress={() => {
-                    if (!hasFavorite) setFavoriteIcon({name: "heart", color: "#CB1000"})
-                    else setFavoriteIcon({name: "heart-o", color: "#030849"})
-                    favoriteButton(!hasFavorite)
-                    setFavorite(!hasFavorite)
-                }}>
-                    <FontAwesome name={favoriteIcon.name} style={[styleSelected.feedPostHeartIcon, {color: favoriteIcon.color}]} />
-                </TouchableOpacity> */}
             </View>
-            {/* <View style={{flexDirection:"row"}}>
-            <Image
-                    style={[styleSelected.avatar, styleSelected.avatarLeftSide, {marginTop: 10}]}
-                    source={{uri: postContent.user.picture ? postContent.user.picture : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"}}
-                /> 
-                <Text style={styleSelected.feedPostUserName}>{postContent.user.name.substring(0,25)}{postContent.user.name.length > 25 && "..."} <Image style={styleSelected.feedPostRoleIcon} source={feedIcon}/></Text>
-                <Text style={[styleSelected.feedPostContentSeeComments, {verticalAlign: "middle", flex: 1, marginRight:45, marginTop:5, textDecorationLine: "none"}]}>{postContent.date.substring(0,10)}</Text>
-                <TouchableOpacity style={styleSelected.feedPostHeartIconPosition} onPress={() => {
-                    if (!hasFavorite) setFavoriteIcon({name: "heart", color: "#CB1000"})
-                    else setFavoriteIcon({name: "heart-o", color: "#030849"})
-                    favoriteButton(!hasFavorite)
-                    setFavorite(!hasFavorite)
-                }}>
-                    <FontAwesome name={favoriteIcon.name} style={[styleSelected.feedPostHeartIcon, {color: favoriteIcon.color}]} />
-                </TouchableOpacity>
-            </View> */}
             <View style={[styleSelected.feedPostContentView, { marginLeft: 20}]}>
                 <Text style={styleSelected.feedPostContentText}>{postContent.text}</Text>
-                {/* { !previewLoaded && <View style= {{height:147}}> */}
-                {/* <LottieView style={{ marginRight: 30 }} resizeMode="contain" autoPlay={true} source={require('../../assets/json/loading-heart.json')} /> */}
-
-                {/* </View>} */}
-                {/* <RNUrlPreview onLoad={() => setPreviewLoaded(true)} text={postContent.linkInPost} title={false} description={false} descriptionNumberOfLines={0} containerStyle={{}} imageStyle={styleSelected.feedPostContentUrlPreviewImage} descriptionStyle={{fontSize:0}}  /> */}
                 {(postContent.content.type === "img" || postContent.content.type === "image") &&
                     <Image source={{ uri: postContent.content.path ? postContent.content.path : null }} onLoad={() => setPreviewLoaded(true)} style={styleSelected.feedPostContentUrlPreviewImage} />
                 }
@@ -285,6 +319,13 @@ const FeedPost = (
                                         
                     <FeedPostCommentList updateNews={updateNews} postContent={postContent} commentAmount={commentAmount} avatarPicture={""} modalVisible={true} userName={"teste"}  comment={"text"} />
                 </View>
+                <TouchableOpacity
+                onPress={() => {
+                    refRBSheetMore.current.open()
+                }}
+                style={{height: 30, justifyContent: "center", alignItems: "center"}}>
+                    <MaterialCommunityIcons name={'dots-horizontal'} size={20}/>
+                </TouchableOpacity>
             </View>
         </View>
     </>

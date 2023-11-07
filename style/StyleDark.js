@@ -3,10 +3,14 @@ const colors = require("../style/Colors.json");
 
 const style = StyleSheet.create({
   backgroundPrimary: {
-    backgroundColor: colors.BaseSlot2,
+    backgroundColor: colors.BaseSlot1,
   },
   backgroundLoader: {
-    backgroundColor: colors.BaseSlot2
+    backgroundColor: colors.BaseSlot1,
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+    width: "100%"
   },
   container: {
     flex: 1,
@@ -21,11 +25,11 @@ const style = StyleSheet.create({
   },
   inputView: {
     backgroundColor: colors.BaseSlot4,
-    width:"80%",
-    borderRadius:25,
-    height:50,
-    marginBottom:20,
-    justifyContent:"center",
+    width: "80%",
+    borderRadius: 25,
+    height: 50,
+    marginBottom: 20,
+    justifyContent: "center",
   },
   TextInput: {
     height: 50,
@@ -38,10 +42,10 @@ const style = StyleSheet.create({
     height: 30,
   },
   return_login_button: {
-    height: 60
+    marginBottom: 100
   },
   new_account_button: {
-      height: 30,
+    height: 30,
   },
   loginBtn: {
     width: "80%",
@@ -62,31 +66,31 @@ const style = StyleSheet.create({
     backgroundColor: colors.BaseSlot1,
   },
   loginText: {
-      color: "#fff"
+    color: "#fff"
   },
   checkboxView: {
-      width: "80%",
-      marginBottom: 20,
-      marginLeft: 20,
-      zIndex: -5,
-      flexDirection: "row",
-      alignItems: "center"
+    width: "80%",
+    marginBottom: 20,
+    marginLeft: 20,
+    zIndex: -5,
+    flexDirection: "row",
+    alignItems: "center"
   },
   inputViewBelowDropdown: {
     backgroundColor: colors.BaseSlot4,
-    width:"80%",
-    borderRadius:25,
-    height:50,
-    marginBottom:20,
-    justifyContent:"center",
+    width: "80%",
+    borderRadius: 25,
+    height: 50,
+    marginBottom: 20,
+    justifyContent: "center",
     zIndex: -5
   },
   DropDownPicker: {
-      backgroundColor: colors.BaseSlot4,
-      borderColor: 'transparent',
-      borderRadius:25,
-      height:50,
-      justifyContent:"center",    
+    backgroundColor: colors.BaseSlot4,
+    borderColor: 'transparent',
+    borderRadius: 25,
+    height: 50,
+    justifyContent: "center",
   },
   dropDownContainer: {
     backgroundColor: colors.BaseSlot1,
@@ -112,12 +116,12 @@ const style = StyleSheet.create({
     height: 400, 
     width: "80%", 
     alignSelf: "center", 
-    borderRadius: 20, 
+    borderRadius: 15, 
     marginTop: 20
   },
   verySmallImageContainer: {
     backgroundColor: colors.BaseSlot5, 
-    height: 200, 
+    height: 250, 
     width: "80%", 
     alignSelf: "center", 
     borderRadius: 15, 
@@ -125,27 +129,26 @@ const style = StyleSheet.create({
   },
   paleBlueContainer: {
     marginTop: 45,
-    flex: 1, 
-    justifyContent: "space-evenly", 
-    borderRadius: 30, 
-    alignSelf: "center", 
-    width: "90%", 
-    backgroundColor: 'rgba(28, 163, 252, 0.1)', 
-    justifyContent: "space-evenly", 
+    flex: 1,
+    justifyContent: "space-evenly",
+    borderRadius: 30,
+    alignSelf: "center",
+    width: "90%",
+    backgroundColor: 'rgba(28, 163, 252, 0.1)',
+    justifyContent: "space-evenly",
     height: 250
   },
   paleBlueContainerTaller: {
     marginTop: 45,
-    flex: 1, 
-    justifyContent: "space-evenly", 
-    borderRadius: 30, 
-    alignSelf: "center", 
-    width: "90%", 
-    backgroundColor: 'rgba(28, 163, 252, 0.1)', 
-    justifyContent: "space-evenly", 
+    flex: 1,
+    justifyContent: "space-evenly",
+    borderRadius: 30,
+    alignSelf: "center",
+    width: "90%",
+    backgroundColor: 'rgba(28, 163, 252, 0.1)',
+    justifyContent: "space-evenly",
     height: 400
   },
-  
   logoLeftSide: {
     width: 150, 
     height: 110, 
@@ -153,7 +156,7 @@ const style = StyleSheet.create({
     alignSelf: "flex-start"
   },
 
-  //buttons
+  //buttonSize
 
   buttonSize: {
     height: 50,
@@ -202,7 +205,7 @@ const style = StyleSheet.create({
   },
   smallButtonPost: {
     borderWidth: 1, 
-    borderRadius: 10,
+    borderRadius: 10, 
     flexDirection:"row", 
     height: 30, 
     paddingLeft: 10, 
@@ -211,7 +214,7 @@ const style = StyleSheet.create({
     paddingBottom: 5
   },
 
-  //text
+  // text
 
   textRegular16: {
     fontSize: 16,
@@ -219,16 +222,16 @@ const style = StyleSheet.create({
   },
   textBold16: {
     fontSize: 16,
-    fontWeight: 400
+    fontWeight: 600
   },
   textBold10DarkBlue: {
     fontSize: 10,
     fontWeight: 600,
     color: "#030849"
   },
-  textBold20DarkBlue:{
-    fontSize: 20, 
-    fontWeight: 600, 
+  textBold20DarkBlue: {
+    fontSize: 20,
+    fontWeight: 600,
     color: "#030849"
   },
   textRegular13DarkBlue: {
@@ -295,28 +298,31 @@ const style = StyleSheet.create({
     color: '#030849'
   },
 
+  text12Regular: {
+      fontSize: 12
+  },
+
   // Safe Area
   AndroidSafeArea: {
     flex: 1,
     backgroundColor: "white",
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
   },
-  
+
   // Avatar
   avatar: {
     paddingTop: 20,
-    height: 100,
-    width: 100,
+    height: 75,
+    width: 75,
     borderRadius: 100,
     padding: 20,
   },
   plusCircleAvatar: {
-    alignContent: "center", 
-    borderRadius: 30, 
-    textAlignVertical: "center", 
-    position: "absolute", 
-    marginLeft: 222, 
-    marginTop: 40, 
+    borderRadius:30, 
+    position:"absolute",
+    left:"52%",
+    top:"55%", 
+    position: "absolute",
     backgroundColor: colors.BaseSlot3
   },
   avatarRightSide: {
@@ -363,7 +369,7 @@ const style = StyleSheet.create({
     height: 50,
     backgroundColor: colors.BaseSlot1,
     flexDirection: "row",
-    width: "190%",
+    width: "100%",
     alignSelf: "flex-start",
     borderWidth: 1,
     borderRadius: 30,
@@ -380,12 +386,11 @@ const style = StyleSheet.create({
   },
   phoneInputTextInput: {
     width: "100%", 
-    height: 50,
-    fontSize:13,
-    color: colors.BaseSlot3
+    height: 50
   },
   phoneInputCodeText: {
-    color: colors.BaseSlot3, 
+    color: "#656565",
+    fontSize: 13,
     marginLeft: -20
   },
   phoneInputCountryPickerButton: {
@@ -397,7 +402,7 @@ const style = StyleSheet.create({
     width: "100%",
     borderRadius: 15,
     paddingTop:10,
-    paddingBottom: 20,
+    paddingBottom: 5,
     paddingRight: 10
   },
   feedPostUserName: {
@@ -451,7 +456,7 @@ const style = StyleSheet.create({
     flex: 1,
     textAlign: "right",
     alignSelf:"center",
-    marginRight:20
+    marginRight:26
   },
   feedPostContentSeeComments: {
     textAlign: "right",
@@ -461,7 +466,7 @@ const style = StyleSheet.create({
   },
   modalCenteredView: {
     flex: 1,
-      backgroundColor: 'rgba(0, 0, 0, 0.5)'
+    backgroundColor: 'rgba(0, 0, 0, 0.5)'
   },
   modalView: {
     backgroundColor: 'white',
@@ -473,8 +478,6 @@ const style = StyleSheet.create({
   },
   modalOpenButton: {
     position:'absolute', 
-    marginLeft: 346, 
-    marginTop: 725, 
     backgroundColor: colors.BaseSlot4, 
     width: 80, 
     borderBottomLeftRadius:30, 
@@ -482,7 +485,9 @@ const style = StyleSheet.create({
     paddingTop:10, 
     paddingBottom:5, 
     borderTopLeftRadius:30, 
-    alignItems:"center" 
+    alignItems:"center", 
+    right: 0,
+    bottom: 20
   },
   journalEntryCreationOpenButton: {
     position:'absolute', 
@@ -509,5 +514,6 @@ const style = StyleSheet.create({
     paddingBottom: 35,
   }
 });
+
 
 export default style;

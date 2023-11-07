@@ -3569,6 +3569,11 @@ expand-brackets@^2.1.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
+expo-apple-authentication@^6.1.2:
+  version "6.1.2"
+  resolved "https://registry.yarnpkg.com/expo-apple-authentication/-/expo-apple-authentication-6.1.2.tgz#46150a41988550a491c321effaf3d6cdaaf12be9"
+  integrity sha512-wXGrltitAu/MncQ7F16uQIZO5Uva2tof7pBa3pbEg1g6TAp4YQhJ1iwEeit0Jlk9J64R9c+kKzbyuRquWMzyyA==
+
 expo-application@~5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/expo-application/-/expo-application-5.1.1.tgz#5206bf0cf89cb0e32d1f5037a0481e5c86b951ab"
@@ -5018,6 +5023,11 @@ jsprim@^1.2.2:
     extsprintf "1.3.0"
     json-schema "0.4.0"
     verror "1.10.0"
+
+jwt-decode@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/jwt-decode/-/jwt-decode-3.1.2.tgz#3fb319f3675a2df0c2895c8f5e9fa4b67b04ed59"
+  integrity sha512-UfpWE/VZn0iP50d8cz9NrZLM9lSWhcJ+0Gt/nm4by88UL+J1SiKN8/5dkjMmbEzwL2CAe+67GsegCbIKtbp75A==
 
 kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0:
   version "3.2.2"
@@ -7301,10 +7311,10 @@ slugify@^1.3.4:
   resolved "https://registry.yarnpkg.com/slugify/-/slugify-1.6.6.tgz#2d4ac0eacb47add6af9e04d3be79319cbcc7924b"
   integrity sha512-h+z7HKHYXj6wJU+AnS/+IH8Uh9fdcX1Lrhg1/VMdf9PwoBQXFcXiAdsy2tSK0P6gKwJLXp02r90ahUCqHk9rrw==
 
-smart-caring-client@^1.0.12:
-  version "1.0.12"
-  resolved "https://registry.yarnpkg.com/smart-caring-client/-/smart-caring-client-1.0.12.tgz#043c545e1d7bfdfcecec799db862ad1cf31e1884"
-  integrity sha512-OmNGmIe4mJyJrwyfuGLH/k0tdYzGo8AGXLQtm3YmYYNB3bIIbuIWJ97GITUpqiXsjbdglFFtaXG54SxYWDylwg==
+smart-caring-client@^1.0.14:
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/smart-caring-client/-/smart-caring-client-1.0.14.tgz#864915d04f9f68159aabdb10d870f919755e3d12"
+  integrity sha512-r15sBAhX4cTp7D89gxp/1OUAgFVYYreiTIMttUs6Jr5nwTNijMxAMrbxlpSBk9EwaDxmYoF29RELe+7g5ZjK2Q==
 
 snapdragon-node@^2.0.1:
   version "2.1.1"

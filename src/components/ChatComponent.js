@@ -5,6 +5,9 @@ import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
 import * as SplashScreen from 'expo-splash-screen';
 import Loader from '../components/Loader'
+import { useTranslation } from "react-i18next"
+import { FontAwesome } from '@expo/vector-icons';
+
 
 export default function ChatComponent({ value, navigation, idUser, ws, update }) {
     const [isLoading, setIsLoading] = useState(true)
@@ -13,6 +16,7 @@ export default function ChatComponent({ value, navigation, idUser, ws, update })
     var colors = require('../../style/Colors.json')
     const [userReceiver, setUserReceiver] = useState(null)
     const [lastedMessage, setLastedMessage] = useState(null)
+    const { t, i18n } = useTranslation()
 
     useEffect(() => {
         console.log('OPEN', ChatComponent.name, 'SCREEN')
@@ -30,8 +34,9 @@ export default function ChatComponent({ value, navigation, idUser, ws, update })
     Appearance.addChangeListener(({ colorScheme }) => {
         console.log('COLOR THEME WAS ALTER')
         console.log(colorScheme)
-        if (Platform.OS === 'android')
+        if (Platform.OS === 'android'){
             NavigationBar.setBackgroundColorAsync(colorScheme === 'light' ? colors.Base_Slot_1 : colors.Base_Slot_1)
+        }
     })
     const onLayoutRootView = useCallback(async () => {
         if (isLoading) {
@@ -67,13 +72,13 @@ export default function ChatComponent({ value, navigation, idUser, ws, update })
                     <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
                         {
                             value.chat_members.length > 2 ? (
-                                <Text style={[styleSelected.textRegular16, { color: lastedMessage?.viewed ? colors.BaseSlot5 : colors.BaseSlot1 }]}>{value.name}</Text>
+                                <Text style={[styleSelected.textRegular16, { color: lastedMessage?.viewed ? colors.BaseSlot5 : colors.BaseSlot1 }]}>{value.name == undefined ? t("group_chat") : value.name}</Text>
                             ) : (
-                                <Text style={[styleSelected.textRegular16, { color: lastedMessage?.viewed ? colors.BaseSlot5 : colors.BaseSlot1 }]}>{value.chat_members.findLast(item => item.id_user != 1)?.name}</Text>
+                                <Text style={[styleSelected.textRegular16, { color: lastedMessage?.viewed ? colors.BaseSlot5 : colors.BaseSlot1 }]}>{value.chat_members.findLast(item => item.id_user != idUser)?.name}</Text>
                             )
                         }
                         {
-                            value.chat_members.findLast(item => item.id_user != idUser)?.user_type == "Patient" && (
+                            value.chat_members.findLast(item => item.id_user != idUser)?.user_type == "Patient" && value.chat_members.length < 3 && (
                                 <Image
                                     style={{ width: 25, height: 25, marginLeft: 10, tintColor: lastedMessage?.viewed ? null : "white" }}
                                     resizeMode='cover'
@@ -82,7 +87,7 @@ export default function ChatComponent({ value, navigation, idUser, ws, update })
                             )
                         }
                         {
-                            value.chat_members.findLast(item => item.id_user != idUser)?.user_type == "Health Professional" && (
+                            value.chat_members.findLast(item => item.id_user != idUser)?.user_type == "Health Professional" && value.chat_members.length < 3 && (
                                 <Image
                                     style={{ width: 25, height: 25, marginLeft: 10, tintColor: lastedMessage?.viewed ? null : "white" }}
                                     resizeMode='cover'
@@ -91,7 +96,7 @@ export default function ChatComponent({ value, navigation, idUser, ws, update })
                             )
                         }
                         {
-                            value.chat_members.findLast(item => item.id_user != idUser)?.user_type == "caregiver" && (
+                            value.chat_members.findLast(item => item.id_user != idUser)?.user_type == "caregiver" && value.chat_members.length < 3 && (
                                 <Image
                                     style={{ width: 25, height: 25, marginLeft: 10, tintColor: lastedMessage?.viewed ? null : "white" }}
                                     resizeMode='cover'
@@ -101,21 +106,32 @@ export default function ChatComponent({ value, navigation, idUser, ws, update })
                         }
                         {
                             value.chat_members.length > 2 && (
+                                // <FontAwesome name="users" size={16} color="black" style={{marginLeft: 10}}/>
                                 <Image
-                                    style={{ width: 20, height: 20, marginLeft: 10 }}
+                                    style={{ width: 18, height: 18, marginLeft: 10, tintColor: lastedMessage?.viewed ? null : "white" }}
                                     resizeMode='cover'
-                                    source={require('../../assets/images/facebook.png')}
+                                    source={require('../../assets/images/users-icon.png')}
                                 />
                             )
                         }
                     </View>
                     <View style={{ flex: 1, justifyContent: "center" }}>
-                        <Text style={[styleSelected.textRegular16, { color: lastedMessage?.viewed ? colors.BaseSlot5 : colors.BaseSlot1 }]}>{value.chat_members.findLast(item => item.id_user == lastedMessage?.id_user_sender)?.name + ": " + lastedMessage?.content}</Text>
+                        {
+                            value.chat_members.findLast(item => item.id_user == lastedMessage?.id_user_sender)?.name != undefined ? (
+                                <Text style={[styleSelected.textRegular16, { color: lastedMessage?.viewed ? colors.BaseSlot5 : colors.BaseSlot1 }]}>{value.chat_members.findLast(item => item.id_user == lastedMessage?.id_user_sender)?.name + ": " + lastedMessage?.content}</Text>
+                            ) : (
+                                <Text style={[styleSelected.textRegular16, { color: lastedMessage?.viewed ? colors.BaseSlot5 : colors.BaseSlot1 }]}></Text>
+                            )
+                        }
                     </View>
                 </View>
 
                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center", marginRight: 20 }}>
-                    <Text style={[styleSelected.textRegular12, { color: lastedMessage?.viewed ? colors.BaseSlot5 : colors.BaseSlot1, fontSize: 12 }]}>{new Date(lastedMessage?.date).toLocaleDateString() + " " +  new Date(lastedMessage?.date).toLocaleTimeString().substring(0, 5)}</Text>
+                    {
+                        new Date(lastedMessage?.date).toLocaleDateString() != "Invalid Date" && (
+                            <Text style={[styleSelected.textRegular12, { color: lastedMessage?.viewed ? colors.BaseSlot5 : colors.BaseSlot1, fontSize: 12 }]}>{new Date(lastedMessage?.date).toLocaleDateString() + " " +  new Date(lastedMessage?.date).toLocaleTimeString().substring(0, 5)}</Text>
+                        )
+                    }
                 </View>
             </TouchableOpacity >
             <View style={{ height: 1, backgroundColor: lastedMessage?.viewed ? colors.BaseSlot5 : colors.BaseSlot1, width: "90%", alignSelf: "center" }} />

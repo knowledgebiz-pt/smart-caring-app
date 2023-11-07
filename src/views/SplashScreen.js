@@ -8,6 +8,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { OpenAPI, } from 'smart-caring-client/client'
 import { CommonActions } from '@react-navigation/native'
 
+// OpenAPI.BASE = 'http://10.103.20.234:8000'
+
 export default function SplashScreen({ route, navigation }) {
     const [isLoading, setIsLoading] = useState(true)
     let colorScheme = useColorScheme()

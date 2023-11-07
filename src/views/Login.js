@@ -62,20 +62,19 @@ export default function Login({ route, navigation }) {
         userInfoResponse.json().then((data) => {
             UserService.getAllUsers().then((res) => {
                 console.log(res.data)
-                res.data.forEach(element => {
-                    if (element.email == data.email) {
-                        AsyncStorage.setItem("@token", element._id.$oid)
-                        navigation.dispatch(
-                            CommonActions.reset({
-                                index: 0,
-                                routes: [{ name: 'BottomTab', params: { userData: element } }],
-                            })
-                        )
-                    } else {
-                        console.warn(data)
-                        navigation.navigate('CreateAccountWithGmail', { userInfo: data })
-                    }
-                });
+                const checkUser = res.data.find((user) => user.email == data.email)
+                if (checkUser) {
+                    AsyncStorage.setItem("@token", checkUser._id.$oid)
+                    navigation.dispatch(
+                        CommonActions.reset({
+                            index: 0,
+                            routes: [{ name: 'BottomTab', params: { userData: checkUser } }],
+                        })
+                    )
+                } else {
+                    console.warn(data)
+                    navigation.navigate('CreateAccountWithGmail', { userInfo: data })
+                }
             }).catch((err) => { })
         });
     }
@@ -211,21 +210,20 @@ export default function Login({ route, navigation }) {
                                         let tokenData = jwtDecode.default(data.identityToken)
                                         let email = tokenData.email
                                         UserService.getAllUsers().then((res) => {
-                                            res.data.forEach(element => {
-                                                if (element.email == email) {
-                                                    AsyncStorage.setItem("@token", element._id.$oid)
-                                                    navigation.dispatch(
-                                                        CommonActions.reset({
-                                                            index: 0,
-                                                            routes: [{ name: 'BottomTab', params: { userData: element } }],
-                                                        })
-                                                    )
-                                                    return
-                                                } else {
-                                                    navigation.navigate('CreateAccountWithGmail', { userInfo: {given_name: "", family_name: "", picture: null, email} })
-                                                    return
-                                                }
-                                            });
+                                            console.log(res.data)
+                                            const checkUser = res.data.find((user) => user.email == email)
+                                            if (checkUser) {
+                                                AsyncStorage.setItem("@token", checkUser._id.$oid)
+                                                navigation.dispatch(
+                                                    CommonActions.reset({
+                                                        index: 0,
+                                                        routes: [{ name: 'BottomTab', params: { userData: checkUser } }],
+                                                    })
+                                                )
+                                            } else {
+                                                console.warn(data)
+                                                navigation.navigate('CreateAccountWithGmail', { userInfo: data })
+                                            }
                                         }).catch((err) => { })
                                       });
                                       // signed in

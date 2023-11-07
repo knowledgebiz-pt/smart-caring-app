@@ -91,16 +91,38 @@ export default function HomePage({ route, navigation }) {
 
     function updateDataNews() {
         NewsService.getNewsAllArticles().then(result => {
-            setFeedPosts([])
-            setFeedPosts([...result.data])
-            let array = [...result.data].sort((a, b) => {
-                return new Date(b.date) - new Date(a.date)
+            AsyncStorage.getItem("@ocultedPosts").then((token) => {
+                if (token != null) {
+                    var list1 = JSON.parse(token)
+                    var arrayFiltered = result.data.filter(item1 => !list1.some(item2 => item1._id.$oid == item2));
+
+                    setFeedPosts([])
+                    setFeedPosts([...arrayFiltered])
+                    let array = [...arrayFiltered].sort((a, b) => {
+                        return new Date(b.date) - new Date(a.date)
+                    })
+                    setDisplayFeedPosts(array)
+                    setIsLoading(false)
+                }else {
+                setFeedPosts([])
+                setFeedPosts([...result.data])
+                let array = [...result.data].sort((a, b) => {
+                    return new Date(b.date) - new Date(a.date)
+                })
+                setDisplayFeedPosts(array)
+                setIsLoading(false)
+                }
+            }).catch((e) => {
+
             })
-            setDisplayFeedPosts(array)
-            setIsLoading(false)
         }).catch(e => {
             console.error("e: ", e)
+            if (!isList) {
             setIsLoading(false)
+            }
+            else {
+                setIsLoadingSort(false)
+            }
             showToast(t("homepage_toast_error_get_posts"), "error")
         })
     }
@@ -198,18 +220,41 @@ export default function HomePage({ route, navigation }) {
             setIsLoadingSort(true)
         }
         NewsService.getNewsAllArticles().then(result => {
-            setFeedPosts([])
-            setFeedPosts([...result.data])
-            let array = [...result.data].sort((a, b) => {
-                return new Date(b.date) - new Date(a.date)
+            AsyncStorage.getItem("@ocultedPosts").then((token) => {
+                if (token != null) {
+                    var list1 = JSON.parse(token)
+                    var arrayFiltered = result.data.filter(item1 => !list1.some(item2 => item1._id.$oid == item2));
+                    setFeedPosts([])
+                    setFeedPosts([...arrayFiltered])
+                    let array = [...arrayFiltered].sort((a, b) => {
+                        return new Date(b.date) - new Date(a.date)
+                    })
+                    setDisplayFeedPosts(array)
+                    if (!isList) {
+                    setIsLoading(false)
+                    }
+                    else {
+                        setIsLoadingSort(false)
+                    }
+                }else {
+                setFeedPosts([])
+                setFeedPosts([...result.data])
+                let array = [...result.data].sort((a, b) => {
+                    return new Date(b.date) - new Date(a.date)
+                })
+                setDisplayFeedPosts(array)
+                if (!isList) {
+                setIsLoading(false)
+                }
+                else {
+                    setIsLoadingSort(false)
+                }
+                }
+
+                
+            }).catch((e) => {
+
             })
-            setDisplayFeedPosts(array)
-            if (!isList) {
-            setIsLoading(false)
-            }
-            else {
-                setIsLoadingSort(false)
-            }
         }).catch(e => {
             console.error("e: ", e)
             if (!isList) {

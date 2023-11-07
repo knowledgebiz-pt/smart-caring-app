@@ -304,7 +304,7 @@ export default function MySchedule({ route, navigation }) {
     )
 
     const Item = ({ item }) => (
-        <View style={{ flex: 1, backgroundColor: "white", marginLeft: "10%", marginRight: "10%", marginTop: 50 }}>
+        <View style={{ flex: 1, backgroundColor: "white", marginLeft: "10%", marginRight: "10%", marginTop: 10 }}>
             {/* <View style={{width:"10%"}}></View> */}
             <View style={{ flex: 1 }}>
                 <View>

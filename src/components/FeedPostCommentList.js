@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Text, ScrollView, Modal, Pressable, Image, View, Linking, TouchableOpacity, TextInput, useColorScheme, Touchable } from "react-native";
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
@@ -12,6 +12,7 @@ import { CommentService } from "smart-caring-client/client";
 import Loader from "./Loader";
 import Toast from 'react-native-toast-message'
 import { useTranslation } from "react-i18next"
+import RBSheet from 'react-native-raw-bottom-sheet'
 
 /***
  * @param buttonColor: string - Determine the color of the component's buttons and their borders.
@@ -46,6 +47,7 @@ export default function FeedPostCommentList(
     let feedStyle = {
         backgroundColor: "#5B5E8910" // in case of no role
     }
+    const refRBSheet = useRef()
 
     useEffect(() => {
         setImage(img)
@@ -57,6 +59,7 @@ export default function FeedPostCommentList(
     }
 
     const retrieveComments = () => {
+        refRBSheet.current.open()
         setSelectedComment(null)
         setModalVisible(true)
         setIsLoading(true)
@@ -102,13 +105,19 @@ export default function FeedPostCommentList(
 
     return (<>
         <TouchableOpacity style={styleSelected.feedPostContentSeeCommentsTouchableOpacity} onPress={() => {
-            if (postContent.total_comments && postContent.total_comments > 0) retrieveComments();
+            if (postContent.total_comments && postContent.total_comments > 0) {
+                retrieveComments();
+            }
         }}>
             <Text style={styleSelected.feedPostContentSeeComments} >{postContent.total_comments && postContent.total_comments > 0 ? t("homepage_comment_see") + postContent.total_comments + (postContent.total_comments === 1 ? " " + t("homepage_comment_lowercase") : " " + t("homepage_comments")) : t("homepage_no_comments")}</Text>
         </TouchableOpacity>
-        <Modal animationType='slide' transparent={true} visible={modalVisible}>
-            <Pressable style={styleSelected.modalCenteredView} onPress={(event) => event.target === event.currentTarget && setModalVisible(false)}>
-                <ScrollView style={styleSelected.feedCommentModalView}>
+        <RBSheet 
+        transparent={true}
+        closeOnDragDown={true}
+        closeOnPressMask={true}
+        closeOnPressBack={false}
+        ref={refRBSheet} height={500}>
+                <ScrollView>
                     <View style={isLoading && { borderTopLeftRadius: 15, borderTopRightRadius: 15, marginTop: 20 }} onStartShouldSetResponder={() => true}>
                         {!isLoading && <FlatList
                             data={comments}
@@ -118,8 +127,7 @@ export default function FeedPostCommentList(
                         {isLoading && <Loader />}
                     </View>
                 </ScrollView>
-            </Pressable>
-        </Modal>
+        </RBSheet>
     </>
     )
 }
