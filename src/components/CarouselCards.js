@@ -30,7 +30,7 @@ export default function CarouselCards({}) {
     return (
         <View style={{flex: 1}}>
           <View style={{flex: .83}}>
-            <Carousel
+            {/* <Carousel
               layout="tinder"
               layoutCardOffset={9}
               ref={isCarousel}
@@ -43,7 +43,7 @@ export default function CarouselCards({}) {
               useScrollView={true}
               enableMomentum={true}
               decelerationRate={5}
-            />
+            /> */}
 
           </View>
           <View style={{flex: .17, marginTop: -50}}>

@@ -7,7 +7,7 @@ import Loader from '../components/Loader'
 import ButtonPrimary from '../components/ButtonPrimary'
 import InputTransparent from '../components/InputTransparent'
 import { useTranslation } from "react-i18next"
-import { UserService } from 'smart-caring-client/client'
+import { UserService } from '@knowledgebiz/smart-caring-client/client'
 import Toast from 'react-native-toast-message'
 
 export default function EnterNewPassword({ route, navigation }) {

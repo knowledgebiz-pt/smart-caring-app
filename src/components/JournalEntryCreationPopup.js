@@ -22,7 +22,7 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import ButtonPrimary from "./ButtonPrimary";
 
 import { useTranslation } from "react-i18next";
-import { NewsService, UserService } from "smart-caring-client/client";
+import { NewsService, UserService } from "@knowledgebiz/smart-caring-client/client";
 
 export default function JournalEntryCreationPopup({
   blurOnSubmit,

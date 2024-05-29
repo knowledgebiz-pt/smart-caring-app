@@ -20,7 +20,7 @@ import ChatSender from './src/views/ChatSender';
 import CreateEvent from './src/views/CreateEvent';
 import SplashScreen from './src/views/SplashScreen';
 import Profile from './src/views/Profile';
-import { OpenAPI } from 'smart-caring-client/client';
+import { OpenAPI } from '@knowledgebiz/smart-caring-client/client';
 import store from "./src/redux/store";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next"

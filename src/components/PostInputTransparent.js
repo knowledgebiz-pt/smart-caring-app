@@ -5,7 +5,7 @@ import styleDark from '../../style/StyleDark'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome } from "@expo/vector-icons"
 import * as ImagePicker from "expo-image-picker"
-import { CommentService, NewsService } from "smart-caring-client/client";
+import { CommentService, NewsService } from "@knowledgebiz/smart-caring-client/client";
 import * as FileSystem from 'expo-file-system'
 import Toast from 'react-native-toast-message'
 import DialogInput from 'react-native-dialog-input';

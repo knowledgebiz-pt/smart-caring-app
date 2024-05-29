@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next"
 import SortAndFilterSelects from '../components/SortAndFilterSelects'
 import { FontAwesome } from '@expo/vector-icons'
 import ButtonSuccess from '../components/ButtonSuccess'
-import { ToolboxService } from 'smart-caring-client/client'
+import { ToolboxService } from '@knowledgebiz/smart-caring-client/client'
 import SearchBar from '../components/SearchBar'
 import ThreeOptionBar from '../components/ThreeOptionBar'
 

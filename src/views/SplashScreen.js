@@ -26,18 +26,18 @@ export default function SplashScreen({ route, navigation }) {
         AsyncStorage.getItem("@token").then(res => {
             if (res) {
                 console.warn(res)
-                setTimeout(() => {
+                // setTimeout(() => {
                     navigation.dispatch(
                         CommonActions.reset({
                           index: 0,
                           routes: [{ name: 'BottomTab' }],
                         })
                     )
-                }, 1000)
+                // }, 1000)
 
             }
             else {
-                setTimeout(() => {
+                // setTimeout(() => {
                     AsyncStorage.getItem("@hadFirstAccess").then(res => {
                         if (res) {
                             navigation.dispatch(
@@ -56,14 +56,14 @@ export default function SplashScreen({ route, navigation }) {
                             )
                         }
                     })
-                }, 1000)
+                // }, 1000)
             }
         })
     }
 
     return (
-        <View style={{flex: 1, justifyContent:"center"}}>
-            <Image source={require("../../assets/images/logo.png")} resizeMode='contain' style={{width: 250, height: 250, alignSelf:"center", justifyContent:"center"}} />
+        <View style={{backgroundColor:'white',flex: 1, justifyContent:"center"}}>
+            <Image source={require("../../assets/adaptive-icon.png")} resizeMode='center' style={{maxHeight:360,alignSelf:"center", justifyContent:"center"}} />
         </View>
     )
 }

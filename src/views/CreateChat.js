@@ -4,7 +4,7 @@ import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
 import Loader from '../components/Loader'
-import { ChatService, UserService } from 'smart-caring-client/client'
+import { ChatService, UserService } from '@knowledgebiz/smart-caring-client/client'
 import { useTranslation } from "react-i18next"
 import ButtonPrimary from '../components/ButtonPrimary'
 import { useSelector } from 'react-redux'

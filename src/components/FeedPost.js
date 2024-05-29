@@ -5,7 +5,7 @@ import styleDark from '../../style/StyleDark'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome } from "@expo/vector-icons"
 import FeedPostCommentList from "./FeedPostCommentList";
-import { NewsService, CommentService } from "smart-caring-client/client";
+import { NewsService, CommentService } from "@knowledgebiz/smart-caring-client/client";
 import { Video, ResizeMode } from 'expo-av';
 import CommentInputPopup from "./CommentInputPopup";
 import Loader from "./Loader";

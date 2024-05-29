@@ -3,7 +3,7 @@ import { useColorScheme, View, Image, Text, TextInput } from 'react-native'
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { CommentService } from 'smart-caring-client/client'
+import { CommentService } from '@knowledgebiz/smart-caring-client/client'
 import Toast from 'react-native-toast-message'
 import { useTranslation } from "react-i18next"
 

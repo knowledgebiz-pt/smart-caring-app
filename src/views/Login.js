@@ -6,7 +6,7 @@ import * as NavigationBar from 'expo-navigation-bar'
 import Loader from '../components/Loader'
 import InputTransparent from '../components/InputTransparent'
 import ButtonPrimary from '../components/ButtonPrimary'
-import { UserService } from "smart-caring-client/client"
+import { UserService } from "@knowledgebiz/smart-caring-client/client"
 import * as Google from "expo-auth-session/providers/google";
 import Toast from 'react-native-toast-message'
 import AsyncStorage from '@react-native-async-storage/async-storage'

@@ -4,7 +4,7 @@ import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import { FlatList } from "react-native-gesture-handler";
 import FeedPostComment from "./FeedPostComment";
-import { CommentService } from "smart-caring-client/client";
+import { CommentService } from "@knowledgebiz/smart-caring-client/client";
 import Loader from "./Loader";
 import Toast from 'react-native-toast-message'
 import { useTranslation } from "react-i18next"

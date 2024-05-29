@@ -8,7 +8,7 @@ import { FlashList } from '@shopify/flash-list'
 import { FontAwesome } from '@expo/vector-icons'
 import JournalEntryCreationPopup from '../components/JournalEntryCreationPopup'
 import JournalEntry from '../components/JournalEntry'
-import { DiaryService } from 'smart-caring-client/client'
+import { DiaryService } from '@knowledgebiz/smart-caring-client/client'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Toast } from 'react-native-toast-message/lib/src/Toast'
 import { useTranslation } from "react-i18next"

@@ -5,7 +5,7 @@ import styleDark from '../../style/StyleDark'
 import * as NavigationBar from 'expo-navigation-bar'
 import Loader from '../components/Loader'
 import HeaderLogoAndProfileImage from '../components/HeaderLogoAndProfileImage'
-import { UserService, NewsService, OpenAPI } from "smart-caring-client/client"
+import { UserService, NewsService, OpenAPI } from "@knowledgebiz/smart-caring-client/client"
 import PostInputTransparent from '../components/PostInputTransparent'
 import FeedPost from '../components/FeedPost'
 import PostInputPopup from '../components/PostInputPopup'

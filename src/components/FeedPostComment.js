@@ -3,7 +3,7 @@ import { Text, Image, View, useColorScheme } from "react-native";
 import style from '../../style/Style'
 import styleDark from '../../style/StyleDark'
 import { MaterialCommunityIcons } from "@expo/vector-icons"
-import { CommentService } from "smart-caring-client/client";
+import { CommentService } from "@knowledgebiz/smart-caring-client/client";
 
 /***
  * @param buttonColor: string - Determine the color of the component's buttons and their borders.

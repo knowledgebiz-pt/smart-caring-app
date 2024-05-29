@@ -12,12 +12,12 @@ import styleDark from "../../style/StyleDark";
 import { MaterialCommunityIcons, FontAwesome } from "@expo/vector-icons";
 import ModalMenu from "./ModalMenu";
 import RBSheet from "react-native-raw-bottom-sheet";
-import { OpenAPI } from "smart-caring-client/client";
+import { OpenAPI } from "@knowledgebiz/smart-caring-client/client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, CommonActions } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { UserService } from "smart-caring-client/client";
+import { UserService } from "@knowledgebiz/smart-caring-client/client";
 
 /***
  * @param img: string - URI of the user's profile image

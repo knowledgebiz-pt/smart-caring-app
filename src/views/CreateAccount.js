@@ -13,7 +13,7 @@ import ButtonOutlineDarkBlueIcon from '../components/ButtonOutlineDarkBlueIcon'
 import TogglerTransparentLabelAbove from "../components/TogglerTransparentLabelAbove"
 import TogglerTransparentLabelLeft from '../components/TogglerTransparentLabelLeft'
 import { launchImageLibrary } from 'react-native-image-picker';
-import { UserService } from "smart-caring-client/client"
+import { UserService } from "@knowledgebiz/smart-caring-client/client"
 import DatePickerTransparentLabelAbove from '../components/DatePickerTransparentLabelAbove'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import PhoneInputTransparentLabelAbove from '../components/PhoneInputTransparentLabelAbove'

@@ -22,7 +22,7 @@ import ChatSenderComponent from "../components/ChatSenderComponent";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ChatService } from "smart-caring-client/client";
+import { ChatService } from "@knowledgebiz/smart-caring-client/client";
 
 export default function ChatSender({ route, navigation }) {
   const [isLoading, setIsLoading] = useState(true);
