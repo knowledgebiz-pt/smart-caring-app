@@ -2,6 +2,7 @@
   "expo": {
     "name": "smart-caring-app",
     "slug": "smart-caring-app",
+    "owner": "knowledgebiz",
     "scheme": "smartcaringscheme",
     "version": "1.0.6",
     "orientation": "portrait",
@@ -36,7 +37,7 @@
         "android.permission.READ_CALENDAR",
         "android.permission.WRITE_CALENDAR"
       ],
-      "versionCode": 7
+      "versionCode": 8
     },
     "web": {
       "favicon": "./assets/favicon.png"
